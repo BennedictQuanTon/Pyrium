@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/*
+ * Tokens follow Landing_DESIGN.md (Dialog style reference) exactly, with the Pyrium palette from
+ * the brand kit (PYRIUM_Brand_Identity_Kit, which supersedes the brand board where they differ):
+ * the single accent is Signal Red #D9292F instead of Tangerine #f69251, and Mist is #F3F3F3.
+ * The accent is for primary CTAs only — never text, icons, decoration or backgrounds.
+ *
+ * Contrast (WCAG 2.x, computed 2026-10-20):
+ *   ink #111111 on fog #f7f7f7 17.63 · on snow 18.88
+ *   midnight #181825 on snow 17.56 · graphite-ink #484758 on fog 8.46
+ *   stone #636363 on fog 5.61 · on snow 6.01
+ *   CTA text #ffffff on signal #D9292F 4.87 (AA); #111111 on signal is 3.87 (fails), so CTA text is white
+ *   pebble #949494 on snow 3.03: input placeholders only, every input has a visible label
+ *   snow on deep-slate #242433 15.27 · #b2b2b2 on deep-slate 7.20 · mist #f3f3f3 on deep-slate 13.76
+ *   mist is otherwise decorative only (dividers, avatar placeholders), never text on light surfaces
+ */
+@theme {
+  --color-signal: #d9292f;
+  --color-signal-ink: #ffffff;
+  --color-midnight: #181825;
+  --color-graphite-ink: #484758;
+  --color-deep-slate: #242433;
+  --color-ink: #111111;
+  --color-stone: #636363;
+  --color-pebble: #949494;
+  --color-ash: #8b8b8b;
+  --color-silver: #b2b2b2;
+  --color-graphite: #8a8a8a;
+  --color-mist: #f3f3f3;
+  --color-fog: #f7f7f7;
+  --color-snow: #ffffff;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 1.2;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-subheading: 18px;
+  --text-subheading--line-height: 1.4;
+  --text-heading-sm: 24px;
+  --text-heading-sm--line-height: 1.33;
+  --text-heading: 32px;
+  --text-heading--line-height: 1.3;
+  --text-heading--letter-spacing: -0.32px;
+  --text-heading-md: 39px;
+  --text-heading-md--line-height: 1.25;
+  --text-heading-md--letter-spacing: -0.39px;
+  --text-heading-lg: 50px;
+  --text-heading-lg--line-height: 1.2;
+  --text-heading-lg--letter-spacing: -0.5px;
+  --text-display: 70px;
+  --text-display--line-height: 1.15;
+  --text-display--letter-spacing: -0.7px;
+
+  --radius-cards: 24px;
+  --radius-small: 8px;
+  --radius-badges: 100px;
+  --radius-inputs: 0px;
+  --radius-buttons: 28px;
+  --radius-overlays: 32px;
+  --radius-card-inner: 12px;
+
+  --shadow-subtle: rgba(24, 24, 37, 0.12) 0px 2px 3px -2px;
+  --shadow-fade: rgba(247, 247, 247, 0.5) 0px -40px 40px 0px;
+  --shadow-button:
+    rgba(0, 0, 0, 0.04) 0px 1px 2px 0px, rgba(0, 0, 0, 0.02) 0px 2px 4px 0px,
+    rgba(0, 0, 0, 0.02) 0px 4px 8px 0px;
+
+  --container-page: 1200px;
+}
+
+/* next/font sets these variables on <html>, so the theme must reference them inline. */
+@theme inline {
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-fog);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    /* Inter Display: the kit's heading face is Inter's largest optical size. */
+    font-variation-settings: "opsz" 32;
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  ::placeholder {
+    color: var(--color-pebble);
+  }
+}
+
+@layer components {
+  /* 24px card, single low-offset shadow (Landing_DESIGN.md "Card Surface"). */
+  .card {
+    background: var(--color-snow);
+    border-radius: var(--radius-cards);
+    padding: 24px;
+    box-shadow: var(--shadow-subtle);
+  }
+
+  .section {
+    padding-block: 96px;
+  }
+
+  .page-width {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .page-width {
+      padding-inline: 32px;
+    }
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
+    transition-duration: 0.01ms !important;
+  }
+}

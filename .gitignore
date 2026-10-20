@@ -1,33 +1,49 @@
-node_modules
-.next
-out
-build
-.DS_Store
-*.tsbuildinfo
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnp
+.pnp.*
+
+# Next.js and build output
+.next/
+out/
+build/
 next-env.d.ts
-.env
-.env.local
-.env.*.local
+*.tsbuildinfo
 .vercel
+
+# Remotion render scratch (final loops live in public/motion/)
+motion/out/
+
+# Tests and coverage
+coverage/
+
+# Logs
 npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Secrets: only .env.example with empty placeholders is shared
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local agent and editor files
+.claude/settings.local.json
+.claude/state/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local screenshots, archives and UI backups
 .screenshots/
-
-# Archive files
 *.zip
-
-# Backup files
 *.ui-backup.md
-
-# Temporarily ignored UI build files
-src/
-public/
-scripts/
-package.json
-package-lock.json
-next.config.ts
-postcss.config.mjs
-eslint.config.mjs
-tsconfig.json
-.prettierrc.json
-.prettierignore
-AGENTS.md
