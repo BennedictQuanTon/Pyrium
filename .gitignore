@@ -1,0 +1,33 @@
+node_modules
+.next
+out
+build
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env.local
+.env.*.local
+.vercel
+npm-debug.log*
+.screenshots/
+
+# Archive files
+*.zip
+
+# Backup files
+*.ui-backup.md
+
+# Temporarily ignored UI build files
+src/
+public/
+scripts/
+package.json
+package-lock.json
+next.config.ts
+postcss.config.mjs
+eslint.config.mjs
+tsconfig.json
+.prettierrc.json
+.prettierignore
+AGENTS.md

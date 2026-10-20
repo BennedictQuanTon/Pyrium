@@ -1,0 +1,226 @@
+[
+  {
+    "path": "01-logos/png/dark-background/PYRIUM-Primary-Reversed-Preview.jpg",
+    "bytes": 57327
+  },
+  {
+    "path": "01-logos/png/dark-background/PYRIUM-Primary-Reversed.png",
+    "bytes": 77102
+  },
+  {
+    "path": "01-logos/png/dark-background/PYRIUM-Vector-Trace-Preview-Dark.png",
+    "bytes": 29145
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-1024px.png",
+    "bytes": 51120
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-1600px.png",
+    "bytes": 94180
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-2400px.png",
+    "bytes": 169058
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-320px.png",
+    "bytes": 10577
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-640px.png",
+    "bytes": 27043
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-Transparent-Master.png",
+    "bytes": 74516
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Primary-Transparent.png",
+    "bytes": 81262
+  },
+  {
+    "path": "01-logos/png/transparent/PYRIUM-Vector-Trace-Preview.png",
+    "bytes": 25223
+  },
+  {
+    "path": "01-logos/png/white-background/PYRIUM-Primary-Preview.png",
+    "bytes": 96606
+  },
+  {
+    "path": "01-logos/png/white-background/PYRIUM-Primary-WhiteBG.jpg",
+    "bytes": 59815
+  },
+  {
+    "path": "01-logos/svg/PYRIUM-Primary-Exact.svg",
+    "bytes": 99753
+  },
+  {
+    "path": "01-logos/svg/PYRIUM-Primary-Vector-Trace.svg",
+    "bytes": 13554
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-1024.png",
+    "bytes": 136819
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-128.png",
+    "bytes": 7279
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-16.png",
+    "bytes": 529
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-24.png",
+    "bytes": 860
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-256.png",
+    "bytes": 18282
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-32.png",
+    "bytes": 1253
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-48.png",
+    "bytes": 2046
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-512.png",
+    "bytes": 49678
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-64.png",
+    "bytes": 2924
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-96.png",
+    "bytes": 4947
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-Transparent.png",
+    "bytes": 21481
+  },
+  {
+    "path": "02-icons/brand/PYRIUM-Mark-Vector-Trace.svg",
+    "bytes": 13554
+  },
+  {
+    "path": "02-icons/ui/arrow-right.svg",
+    "bytes": 247
+  },
+  {
+    "path": "02-icons/ui/chart.svg",
+    "bytes": 276
+  },
+  {
+    "path": "02-icons/ui/check.svg",
+    "bytes": 222
+  },
+  {
+    "path": "02-icons/ui/close.svg",
+    "bytes": 240
+  },
+  {
+    "path": "02-icons/ui/external-link.svg",
+    "bytes": 316
+  },
+  {
+    "path": "02-icons/ui/layers.svg",
+    "bytes": 281
+  },
+  {
+    "path": "02-icons/ui/lock.svg",
+    "bytes": 280
+  },
+  {
+    "path": "02-icons/ui/menu.svg",
+    "bytes": 254
+  },
+  {
+    "path": "02-icons/ui/plus.svg",
+    "bytes": 235
+  },
+  {
+    "path": "02-icons/ui/workflow.svg",
+    "bytes": 330
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Dark-1024.png",
+    "bytes": 23471
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Dark-180.png",
+    "bytes": 5701
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Dark-192.png",
+    "bytes": 6286
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Dark-256.png",
+    "bytes": 9027
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Dark-512.png",
+    "bytes": 16984
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Light-1024.png",
+    "bytes": 38195
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Light-180.png",
+    "bytes": 9641
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Light-192.png",
+    "bytes": 10505
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Light-256.png",
+    "bytes": 15380
+  },
+  {
+    "path": "03-app-and-favicon/PYRIUM-AppIcon-Light-512.png",
+    "bytes": 30589
+  },
+  {
+    "path": "03-app-and-favicon/favicon.ico",
+    "bytes": 1866
+  },
+  {
+    "path": "03-app-and-favicon/favicon.svg",
+    "bytes": 28775
+  },
+  {
+    "path": "04-brand-guidelines/Brand-Guidelines.md",
+    "bytes": 1555
+  },
+  {
+    "path": "04-brand-guidelines/PYRIUM-Brand-Preview.jpg",
+    "bytes": 60444
+  },
+  {
+    "path": "05-frontend/css/pyrium-tailwind-theme.js",
+    "bytes": 406
+  },
+  {
+    "path": "05-frontend/css/pyrium-tokens.css",
+    "bytes": 516
+  },
+  {
+    "path": "05-frontend/react/PyriumLogo.tsx",
+    "bytes": 589
+  },
+  {
+    "path": "05-frontend/react/README.md",
+    "bytes": 490
+  },
+  {
+    "path": "README.md",
+    "bytes": 1342
+  }
+]
