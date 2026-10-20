@@ -2,18 +2,20 @@ import type { SourceId, Stat } from "./types";
 
 /**
  * Page copy. Wording follows the proposal's messaging hierarchy (§10) and its claims policy:
- * no "100% private", no fixed savings percentages, no universal performance claims.
+ * no "100% private", no fixed savings percentages, no universal performance claims. Each
+ * section carries one idea, stated once.
  */
 
 export const hero = {
-  label: "Private AI systems engineering",
-  title: "Private AI. Built to act.",
+  title: "Private AI, engineered for the real business.",
   subtitle:
-    "Agentic systems engineered for real workflows — with privacy and inference efficiency built in.",
+    "Pyrium designs and operates private AI systems that act inside your infrastructure — under your permissions, measured on your workflows.",
+  trustStat: "Built at 11 events with NVIDIA, Viettel, Google and OpenAI · 6 projects shipped",
   primaryCta: "Talk to our team",
   secondaryCta: "Explore solutions",
+  navCta: "Get in touch",
   emailPlaceholder: "Work email",
-  trustLabel: "Events we've built at",
+  trustLabel: "Organizers, platforms & institutions we've built and studied with",
 };
 
 export const nav = [
@@ -46,7 +48,7 @@ export const problemStats: Stat[] = [
 export const problem = {
   label: "The problem",
   title: "AI adoption is broad. Value in production is not.",
-  body: "Most organizations already use AI somewhere, yet agents that do real work are rare and their oversight lags behind. The hard part is no longer access to models — it's reliable workflows, governance, and cost that a business can justify.",
+  body: "Most organizations already use AI somewhere, yet agents that do real work are rare — and oversight lags behind. The hard part is no longer access to models: it's reliable workflows, governance, and cost a business can justify.",
   chart: {
     title: "Worldwide AI spending, US$ trillions",
     source: "gartner-spend-2026-09" as SourceId,
@@ -138,6 +140,21 @@ export const contact = {
       detail: "Ongoing monitoring, model updates, cost reviews and regression testing.",
     },
   ],
+  /** Engagement packages, described by scope only — pricing stays out of the page. */
+  packages: [
+    {
+      name: "Discovery sprint",
+      detail: "Data and workflow assessment, ROI hypothesis, pilot plan.",
+    },
+    {
+      name: "Workflow pilot",
+      detail: "One bounded workflow, acceptance criteria agreed upfront.",
+    },
+    {
+      name: "Production & operations",
+      detail: "Deployment hardening, then managed AI operations.",
+    },
+  ],
   formNote: "We reply from a real inbox. The form isn't connected yet.",
 };
 
@@ -151,7 +168,12 @@ export const teamSection = {
   },
 };
 
+export const closing = {
+  title: "Your data. Your models. Your control.",
+  body: "That's the whole pitch. The rest is measured, workflow by workflow.",
+};
+
 export const footer = {
-  tagline: "Your data. Your models. Your control.",
+  tagline: "Private AI, engineered for the real business.",
   citationsTitle: "Sources",
 };

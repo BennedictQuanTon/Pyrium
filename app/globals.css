@@ -6,6 +6,9 @@
  * the single accent is Signal Red #D9292F instead of Tangerine #f69251, and Mist is #F3F3F3.
  * The accent is for primary CTAs only — never text, icons, decoration or backgrounds.
  *
+ * Headings use DM Sans Light, the sanctioned substitute for the doc's "PP Radio Grotesk Light"
+ * display voice; body copy is Inter. JetBrains Mono is banned by the brief.
+ *
  * Contrast (WCAG 2.x, computed 2026-10-20):
  *   ink #111111 on fog #f7f7f7 17.63 · on snow 18.88
  *   midnight #181825 on snow 17.56 · graphite-ink #484758 on fog 8.46
@@ -67,17 +70,120 @@
     rgba(0, 0, 0, 0.02) 0px 4px 8px 0px;
 
   --container-page: 1200px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* next/font sets these variables on <html>, so the theme must reference them inline. */
 @theme inline {
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-dm-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* The Dialog hero arc, rebuilt at full strength: a huge red dome whose saturated core covers
+   the headline, the sub and the CTA row, fringed by a lavender haze, rolling off before the
+   logo marquee. Stops are tuned so solid red still sits behind the buttons. */
+@utility bg-gradient-arc {
+  background-image: radial-gradient(
+    118% 112% at 50% 0%,
+    #e8523c 0%,
+    #dd3a33 30%,
+    #d9292f 48%,
+    rgba(217, 41, 47, 0.94) 56%,
+    rgba(217, 41, 47, 0.72) 62%,
+    rgba(176, 110, 142, 0.4) 70%,
+    rgba(180, 150, 180, 0.15) 79%,
+    rgba(247, 247, 247, 0) 87%
+  );
+}
+
+/* Background fields from the brand sheet's "Landing Page Background Templates": 02 Problem /
+   Control Grid — a faint diagonal grid of grey diagonals with isolated red crosses and solid
+   red nodes, weighted to the section edges so the center stays clear for content. */
+@utility bg-blueprint {
+  background-image:
+    /* red nodes on the upper-left and right edges */
+    radial-gradient(3px 3px at 92% 12%, rgba(217, 41, 47, 0.5) 50%, transparent 51%),
+    radial-gradient(2.5px 2.5px at 7% 38%, rgba(217, 41, 47, 0.42) 50%, transparent 51%),
+    radial-gradient(2.5px 2.5px at 96% 72%, rgba(217, 41, 47, 0.36) 50%, transparent 51%),
+    /* grey diagonal construction lines */
+    linear-gradient(
+      63deg,
+      transparent 49.92%,
+      rgba(72, 71, 88, 0.05) 49.92%,
+      rgba(72, 71, 88, 0.05) 50.08%,
+      transparent 50.08%
+    ),
+    linear-gradient(
+      -63deg,
+      transparent 49.94%,
+      rgba(72, 71, 88, 0.04) 49.94%,
+      rgba(72, 71, 88, 0.04) 50.06%,
+      transparent 50.06%
+    ),
+    linear-gradient(
+      24deg,
+      transparent 49.95%,
+      rgba(72, 71, 88, 0.035) 49.95%,
+      rgba(72, 71, 88, 0.035) 50.05%,
+      transparent 50.05%
+    );
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    220px 220px,
+    260px 260px,
+    340px 340px;
+}
+
+/* 03 Capabilities / Architectural Planes — faint grey facet planes sweeping from the top-left,
+like folded architectural sheets, with a whisper of red along one fold. */ @utility bg-planes {
+  background-image:
+    linear-gradient(
+      118deg,
+      rgba(72, 71, 88, 0.055) 0%,
+      rgba(72, 71, 88, 0.028) 17%,
+      transparent 34%
+    ),
+    linear-gradient(
+      118deg,
+      transparent 20%,
+      rgba(72, 71, 88, 0.035) 38%,
+      rgba(72, 71, 88, 0.016) 52%,
+      transparent 66%
+    ),
+    linear-gradient(298deg, rgba(217, 41, 47, 0.045) 0%, transparent 22%),
+    linear-gradient(0deg, rgba(72, 71, 88, 0.022) 0%, transparent 12%);
+}
+
+/* 04 CTA / Signal Frame — hairline red circuit traces running in from the corners with small
+   red terminals, framing the closing statement without touching the copy. */
+@utility signal-frame {
+  background-image:
+    radial-gradient(4px 4px at 11.5% 21%, rgba(217, 41, 47, 0.55) 50%, transparent 51%),
+    radial-gradient(4px 4px at 88.5% 79%, rgba(217, 41, 47, 0.55) 50%, transparent 51%),
+    linear-gradient(
+      to right,
+      transparent 10.5%,
+      rgba(217, 41, 47, 0.16) 10.5%,
+      rgba(217, 41, 47, 0.16) calc(10.5% + 1px),
+      transparent calc(10.5% + 1px),
+      transparent 89.5%,
+      rgba(217, 41, 47, 0.16) 89.5%,
+      rgba(217, 41, 47, 0.16) calc(89.5% + 1px),
+      transparent calc(89.5% + 1px)
+    );
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+
+  /* The welcome overlay locks scrolling for its ~2s life. */
+  html.welcome-lock {
+    overflow: hidden;
   }
 
   body {
@@ -94,9 +200,11 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 300;
-    /* Inter Display: the kit's heading face is Inter's largest optical size. */
-    font-variation-settings: "opsz" 32;
+    /* Weight 400 is the doc's signature move: DM Sans at regular reads as the "pencil-drawn"
+       light grotesque (PP Radio Grotesk Light = weight 400) — present, never aggressive. */
+    font-weight: 400;
+    /* DM Sans's largest optical size is the light display cut the headings need. */
+    font-variation-settings: "opsz" 40;
     color: var(--color-ink);
   }
 
@@ -144,6 +252,189 @@
   }
 }
 
+/* ---- Welcome overlay: first visit per session only ------------------------------------ */
+
+/*
+ * The inline bootstrap script in app/layout.tsx runs before first paint, so skip visitors
+ * (welcome-skip), JS-off visitors (no .js) and reduced-motion visitors never see the overlay;
+ * it is unmounted by React on animationend otherwise.
+ */
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--color-fog);
+  animation: welcome-fade 0.7s var(--ease-out-soft) 1.25s forwards;
+}
+
+html.welcome-skip .welcome,
+html:not(.js) .welcome {
+  display: none;
+}
+
+.welcome-mark {
+  animation: welcome-rise 0.8s var(--ease-out-soft) both;
+}
+
+.welcome-line {
+  width: 96px;
+  height: 2px;
+  background: var(--color-signal);
+  transform-origin: center;
+  animation: welcome-line 0.6s var(--ease-out-soft) 0.45s both;
+}
+
+.welcome-tagline {
+  animation: welcome-rise 0.8s var(--ease-out-soft) 0.62s both;
+}
+
+/* ---- Hero entrance: arc blooms downward while copy unblurs upward ---------------------- */
+
+/* The gradient dome blooms: it settles from a slightly larger, higher state as the curtain
+   lifts, so the arc reads as arriving rather than always having been there. */
+.arc-bloom {
+  animation: arc-bloom 1.5s var(--ease-out-soft) 0.2s both;
+}
+
+html.welcome-skip .arc-bloom {
+  animation-duration: 0.9s;
+  animation-delay: 0s;
+}
+
+@keyframes arc-bloom {
+  from {
+    opacity: 0;
+    transform: translateY(-7%) scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-in {
+  animation: hero-rise 0.95s var(--ease-out-soft) both;
+  animation-delay: calc(1.3s + var(--hero-i, 0) * 0.12s);
+}
+
+html.welcome-skip .hero-in {
+  animation-delay: calc(var(--hero-i, 0) * 0.07s);
+}
+
+/* Copy arrives with a soft focus pull: blurred and low, resolving to crisp. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* ---- Scroll reveal: hidden only when JS is confirmed present --------------------------- */
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out-soft),
+    transform 0.7s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+/* ---- Organizer marquee: one seamless drift, pause on hover ------------------------------ */
+
+.marquee {
+  /* 22s for the -50% drift (~2 copies): quick enough to feel alive, slow enough to read. */
+  animation: marquee 22s linear infinite;
+  will-change: transform;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* The second row drifts the opposite way, so the two lines cross traffic. */
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+/* Edge fade via mask, not a color overlay: the marks themselves dissolve to transparent, so
+   the fade matches any backdrop — including the hero's red-to-fog gradient — instead of
+   painting a visible fog rectangle over it. */
+.marquee-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 96px,
+    black calc(100% - 96px),
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 96px,
+    black calc(100% - 96px),
+    transparent
+  );
+}
+
+/* ---- Keyframes ------------------------------------------------------------------------- */
+
+@keyframes welcome-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes welcome-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes welcome-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes glow-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -2.5%, 0) scale(1.05);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -155,5 +446,10 @@
     animation-duration: 0.01ms !important;
     /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
     transition-duration: 0.01ms !important;
+  }
+  /* The reveal transform must not leave content offset when transitions are dead. */
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

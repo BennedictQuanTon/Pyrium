@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
+import { CountUp } from "@/components/motion/CountUp";
 import {
   contact,
   footer,
   hero,
-  nav,
   problem,
   problemStats,
   solution,
@@ -13,35 +14,12 @@ import { organizers, team, testimonials } from "@/content/people";
 import { sourceOrder, sources } from "@/content/sources";
 import type { Project } from "@/content/types";
 import { MotionLoop } from "./MotionLoop";
+import { Nav } from "./Nav";
 import { Badge, BrowserFrame, Citation, PillButton, Wordmark } from "./Primitives";
 
-/* Shared, design-neutral blocks. Each design route arranges these; none of them adds colour. */
+export { Nav };
 
-export function Nav() {
-  return (
-    <header className="sticky top-4 z-40 px-4">
-      <nav
-        aria-label="Primary"
-        className="mx-auto flex h-16 max-w-page items-center justify-between rounded-overlays bg-snow pl-6 pr-2 shadow-subtle"
-      >
-        <a href="#main" aria-label="Pyrium, back to top" className="shrink-0">
-          {/* Narrower on phones so the CTA pill stays on one line beside it. */}
-          <Wordmark className="w-[132px] md:w-[180px]" />
-        </a>
-        <ul className="hidden items-center gap-6 md:flex">
-          {nav.map((item) => (
-            <li key={item.href}>
-              <a href={item.href} className="text-[14px] text-stone hover:text-ink">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <PillButton href="#contact">{hero.primaryCta}</PillButton>
-      </nav>
-    </header>
-  );
-}
+/* Shared, design-neutral blocks. Each design route arranges these; none of them adds colour. */
 
 /** Hero email row: bare 0-radius input against the pill, as in Landing_DESIGN.md. */
 export function EmailCta({ align = "center" }: { align?: "center" | "left" }) {
@@ -64,40 +42,81 @@ export function EmailCta({ align = "center" }: { align?: "center" | "left" }) {
   );
 }
 
-export function OrganizerRow({
-  align = "center",
-  onDark = false,
-}: {
-  align?: "center" | "left";
-  onDark?: boolean;
-}) {
+/**
+ * Organizer marquee, two rows drifting in opposite directions inside a contained frame with
+ * edge fades, like the reference's logo wall. Rows split the organizer list so the two lines
+ * aren't identical; every mark renders inside the same 40px box — scaled to fit, never
+ * distorted — at one stone-grey tone, with wordmarks typeset at the same optical height for
+ * brands without a normalized file. Each list is duplicated with aria-hidden so the loop
+ * never shows an edge.
+ */
+
+/** Deterministic half-split: both rows keep their members across renders. */
+function marqueeRows(): [typeof organizers, typeof organizers] {
+  const top: typeof organizers = [];
+  const bottom: typeof organizers = [];
+  organizers.forEach((organizer, index) => {
+    (index % 2 === 0 ? top : bottom).push(organizer);
+  });
+  return [top, bottom];
+}
+
+export function LogoMarquee() {
+  const [topRow, bottomRow] = marqueeRows();
+  const rows = [topRow, bottomRow];
   return (
-    <div className={`flex flex-col gap-3 ${align === "center" ? "items-center" : "items-start"}`}>
-      <p className={`text-[12px] ${onDark ? "text-silver" : "text-stone"}`}>{hero.trustLabel}</p>
-      <ul
-        className={`flex flex-wrap gap-x-6 gap-y-2 ${align === "center" ? "justify-center" : ""}`}
-        aria-label={hero.trustLabel}
-      >
-        {organizers.map((organizer) => (
-          <li
-            key={organizer.id}
-            className={`text-[15px] font-medium tracking-[-0.01em] ${onDark ? "text-silver" : "text-graphite-ink"}`}
+    <section aria-label={hero.trustLabel} className="page-width relative flex flex-col gap-8">
+      {rows.map((row, rowIndex) => (
+        <div key={rowIndex === 0 ? "a" : "b"} className="marquee-fade relative overflow-hidden">
+          <div
+            className={`marquee flex w-max items-center ${rowIndex === 1 ? "marquee-reverse" : ""}`}
           >
-            {organizer.name}
-          </li>
-        ))}
-      </ul>
-    </div>
+            {/* Four copies of the row, looped at -50% (two copies): even a short list stays
+                wider than any viewport, so the drift never reveals a blank stretch. */}
+            {[0, 1, 2, 3].map((copy) => (
+              <ul
+                key={copy === 0 ? "base" : `copy-${copy}`}
+                aria-hidden={copy > 0 || undefined}
+                className="flex items-center gap-16 pr-16 text-graphite-ink"
+              >
+                {row.map((organizer) => (
+                  <li key={organizer.id} className="flex h-10 w-24 items-center justify-center">
+                    {organizer.logo ? (
+                      // One optical box for every mark: square icons fill it, wide wordmarks
+                      // (Viettel, Google, OpenAI) scale to the box width at natural height —
+                      // same visual weight across the row, nothing dwarfed or oversized.
+                      // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
+                      <img
+                        src={organizer.logo}
+                        alt={organizer.name}
+                        className="max-h-10 max-w-full object-contain"
+                      />
+                    ) : (
+                      <span className="text-[19px] font-medium tracking-[-0.01em] whitespace-nowrap">
+                        {organizer.name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
   );
 }
 
 export function StatCards({ columns = 3 }: { columns?: 1 | 3 }) {
   return (
-    <ul className={`grid gap-4 ${columns === 3 ? "md:grid-cols-3" : ""}`}>
+    <ul className={`grid gap-5 ${columns === 3 ? "md:grid-cols-3" : ""}`}>
       {problemStats.map((stat) => (
-        <li key={stat.label} className="card flex flex-col gap-3">
-          <span className="font-display text-heading font-light text-ink">{stat.value}</span>
-          <span className="text-[15px] text-stone">
+        <li key={stat.label} className="card flex flex-col gap-4 px-8 py-10 md:px-10 md:py-12">
+          <CountUp
+            text={stat.value}
+            className="font-display text-[44px] leading-none font-normal tracking-[-1px] text-signal md:text-[56px]"
+          />
+          <span className="max-w-[30ch] text-[16px] text-stone">
             {stat.label}
             <Citation id={stat.source} />
           </span>
@@ -107,51 +126,61 @@ export function StatCards({ columns = 3 }: { columns?: 1 | 3 }) {
   );
 }
 
-/** Inline-SVG bar chart. Derived bars are drawn as outlines so they never pass for reported data. */
+/**
+ * Inline-SVG bar chart in the brand's block language: the published 2026 bar is a solid
+ * signal-red block, derived bars are dashed outlines so they never pass for reported data.
+ */
 export function SpendChart() {
   const { bars, title, note, source } = problem.chart;
   const max = 4;
-  const height = 180;
+  const height = 200;
   return (
-    <figure className="card flex flex-col gap-4">
-      <figcaption className="text-[14px] font-medium text-ink">
+    <figure className="card flex h-full flex-col gap-5 px-8 py-8 md:px-10">
+      <figcaption className="text-[15px] font-medium text-ink">
         {title}
         <Citation id={source} />
       </figcaption>
-      <svg viewBox="0 0 320 220" role="img" aria-labelledby="spend-chart-desc" className="w-full">
+      <svg
+        viewBox="0 0 340 240"
+        role="img"
+        aria-labelledby="spend-chart-desc"
+        className="w-full flex-1"
+        preserveAspectRatio="xMidYMax meet"
+      >
         <desc id="spend-chart-desc">
           {bars
             .map((bar) => `${bar.year}: ${bar.derived ? "about " : ""}US$${bar.value}T`)
             .join(", ")}
         </desc>
-        <line x1="0" y1={height + 4} x2="320" y2={height + 4} stroke="#b2b2b2" strokeWidth="1" />
+        <line x1="0" y1={height + 8} x2="340" y2={height + 8} stroke="#b2b2b2" strokeWidth="1" />
         {bars.map((bar, index) => {
           const barHeight = (bar.value / max) * height;
-          const x = 30 + index * 100;
+          const x = 36 + index * 104;
           return (
             <g key={bar.year}>
               <rect
                 x={x}
-                y={height + 4 - barHeight}
-                width="60"
+                y={height + 8 - barHeight}
+                width="72"
                 height={barHeight}
-                rx="6"
-                fill={bar.derived ? "#ffffff" : "#111111"}
-                stroke="#111111"
+                rx="14"
+                fill={bar.derived ? "none" : "#d9292f"}
+                stroke="#d9292f"
                 strokeWidth="1.5"
-                strokeDasharray={bar.derived ? "4 4" : undefined}
+                strokeDasharray={bar.derived ? "5 5" : undefined}
               />
               <text
-                x={x + 30}
-                y={height - barHeight - 4}
+                x={x + 36}
+                y={height - barHeight - 8}
                 textAnchor="middle"
-                fontSize="13"
-                fill="#111111"
+                fontSize="15"
+                fontWeight="500"
+                fill={bar.derived ? "#484758" : "#d9292f"}
               >
                 {bar.derived ? "≈" : ""}
                 {bar.value.toFixed(bar.value < 2 ? 2 : 1)}
               </text>
-              <text x={x + 30} y={height + 24} textAnchor="middle" fontSize="12" fill="#636363">
+              <text x={x + 36} y={height + 32} textAnchor="middle" fontSize="13" fill="#636363">
                 {bar.year}
               </text>
             </g>
@@ -163,12 +192,84 @@ export function SpendChart() {
   );
 }
 
+/**
+ * Two photo panels for the solution section: one private-infrastructure shot beside one
+ * domain-intelligence shot, each captioned with the principle it embodies. Unsplash images
+ * (open, source-honest photography) normalized to the kit's tonal restraint.
+ */
+export function FeaturePanels() {
+  return (
+    <div className="grid gap-5 md:grid-cols-2">
+      <figure className="group relative overflow-hidden rounded-cards">
+        {/* biome-ignore lint/performance/noImgElement: static open-license photo; next/image adds nothing here */}
+        <img
+          src="/images/solution-racks.jpg"
+          alt="Server racks in a private data centre — the infrastructure Pyrium deploys into"
+          className="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-midnight/85 to-transparent p-6 pt-16">
+          <span className="text-[16px] font-medium text-snow">
+            Private by design — your racks, your control.
+          </span>
+        </figcaption>
+      </figure>
+      <figure className="group relative overflow-hidden rounded-cards">
+        {/* biome-ignore lint/performance/noImgElement: static open-license photo; next/image adds nothing here */}
+        <img
+          src="/images/solution-earth.jpg"
+          alt="A networked globe — domain intelligence across Vietnam and Southeast Asia"
+          className="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-midnight/85 to-transparent p-6 pt-16">
+          <span className="text-[16px] font-medium text-snow">
+            Domain intelligence — tuned to your market's realities.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
+/** Line icons keyed to each principle, drawn on a 24px grid, stroke at 1.5 like the kit. */
+const PRINCIPLE_ICONS: Record<string, ReactNode> = {
+  "Privacy by design": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="M12 3l7 3v5c0 4.4-3 8.6-7 10-4-1.4-7-5.6-7-10V6l7-3z" />
+      <path d="M9.5 12l1.8 1.8L15 10" />
+    </svg>
+  ),
+  "Controlled execution": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4" />
+    </svg>
+  ),
+  "Efficient inference": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="M13 3L5 13.5h6L11 21l8-10.5h-6L13 3z" strokeLinejoin="round" />
+    </svg>
+  ),
+  "Domain intelligence": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3c2.5 2.4 4 5.6 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.6-4-9s1.5-6.6 4-9z" />
+    </svg>
+  ),
+};
+
+/** Core features: icon in a red-tinted well, name, one line — the kit's restrained emphasis. */
 export function Principles() {
   return (
-    <ul className="grid gap-4 sm:grid-cols-2">
+    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {solution.principles.map((principle) => (
-        <li key={principle.title} className="card flex flex-col gap-2">
-          <h3 className="font-sans text-[16px] font-medium">{principle.title}</h3>
+        <li key={principle.title} className="card flex flex-col gap-4 px-7 py-8">
+          <span
+            className="flex size-11 items-center justify-center rounded-[12px] bg-signal/8 text-signal [&>svg]:size-5"
+            aria-hidden="true"
+          >
+            {PRINCIPLE_ICONS[principle.title]}
+          </span>
+          <h3 className="font-sans text-[17px] font-medium">{principle.title}</h3>
           <p className="text-[15px] text-stone">{principle.body}</p>
         </li>
       ))}
@@ -204,13 +305,13 @@ export function Layers({ onDark = false }: { onDark?: boolean }) {
 export function Audience() {
   const { audience } = solution;
   return (
-    <div className="card flex flex-col gap-4">
-      <h3 className="font-sans text-[16px] font-medium">{audience.title}</h3>
-      <p className="text-[15px] text-stone">{audience.body}</p>
+    <div className="flex flex-col gap-5 rounded-cards bg-deep-slate p-8 md:p-10">
+      <h3 className="text-[20px] font-medium text-snow">{audience.title}</h3>
+      <p className="text-[16px] leading-[1.6] text-silver">{audience.body}</p>
       <ul className="flex flex-wrap gap-2" aria-label="Typical buyers">
         {audience.buyers.map((buyer) => (
           <li key={buyer}>
-            <span className="inline-flex rounded-badges bg-fog px-3 py-1 text-[12px] font-medium text-graphite-ink">
+            <span className="inline-flex rounded-badges bg-white/10 px-4 py-1.5 text-[13px] font-medium text-snow">
               {buyer}
             </span>
           </li>
@@ -351,6 +452,20 @@ export function EngagementSteps() {
   );
 }
 
+/** Engagement packages, described by scope only. Pricing is a discovery-call decision. */
+export function Packages() {
+  return (
+    <ul className="grid gap-4 md:grid-cols-3">
+      {contact.packages.map((pkg) => (
+        <li key={pkg.name} className="card flex flex-col gap-2">
+          <h3 className="font-sans text-[16px] font-medium">{pkg.name}</h3>
+          <p className="text-[14px] text-stone">{pkg.detail}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** Contact form shell. Not connected to a backend yet, and it says so. */
 export function ContactForm() {
   return (
@@ -403,12 +518,23 @@ export function TeamCards({ onDark = false }: { onDark?: boolean }) {
       {team.map((member) => (
         <li
           key={member.github}
-          className={`flex flex-col gap-4 rounded-cards p-6 ${onDark ? "bg-white/5" : "bg-snow shadow-subtle"}`}
+          className={`flex flex-col gap-4 overflow-hidden rounded-cards p-6 ${onDark ? "bg-white/5" : "bg-snow shadow-subtle"}`}
         >
-          <span
-            className={`size-12 rounded-full ${onDark ? "bg-white/10" : "bg-mist"}`}
-            aria-hidden="true"
-          />
+          {member.photo ? (
+            // Full-width portrait above the identity block; the monochrome artwork carries
+            // its own dark ground, so no placeholder dot is needed.
+            // biome-ignore lint/performance/noImgElement: normalized monochrome brand artwork; next/image adds nothing here
+            <img
+              src={member.photo}
+              alt={`Portrait of ${member.name}`}
+              className="aspect-3/4 w-full rounded-card-inner object-cover"
+            />
+          ) : (
+            <span
+              className={`size-12 rounded-full ${onDark ? "bg-white/10" : "bg-mist"}`}
+              aria-hidden="true"
+            />
+          )}
           <div className="flex flex-col gap-1">
             <h3 className={`font-sans text-[16px] font-medium ${onDark ? "text-snow" : ""}`}>
               {member.name}
@@ -446,7 +572,7 @@ export function Footer() {
       <div className="page-width flex flex-col gap-12 py-16">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="flex flex-col gap-2">
-            <Wordmark width={240} />
+            <Wordmark width={240} variant="primary" />
             <p className="text-[14px] text-stone">{footer.tagline}</p>
           </div>
           <PillButton href="#contact">{hero.primaryCta}</PillButton>
