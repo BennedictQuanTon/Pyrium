@@ -2,27 +2,40 @@ import type { ReactNode } from "react";
 import { citationNumber, sources } from "@/content/sources";
 import type { SourceId } from "@/content/types";
 
+type WordmarkProps = { width?: number; className?: string; variant?: "primary" | "reverse" };
+
 /**
- * The primary Pyrium logo, copied unchanged from PYRIUM_Brand_Identity_Kit/01-logos (640px
- * transparent PNG). Its red mark and dot are the only place red appears outside a CTA.
+ * The Pyrium lockup from the corrected no-tagline logo kit — tagline band removed, complete
+ * P emblem, full wordmark, red dot over the i. The primary (black + red) variant sits on
+ * light surfaces like the nav pill; the reverse (white + red) is the sanctioned treatment
+ * for dark and colored surfaces like the hero arc.
  */
-export function Wordmark({ width = 180, className = "" }: { width?: number; className?: string }) {
+export function Wordmark({ width = 180, className = "", variant = "primary" }: WordmarkProps) {
   return (
     // biome-ignore lint/performance/noImgElement: fixed brand artwork; next/image adds nothing here
     <img
-      src="/brand/pyrium-logo.png"
+      src={
+        variant === "reverse"
+          ? "/brand/pyrium-lockup-reverse.svg"
+          : "/brand/pyrium-lockup-primary.svg"
+      }
       alt="Pyrium"
       width={width}
-      height={Math.round((width * 150) / 640)}
+      height={Math.round((width * 404) / 1611)}
       className={`block h-auto ${className}`}
     />
   );
 }
 
-type PillProps = { href: string; children: ReactNode; variant?: "primary" | "ghost" };
+type PillProps = {
+  href: string;
+  children: ReactNode;
+  variant?: "primary" | "ghost";
+  className?: string;
+};
 
 /** 28px pill, the only rounded control in the system. Primary = the single red accent. */
-export function PillButton({ href, children, variant = "primary" }: PillProps) {
+export function PillButton({ href, children, variant = "primary", className = "" }: PillProps) {
   const tone =
     variant === "primary"
       ? "bg-signal text-signal-ink hover:bg-[#c42228]"
@@ -30,7 +43,7 @@ export function PillButton({ href, children, variant = "primary" }: PillProps) {
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center rounded-buttons px-6 py-3 text-[15px] font-medium tracking-[-0.01em] shadow-button transition-colors ${tone}`}
+      className={`inline-flex items-center justify-center rounded-buttons px-6 py-3 text-[15px] font-medium tracking-[-0.01em] shadow-button transition-colors ${tone} ${className}`}
     >
       {children}
     </a>
@@ -48,8 +61,22 @@ export function Badge({ children, onDark = false }: { children: ReactNode; onDar
   );
 }
 
+/**
+ * Star rating pill from the reference hero: five signal-red stars and a short line, in one
+ * white pill floating on the gradient. The star row is decorative; the text carries meaning.
+ */
+export function RatingPill({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-badges bg-snow px-4 py-1.5 text-[12px] font-medium text-graphite-ink shadow-button">
+      <span aria-hidden="true" className="text-signal tracking-[0.08em]">
+        ★★★★★
+      </span>
+      {children}
+    </span>
+  );
+}
+
 type HeadingProps = {
-  label: string;
   title: string;
   body?: string;
   align?: "left" | "center";
@@ -57,9 +84,8 @@ type HeadingProps = {
   onDark?: boolean;
 };
 
-/** Section heading block: label pill, light display headline, Inter subtext. */
+/** Section heading block: light display headline over Inter subtext, no label chrome. */
 export function SectionHeading({
-  label,
   title,
   body,
   align = "left",
@@ -69,7 +95,6 @@ export function SectionHeading({
   const centered = align === "center";
   return (
     <div className={`flex flex-col gap-4 ${centered ? "items-center text-center" : "items-start"}`}>
-      <Badge onDark={onDark}>{label}</Badge>
       <h2
         className={`max-w-[22ch] ${size === "lg" ? "text-heading md:text-heading-lg" : "text-heading-sm md:text-heading"} ${onDark ? "text-snow" : ""}`}
       >

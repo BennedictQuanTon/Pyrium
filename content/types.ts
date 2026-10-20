@@ -58,13 +58,24 @@ export type Project = {
   upcoming?: boolean;
 };
 
-export type Organizer = { id: string; name: string };
+export type Organizer = {
+  id: string;
+  name: string;
+  /** Path to a normalized monochrome SVG in /brand/logos, when a public one exists. */
+  logo?: string;
+  /** SVG viewBox or PNG pixel size, so marks scale by height without layout shift. */
+  viewBox?: string;
+  /** True for marks whose identity requires their official colors (e.g. Google). */
+  fullColor?: boolean;
+};
 
 export type TeamMember = {
   name: string;
   github: string;
   /** Null until the team confirms each role; the UI shows a labelled placeholder. */
   role: string | null;
+  /** Path to the member's monochrome portrait in /team, cropped from the brand trio. */
+  photo?: string;
 };
 
 export type Testimonial = {
