@@ -1,0 +1,17 @@
+# Dependencies & caches
+node_modules
+.next
+.pnpm-store
+
+# Brand design source kits & raw archives (runtime assets are in public/)
+PYRIUM_Brand_Identity_Kit/
+PYRIUM_Logo_No_Tagline_Kit.zip
+Monochrome PYRIUM Portrait Trio.png
+
+# Documentation and design briefs
+docs/
+*.md
+
+# Motion development scratch
+motion/out/
+.screenshots/
