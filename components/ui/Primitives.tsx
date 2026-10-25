@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { citationNumber, sources } from "@/content/sources";
 import type { SourceId } from "@/content/types";
@@ -27,79 +28,149 @@ export function Wordmark({ width = 180, className = "", variant = "primary" }: W
   );
 }
 
-type PillProps = {
+type Direction = "forward" | "back";
+
+type SmartLinkProps = {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "ghost";
   className?: string;
+  /** Page-transition direction for internal routes; external links open in a new tab. */
+  direction?: Direction;
+  "aria-label"?: string;
 };
 
-/** 28px pill, the only rounded control in the system. Primary = the single red accent. */
-export function PillButton({ href, children, variant = "primary", className = "" }: PillProps) {
-  const tone =
-    variant === "primary"
-      ? "bg-signal text-signal-ink hover:bg-[#c42228]"
-      : "bg-snow text-ink hover:bg-mist";
+/**
+ * One link for the whole site: internal routes go through next/link with a transition type
+ * (so <PageTransition> knows which way to move), in-page anchors stay plain, and external
+ * links open in a new tab.
+ */
+export function SmartLink({
+  href,
+  children,
+  className = "",
+  direction = "forward",
+  ...rest
+}: SmartLinkProps) {
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className} {...rest}>
+        {children}
+      </a>
+    );
+  }
+  if (href.startsWith("#")) {
+    return (
+      <a href={href} className={className} {...rest}>
+        {children}
+      </a>
+    );
+  }
   return (
-    <a
+    <Link
       href={href}
-      className={`inline-flex items-center justify-center rounded-buttons px-6 py-3 text-[15px] font-medium tracking-[-0.01em] shadow-button transition-colors ${tone} ${className}`}
+      transitionTypes={[direction === "back" ? "nav-back" : "nav-forward"]}
+      className={className}
+      {...rest}
     >
       {children}
-    </a>
+    </Link>
   );
 }
 
-/** Neutral pill label (Landing_DESIGN.md "Feature Badge"): no colour, organizes without chroma. */
+type PillProps = {
+  href: string;
+  children: ReactNode;
+  variant?: "primary" | "ghost" | "glass";
+  className?: string;
+  direction?: Direction;
+};
+
+/** 28px pill, the only rounded control in the system. Primary = the single red accent. */
+export function PillButton({
+  href,
+  children,
+  variant = "primary",
+  className = "",
+  direction,
+}: PillProps) {
+  const tone = {
+    primary: "bg-signal text-signal-ink shadow-button hover:bg-[#c42228]",
+    ghost: "bg-snow text-ink shadow-button hover:bg-mist",
+    glass: "glass text-ink hover:bg-white/80",
+  }[variant];
+  return (
+    <SmartLink
+      href={href}
+      direction={direction}
+      className={`group inline-flex items-center justify-center gap-2 rounded-buttons px-6 py-3 text-[15px] font-medium tracking-[-0.01em] transition-colors ${tone} ${className}`}
+    >
+      {children}
+      {href.startsWith("http") ? (
+        <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+          ↗
+        </span>
+      ) : null}
+    </SmartLink>
+  );
+}
+
+/** Neutral pill label: no colour, organizes without chroma. */
 export function Badge({ children, onDark = false }: { children: ReactNode; onDark?: boolean }) {
   return (
     <span
-      className={`inline-flex items-center rounded-badges px-3 py-1 text-[12px] font-medium ${onDark ? "bg-white/10 text-silver" : "bg-snow text-graphite-ink"}`}
+      className={`inline-flex items-center rounded-badges px-3 py-1 text-[12px] font-medium ${onDark ? "bg-white/10 text-silver" : "bg-snow text-graphite-ink shadow-subtle"}`}
     >
       {children}
     </span>
   );
 }
 
-/**
- * Star rating pill from the reference hero: five signal-red stars and a short line, in one
- * white pill floating on the gradient. The star row is decorative; the text carries meaning.
- */
-export function RatingPill({ children }: { children: ReactNode }) {
+/** Marks draft copy (quotes awaiting approval) so it is never mistaken for a signed-off one. */
+export function DraftTag({ onDark = false }: { onDark?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-badges bg-snow px-4 py-1.5 text-[12px] font-medium text-graphite-ink shadow-button">
-      <span aria-hidden="true" className="text-signal tracking-[0.08em]">
-        ★★★★★
-      </span>
-      {children}
+    <span
+      className={`inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase ${onDark ? "text-silver" : "text-stone"}`}
+    >
+      <span aria-hidden="true" className="size-1.5 rounded-full border border-current" />
+      Draft
     </span>
   );
 }
 
 type HeadingProps = {
   title: string;
+  eyebrow?: string;
   body?: string;
   align?: "left" | "center";
   size?: "lg" | "md";
   onDark?: boolean;
+  as?: "h1" | "h2";
 };
 
-/** Section heading block: light display headline over Inter subtext, no label chrome. */
+/** Section heading block: eyebrow, light display headline, Inter subtext. */
 export function SectionHeading({
   title,
+  eyebrow,
   body,
   align = "left",
   size = "lg",
   onDark = false,
+  as: Tag = "h2",
 }: HeadingProps) {
   const centered = align === "center";
   return (
     <div className={`flex flex-col gap-4 ${centered ? "items-center text-center" : "items-start"}`}>
-      <h2
+      {eyebrow ? (
+        <p className={`eyebrow flex items-center gap-2 ${onDark ? "text-silver" : ""}`}>
+          <span aria-hidden="true" className="h-px w-6 bg-signal" />
+          {eyebrow}
+        </p>
+      ) : null}
+      <Tag
         className={`max-w-[22ch] ${size === "lg" ? "text-heading md:text-heading-lg" : "text-heading-sm md:text-heading"} ${onDark ? "text-snow" : ""}`}
       >
         {title}
-      </h2>
+      </Tag>
       {body ? (
         <p
           className={`max-w-[60ch] text-body md:text-subheading ${onDark ? "text-silver" : "text-stone"}`}
@@ -122,22 +193,5 @@ export function Citation({ id, onDark = false }: { id: SourceId; onDark?: boolea
     >
       [{number}]
     </a>
-  );
-}
-
-/** White card with decorative browser chrome (Landing_DESIGN.md "Browser Mockup Frame"). */
-export function BrowserFrame({ children, fade = false }: { children: ReactNode; fade?: boolean }) {
-  return (
-    <div className="relative overflow-hidden rounded-cards bg-snow p-3 shadow-subtle">
-      <div className="flex gap-2 px-2 pb-3 pt-1" aria-hidden="true">
-        <span className="size-2.5 rounded-full bg-[#c97b84]" />
-        <span className="size-2.5 rounded-full bg-silver" />
-        <span className="size-2.5 rounded-full bg-ash" />
-      </div>
-      <div className="overflow-hidden rounded-card-inner bg-fog">{children}</div>
-      {fade ? (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-fog to-transparent" />
-      ) : null}
-    </div>
   );
 }

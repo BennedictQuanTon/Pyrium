@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import type { ReactNode } from "react";
+import { Intro } from "@/components/motion/Intro";
+import { PointerLight } from "@/components/motion/PointerLight";
+import { Footer } from "@/components/ui/Footer";
+import { Nav } from "@/components/ui/Nav";
 import "./globals.css";
 
 /*
@@ -38,10 +42,10 @@ export const metadata: Metadata = {
 
 /**
  * Runs before first paint. Marks that JS is available (scroll reveals may hide pre-reveal
- * content only when this class is present) and records whether the welcome overlay should
- * play: first visit in a session only.
+ * content only when this class is present) and records whether the intro should play: first
+ * visit in a session only, never with reduced motion or when storage is unavailable.
  */
-const bootstrap = `(function(){try{document.documentElement.classList.add("js");if(sessionStorage.getItem("pyrium-welcomed")){document.documentElement.classList.add("welcome-skip")}else{sessionStorage.setItem("pyrium-welcomed","1")}}catch(e){}})();`;
+const bootstrap = `(function(){var r=document.documentElement;try{r.classList.add("js");if(sessionStorage.getItem("pyrium-welcomed")||matchMedia("(prefers-reduced-motion: reduce)").matches){r.classList.add("welcome-skip")}else{sessionStorage.setItem("pyrium-welcomed","1")}}catch(e){r.classList.add("welcome-skip")}})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
@@ -62,7 +66,11 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         >
           Skip to content
         </a>
+        <Intro />
+        <PointerLight />
+        <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

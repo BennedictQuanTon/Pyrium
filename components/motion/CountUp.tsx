@@ -20,6 +20,8 @@ export function CountUp({ text, className = "" }: CountUpProps) {
     const element = ref.current;
     if (!element) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Decimals ("0.982") would roll through misleading intermediate values; show them as-is.
+    if (/\d\.\d/.test(text)) return;
     const matches = [...text.matchAll(/\d+/g)];
     if (matches.length === 0) return;
 

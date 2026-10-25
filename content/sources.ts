@@ -6,6 +6,14 @@ import type { Source, SourceId } from "./types";
  * update, so the page cites the newer one and keeps the May release for reference.
  */
 export const sources = {
+  "gartner-cio-2026-10": {
+    id: "gartner-cio-2026-10",
+    publisher: "Gartner",
+    date: "Oct 2026",
+    title:
+      "Only 13% of CIOs Say Their Enterprise Has Realized Significant or Transformational Value from AI",
+    url: "https://www.gartner.com/en/newsroom/press-releases/2026-10-19-gartner-survey-finds-only-13-percent-of-cios-say-their-enterprise-has-realized-significant-or-transformational-value-from-ai",
+  },
   "gartner-spend-2026-09": {
     id: "gartner-spend-2026-09",
     publisher: "Gartner",
@@ -87,9 +95,10 @@ export const sources = {
 
 /** Display order for the numbered citation list; a source's number is its position here + 1. */
 export const sourceOrder: SourceId[] = [
-  "gartner-spend-2026-09",
   "stanford-ai-index-2026",
+  "gartner-cio-2026-10",
   "deloitte-state-of-ai-2026",
+  "gartner-spend-2026-09",
   "econ-sea-2025",
   "vn-ai-strategy-2026",
   "vn-pdp-law-2025",

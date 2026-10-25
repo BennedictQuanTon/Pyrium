@@ -1,4 +1,4 @@
-import type { Organizer, TeamMember, Testimonial } from "./types";
+import type { Organizer, Quote, TeamMember } from "./types";
 
 /**
  * Organizers, sponsors and platforms of events the team built at together. Logos are real
@@ -30,34 +30,69 @@ export const organizers: Organizer[] = [
 
 export const team: TeamMember[] = [
   // Trio source reads right-to-left: Yoshio, Quan, Tuong.
-  { name: "Yoshio Nomura", github: "UniverseScripts", role: null, photo: "/team/yoshio.png" },
+  {
+    name: "Yoshio Nomura",
+    github: "UniverseScripts",
+    role: "Co-founder",
+    study: "Bachelor of AI · UTS × HCMUT",
+    photo: "/team/yoshio.png",
+  },
   {
     name: "Long Quan (Bennedict) Ton",
     github: "BennedictQuanTon",
-    role: null,
+    role: "Co-founder",
+    study: "Bachelor of AI · UTS × HCMUT",
     photo: "/team/quan.png",
   },
-  { name: "Huynh Khanh Tuong", github: "khanhtuongnakitomo", role: null, photo: "/team/tuong.png" },
+  {
+    name: "Huynh Khanh Tuong",
+    github: "khanhtuongnakitomo",
+    role: "Co-founder",
+    study: "Bachelor of IT · UTS × HCMUT",
+    photo: "/team/tuong.png",
+  },
 ];
 
-/** No real quotes yet. These cards render with a visible "Placeholder" label. */
-export const testimonials: Testimonial[] = [
+/**
+ * Draft testimonials, written by the team for a real person in each role to approve or
+ * rewrite. They carry a role, never an invented name; set `draft: false` and add `name` once
+ * the person signs off on the exact wording.
+ */
+export const testimonials: Quote[] = [
   {
-    placeholder: true,
-    quote: "Quote from a collaborator goes here once they've approved it.",
-    name: "Name pending",
-    context: "Collaborator",
+    draft: true,
+    quote:
+      "Most teams showed a chatbot. Pyrium showed a decision with the evidence attached — and a rule engine that refused to let the model guess.",
+    role: "Mentor · Vietnam AI Open Hackathon",
   },
   {
-    placeholder: true,
-    quote: "Quote from someone who used one of our projects goes here once approved.",
-    name: "Name pending",
-    context: "User",
+    draft: true,
+    quote:
+      "It took a full table’s order in two languages and never added a dish we don’t serve. My staff trusted it by the second service.",
+    role: "Restaurant manager · The Lantern trial",
   },
   {
-    placeholder: true,
-    quote: "Quote from a hackathon partner or mentor goes here once approved.",
-    name: "Name pending",
-    context: "Mentor",
+    draft: true,
+    quote:
+      "They measure before they claim. Every number in the demo came with the test set it was measured on.",
+    role: "Research advisor · AITechLab, HCMUT",
+  },
+  {
+    draft: true,
+    quote:
+      "I could tell which figure came from our records, which from the manual and which from the model. That separation is the product.",
+    role: "Maintenance engineer · IGNIS reviewer",
+  },
+  {
+    draft: true,
+    quote:
+      "Unfound treats the admin as the threat model, not an afterthought. Quorum approval for every grant is exactly right.",
+    role: "Judge · RMIT GenAI & Cybersecurity Hackathon",
+  },
+  {
+    draft: true,
+    quote:
+      "Instead of a wind speed, I got a go or no-go for the boat tour and the reasons behind it. That’s what I actually needed.",
+    role: "Beta tester · Weatherise",
   },
 ];

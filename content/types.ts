@@ -5,6 +5,7 @@
  */
 
 export type SourceId =
+  | "gartner-cio-2026-10"
   | "gartner-spend-2026-09"
   | "gartner-spend-2026-05"
   | "gartner-agentic-2026-02"
@@ -72,16 +73,70 @@ export type Organizer = {
 export type TeamMember = {
   name: string;
   github: string;
-  /** Null until the team confirms each role; the UI shows a labelled placeholder. */
-  role: string | null;
+  role: string;
+  /** Degree line, e.g. "Bachelor of AI · UTS × HCMUT". */
+  study: string;
   /** Path to the member's monochrome portrait in /team, cropped from the brand trio. */
   photo?: string;
 };
 
-export type Testimonial = {
-  /** Always true until real, permitted quotes arrive; the UI labels these cards. */
-  placeholder: true;
+/**
+ * A quote written by the team as a draft for a real person in the named role to approve or
+ * rewrite. Drafts carry a role, never an invented name, and the UI marks them until approved.
+ */
+export type Quote = {
+  draft: boolean;
   quote: string;
-  name: string;
+  /** Who would say it, e.g. "Mentor · Vietnam AI Open Hackathon". */
+  role: string;
+  /** Filled only once the person approves the wording. */
+  name?: string;
+};
+
+export type ProductSlug = "weatherise" | "lantern" | "ignis" | "unfound";
+
+export type ProductMetric = {
+  value: string;
+  label: string;
+  /** How and where it was measured, shown beside the number. */
   context: string;
+};
+
+export type Product = {
+  slug: ProductSlug;
+  name: string;
+  /** Short category line, e.g. "Weather decisions". */
+  category: string;
+  tagline: string;
+  oneLine: string;
+  event: string;
+  organizers: string;
+  period: string;
+  result?: string;
+  /** Team size at the event, when known. */
+  team?: string;
+  problem: string;
+  solution: string;
+  metrics: [ProductMetric, ProductMetric, ProductMetric];
+  /** How the product splits the work: what the model proposes, what code decides, what people approve. */
+  split: { model: string; code: string; human: string };
+  process: { title: string; detail: string }[];
+  outcomes: string[];
+  screens: { src: string; caption: string }[];
+  stack: string[];
+  demo: string;
+  github: string;
+  video: { webm: string; mp4: string; poster: string; background: string };
+  /** Open-licence context photo from public/images/open (see CREDITS.md there). */
+  photo: { src: string; alt: string };
+  review: Quote;
+};
+
+export type LabProject = {
+  name: string;
+  event: string;
+  period: string;
+  oneLine: string;
+  result?: string;
+  href?: string;
 };

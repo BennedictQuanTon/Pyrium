@@ -252,53 +252,305 @@ like folded architectural sheets, with a whisper of red along one fold. */ @util
   }
 }
 
-/* ---- Welcome overlay: first visit per session only ------------------------------------ */
+@layer components {
+  /* Small uppercase label above a section title. */
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ---- Liquid glass ---------------------------------------------------------------------- */
 
 /*
- * The inline bootstrap script in app/layout.tsx runs before first paint, so skip visitors
- * (welcome-skip), JS-off visitors (no .js) and reduced-motion visitors never see the overlay;
- * it is unmounted by React on animationend otherwise.
+ * Frosted panels in the Apple "liquid glass" idiom: a translucent fill that blurs and lifts the
+ * saturation of whatever sits behind it, a 1px rim light that is brighter on the top-left edge,
+ * and a soft specular sheen. --mx/--my move the sheen toward the pointer (components/motion/
+ * PointerLight.tsx). Where backdrop-filter is unsupported the panel falls back to a near-solid
+ * fill so text contrast never depends on the blur.
  */
-.welcome {
+.glass,
+.glass-dark {
+  position: relative;
+  isolation: isolate;
+  border-radius: 28px;
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+}
+
+.glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(24, 24, 37, 0.06),
+    0 24px 60px -28px rgba(24, 24, 37, 0.45);
+}
+
+.glass-dark {
+  background: linear-gradient(160deg, rgba(36, 36, 51, 0.62), rgba(17, 17, 17, 0.42));
+  color: var(--color-snow);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 24px 60px -28px rgba(0, 0, 0, 0.7);
+}
+
+.glass::before,
+.glass-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.2) 38%,
+    rgba(255, 255, 255, 0.05) 62%,
+    rgba(255, 255, 255, 0.65)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.glass-dark::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.42),
+    rgba(255, 255, 255, 0.06) 38%,
+    rgba(255, 255, 255, 0.02) 62%,
+    rgba(255, 255, 255, 0.22)
+  );
+}
+
+.glass::after,
+.glass-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx, 18%) var(--my, 0%),
+    rgba(255, 255, 255, 0.6),
+    transparent 60%
+  );
+  transition: background 0.2s linear;
+}
+
+.glass-dark::after {
+  background: radial-gradient(
+    420px circle at var(--mx, 18%) var(--my, 0%),
+    rgba(255, 255, 255, 0.1),
+    transparent 60%
+  );
+}
+
+/* The nav floats over every kind of section, so its glass is nearly opaque. */
+.glass.glass-strong {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+}
+
+/* Opaque dark glass for statement panels on light pages: keeps the rim light and sheen but
+   never turns muddy over a pale backdrop. */
+.glass-dark.glass-solid {
+  background: linear-gradient(160deg, #2c2c3d, #181825);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .glass-dark {
+    background: rgba(24, 24, 37, 0.94);
+  }
+}
+
+/* Open-licence photography sits under glass in monochrome, like the brand board's concrete. */
+.photo-mono {
+  filter: grayscale(1) contrast(1.05) brightness(1.02);
+}
+
+/* ---- First-visit intro: mark wipes in, counter runs, curtain lifts --------------------- */
+
+/*
+ * The inline bootstrap in app/layout.tsx runs before first paint, so repeat visitors in the
+ * session (welcome-skip), JS-off visitors (no .js) and reduced-motion visitors never see it.
+ * Timeline: 0–0.9s the lockup is wiped in along the red slash's diagonal; 0.6–1.9s the
+ * counter and hairline run to 100; 1.85s the content lifts away; 2.0s the curtain collapses
+ * upward, with a signal-red edge riding the cut.
+ */
+.intro {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  place-items: center;
   background: var(--color-fog);
-  animation: welcome-fade 0.7s var(--ease-out-soft) 1.25s forwards;
+  animation: intro-curtain 0.95s cubic-bezier(0.76, 0, 0.24, 1) 2s forwards;
 }
 
-html.welcome-skip .welcome,
-html:not(.js) .welcome {
+.intro-edge {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 101;
+  height: 2px;
+  background: var(--color-signal);
+  transform: translateY(100vh);
+  opacity: 0;
+  animation: intro-edge 0.95s cubic-bezier(0.76, 0, 0.24, 1) 2s forwards;
+}
+
+html.welcome-skip .intro,
+html.welcome-skip .intro-edge,
+html:not(.js) .intro,
+html:not(.js) .intro-edge {
   display: none;
 }
 
-.welcome-mark {
-  animation: welcome-rise 0.8s var(--ease-out-soft) both;
+.intro-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  animation: intro-content-out 0.5s cubic-bezier(0.7, 0, 0.84, 0) 1.85s forwards;
 }
 
-.welcome-line {
-  width: 96px;
-  height: 2px;
+.intro-mark {
+  animation:
+    intro-wipe 0.95s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both,
+    intro-settle 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.intro-word {
+  display: inline-block;
+  animation: intro-word 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(0.75s + var(--i, 0) * 0.07s);
+}
+
+.intro-meter {
+  position: absolute;
+  inset-inline: 24px;
+  bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: intro-content-out 0.5s cubic-bezier(0.7, 0, 0.84, 0) 1.85s forwards;
+}
+
+.intro-track {
+  position: relative;
+  height: 1px;
+  flex: 1;
+  background: rgba(72, 71, 88, 0.15);
+  overflow: hidden;
+}
+
+.intro-fill {
+  position: absolute;
+  inset: 0;
   background: var(--color-signal);
-  transform-origin: center;
-  animation: welcome-line 0.6s var(--ease-out-soft) 0.45s both;
+  transform-origin: left;
+  animation: intro-fill 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.55s both;
 }
 
-.welcome-tagline {
-  animation: welcome-rise 0.8s var(--ease-out-soft) 0.62s both;
+@keyframes intro-wipe {
+  from {
+    clip-path: polygon(0 0, 0 0, -40% 100%, -40% 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 140% 0, 100% 100%, -40% 100%);
+  }
+}
+
+@keyframes intro-settle {
+  from {
+    transform: scale(1.06);
+    filter: blur(6px);
+  }
+  to {
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes intro-word {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes intro-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes intro-content-out {
+  to {
+    opacity: 0;
+    transform: translateY(-14px);
+    filter: blur(8px);
+  }
+}
+
+@keyframes intro-curtain {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-edge {
+  0% {
+    opacity: 1;
+    transform: translateY(100vh);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+/* The intro locks scrolling for its ~3s life. */
+html.welcome-lock {
+  overflow: hidden;
 }
 
 /* ---- Hero entrance: arc blooms downward while copy unblurs upward ---------------------- */
 
-/* The gradient dome blooms: it settles from a slightly larger, higher state as the curtain
-   lifts, so the arc reads as arriving rather than always having been there. */
 .arc-bloom {
-  animation: arc-bloom 1.5s var(--ease-out-soft) 0.2s both;
+  animation: arc-bloom 1.6s var(--ease-out-soft) 2.1s both;
 }
 
 html.welcome-skip .arc-bloom {
@@ -319,14 +571,13 @@ html.welcome-skip .arc-bloom {
 
 .hero-in {
   animation: hero-rise 0.95s var(--ease-out-soft) both;
-  animation-delay: calc(1.3s + var(--hero-i, 0) * 0.12s);
+  animation-delay: calc(2.3s + var(--hero-i, 0) * 0.12s);
 }
 
 html.welcome-skip .hero-in {
   animation-delay: calc(var(--hero-i, 0) * 0.07s);
 }
 
-/* Copy arrives with a soft focus pull: blurred and low, resolving to crisp. */
 @keyframes hero-rise {
   from {
     opacity: 0;
@@ -337,6 +588,100 @@ html.welcome-skip .hero-in {
     opacity: 1;
     transform: none;
     filter: blur(0);
+  }
+}
+
+/* ---- Page transitions (React <ViewTransition>, see components/motion/PageTransition) ---- */
+
+::view-transition {
+  pointer-events: none;
+}
+
+/* Only the page content moves; the root snapshot does not crossfade underneath it. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* The header is the spatial anchor and never moves. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* Forward: the old page recedes up and softens; the new page rises through a rounded
+   aperture that opens to full bleed. Back mirrors the direction. */
+::view-transition-old(.page-forward) {
+  animation: 280ms cubic-bezier(0.4, 0, 1, 1) both vt-recede-up;
+}
+::view-transition-new(.page-forward) {
+  animation: 720ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-rise;
+}
+::view-transition-old(.page-back) {
+  animation: 280ms cubic-bezier(0.4, 0, 1, 1) both vt-recede-down;
+}
+::view-transition-new(.page-back) {
+  animation: 720ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-drop;
+}
+
+@keyframes vt-recede-up {
+  to {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.985);
+    filter: blur(8px);
+  }
+}
+@keyframes vt-recede-down {
+  to {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    filter: blur(8px);
+  }
+}
+@keyframes vt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(56px);
+    clip-path: inset(6% 3% 0 3% round 40px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 0);
+    filter: blur(0);
+  }
+}
+@keyframes vt-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Product media morphs from its card into the case study hero, softened mid-flight. */
+::view-transition-group(.morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-via-blur;
+}
+@keyframes vt-via-blur {
+  35% {
+    filter: blur(4px);
   }
 }
 
@@ -356,12 +701,71 @@ html.js .reveal.is-visible {
   transition-delay: var(--reveal-delay, 0s);
 }
 
-/* ---- Organizer marquee: one seamless drift, pause on hover ------------------------------ */
+/* Final states, overridden below while a Reveal parent is still hidden. */
+.ring {
+  stroke-dashoffset: var(--ring-offset);
+}
+.rail-node {
+  background: var(--color-signal);
+}
+
+/* Data marks grow once their Reveal parent is visible: bars from the left, columns from the
+   baseline, rings around their track. --d staggers siblings. */
+html.js .reveal .grow-x {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+html.js .reveal .grow-y {
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transform-box: fill-box;
+}
+html.js .reveal.is-visible .grow-x,
+html.js .reveal.is-visible .grow-y {
+  transform: none;
+  transition: transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(0.25s + var(--d, 0s));
+}
+html.js .reveal .ring {
+  stroke-dashoffset: var(--ring-length);
+}
+html.js .reveal.is-visible .ring {
+  stroke-dashoffset: var(--ring-offset);
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+/* The approach rail: a red line draws across, and each node lights as it arrives. */
+html.js .reveal .rail {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+html.js .reveal.is-visible .rail {
+  transform: none;
+  transition: transform 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.3s;
+}
+html.js .reveal .rail-node {
+  background: var(--color-snow);
+  box-shadow: inset 0 0 0 1px rgba(72, 71, 88, 0.25);
+}
+html.js .reveal.is-visible .rail-node {
+  background: var(--color-signal);
+  box-shadow:
+    inset 0 0 0 1px var(--color-signal),
+    0 0 0 6px rgba(217, 41, 47, 0.12);
+  transition:
+    background 0.4s ease,
+    box-shadow 0.4s ease;
+  transition-delay: calc(0.3s + var(--d, 0s));
+}
+
+/* ---- Marquees: one seamless drift, pause on hover --------------------------------------- */
 
 .marquee {
-  /* 22s for the -50% drift (~2 copies): quick enough to feel alive, slow enough to read. */
   animation: marquee 22s linear infinite;
   will-change: transform;
+}
+.marquee-slow {
+  animation-duration: 70s;
 }
 .marquee:hover {
   animation-play-state: paused;
@@ -371,14 +775,11 @@ html.js .reveal.is-visible {
     transform: translateX(-50%);
   }
 }
-/* The second row drifts the opposite way, so the two lines cross traffic. */
 .marquee-reverse {
   animation-direction: reverse;
 }
 
-/* Edge fade via mask, not a color overlay: the marks themselves dissolve to transparent, so
-   the fade matches any backdrop — including the hero's red-to-fog gradient — instead of
-   painting a visible fog rectangle over it. */
+/* Edge fade via mask, so it matches any backdrop. */
 .marquee-fade {
   mask-image: linear-gradient(
     to right,
@@ -396,43 +797,21 @@ html.js .reveal.is-visible {
   );
 }
 
-/* ---- Keyframes ------------------------------------------------------------------------- */
+/* ---- Showcase: the active product's media crossfades in place --------------------------- */
 
-@keyframes welcome-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.stage-layer {
+  opacity: 0;
+  transform: scale(1.02);
+  filter: blur(8px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-@keyframes welcome-line {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes welcome-fade {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes glow-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(0, -2.5%, 0) scale(1.05);
-  }
+.stage-layer[data-active="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -447,9 +826,34 @@ html.js .reveal.is-visible {
     /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
     transition-duration: 0.01ms !important;
   }
-  /* The reveal transform must not leave content offset when transitions are dead. */
+  .intro,
+  .intro-edge {
+    display: none;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
+    animation-duration: 0s !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must beat every utility */
+    animation-delay: 0s !important;
+  }
   html.js .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Text that swaps in place (e.g. the approach panel) arrives with a short focus pull. */
+@keyframes fade-swap {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
   }
 }
