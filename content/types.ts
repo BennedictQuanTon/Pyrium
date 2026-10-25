@@ -73,11 +73,12 @@ export type Organizer = {
 export type TeamMember = {
   name: string;
   github: string;
-  role: string;
-  /** Degree line, e.g. "Bachelor of AI · UTS × HCMUT". */
-  study: string;
-  /** Path to the member's monochrome portrait in /team, cropped from the brand trio. */
-  photo?: string;
+  /** Role in each language, e.g. { en: "AI Engineer", vi: "Kỹ sư AI" }. */
+  role: { en: string; vi: string };
+  /** Photo in /team: colour portrait on the shared studio backdrop. */
+  photo: string;
+  /** Contact links; a missing one renders as "coming soon". */
+  links: { linkedin?: string; email?: string; portfolio?: string };
 };
 
 /**
@@ -95,42 +96,49 @@ export type Quote = {
 
 export type ProductSlug = "weatherise" | "lantern" | "ignis" | "unfound";
 
-export type ProductMetric = {
-  value: string;
-  label: string;
-  /** How and where it was measured, shown beside the number. */
-  context: string;
-};
+/** A plain-language impact number: what it means for the people using the product. */
+export type ProductMetric = { value: string; label: string };
 
-export type Product = {
+/** Language-independent facts about a product. */
+export type ProductBase = {
   slug: ProductSlug;
   name: string;
-  /** Short category line, e.g. "Weather decisions". */
-  category: string;
-  tagline: string;
-  oneLine: string;
   event: string;
   organizers: string;
   period: string;
-  result?: string;
-  /** Team size at the event, when known. */
-  team?: string;
-  problem: string;
-  solution: string;
-  metrics: [ProductMetric, ProductMetric, ProductMetric];
-  /** How the product splits the work: what the model proposes, what code decides, what people approve. */
-  split: { model: string; code: string; human: string };
-  process: { title: string; detail: string }[];
-  outcomes: string[];
-  screens: { src: string; caption: string }[];
-  stack: string[];
   demo: string;
   github: string;
   video: { webm: string; mp4: string; poster: string; background: string };
   /** Open-licence context photo from public/images/open (see CREDITS.md there). */
-  photo: { src: string; alt: string };
+  photo: string;
+  /** The product's own brand colour, used only as a soft glow behind its film. */
+  accent: string;
+  screens: string[];
+  stack: string[];
+};
+
+/** Everything about a product that is written in a language. */
+export type ProductText = {
+  category: string;
+  /** Who the product is for, in a few words. */
+  audience: string;
+  tagline: string;
+  oneLine: string;
+  result?: string;
+  team?: string;
+  problem: string;
+  solution: string;
+  metrics: [ProductMetric, ProductMetric, ProductMetric];
+  split: { model: string; code: string; human: string };
+  process: { title: string; detail: string }[];
+  outcomes: string[];
+  /** Captions for ProductBase.screens, in the same order. */
+  captions: string[];
+  photoAlt: string;
   review: Quote;
 };
+
+export type Product = ProductBase & ProductText;
 
 export type LabProject = {
   name: string;

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { citationNumber, sources } from "@/content/sources";
 import type { SourceId } from "@/content/types";
+import { SmartLink } from "./SmartLink";
 
 type WordmarkProps = { width?: number; className?: string; variant?: "primary" | "reverse" };
 
@@ -28,54 +28,9 @@ export function Wordmark({ width = 180, className = "", variant = "primary" }: W
   );
 }
 
+export { SmartLink } from "./SmartLink";
+
 type Direction = "forward" | "back";
-
-type SmartLinkProps = {
-  href: string;
-  children: ReactNode;
-  className?: string;
-  /** Page-transition direction for internal routes; external links open in a new tab. */
-  direction?: Direction;
-  "aria-label"?: string;
-};
-
-/**
- * One link for the whole site: internal routes go through next/link with a transition type
- * (so <PageTransition> knows which way to move), in-page anchors stay plain, and external
- * links open in a new tab.
- */
-export function SmartLink({
-  href,
-  children,
-  className = "",
-  direction = "forward",
-  ...rest
-}: SmartLinkProps) {
-  if (href.startsWith("http")) {
-    return (
-      <a href={href} target="_blank" rel="noreferrer" className={className} {...rest}>
-        {children}
-      </a>
-    );
-  }
-  if (href.startsWith("#")) {
-    return (
-      <a href={href} className={className} {...rest}>
-        {children}
-      </a>
-    );
-  }
-  return (
-    <Link
-      href={href}
-      transitionTypes={[direction === "back" ? "nav-back" : "nav-forward"]}
-      className={className}
-      {...rest}
-    >
-      {children}
-    </Link>
-  );
-}
 
 type PillProps = {
   href: string;
@@ -126,13 +81,19 @@ export function Badge({ children, onDark = false }: { children: ReactNode; onDar
 }
 
 /** Marks draft copy (quotes awaiting approval) so it is never mistaken for a signed-off one. */
-export function DraftTag({ onDark = false }: { onDark?: boolean }) {
+export function DraftTag({
+  onDark = false,
+  label = "Draft",
+}: {
+  onDark?: boolean;
+  label?: string;
+}) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase ${onDark ? "text-silver" : "text-stone"}`}
     >
       <span aria-hidden="true" className="size-1.5 rounded-full border border-current" />
-      Draft
+      {label}
     </span>
   );
 }

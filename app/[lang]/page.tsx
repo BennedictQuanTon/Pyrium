@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Approach } from "@/components/home/Approach";
+import { notFound } from "next/navigation";
+import { Core } from "@/components/home/Core";
 import { Problem } from "@/components/home/Problem";
 import {
   Engagement,
@@ -14,18 +14,23 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PillButton, SectionHeading } from "@/components/ui/Primitives";
 import { ProductShowcase } from "@/components/work/ProductShowcase";
-import { closing, engagement, hero, productsSection, teamSection } from "@/content/copy";
-import { coreProducts } from "@/content/products";
-
-export const metadata: Metadata = { title: "Private AI, engineered for the real business." };
+import { getCopy } from "@/content/copy";
+import { getProducts } from "@/content/products";
+import { isLang } from "@/lib/i18n";
 
 /**
  * The Pyrium home page: hero over the red arc with the organizer marquee; the problem as a
- * liquid-glass bento; the method (model proposes, code decides, people approve); the four
- * core products as a pinned showcase; testimonials; the engagement path; the founders; and
- * the closing statement. Sources are listed in the site footer.
+ * liquid-glass bento; the core (Agentic, Private, Cost-efficient); the four products with
+ * their impact numbers and the pinned showcase; testimonials; the engagement path; the
+ * founders; and the closing statement. Sources are listed in the site footer.
  */
-export default function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  if (!isLang(lang)) notFound();
+  const copy = getCopy(lang);
+  const { hero, productsSection, engagement, team, closing } = copy;
+  const products = getProducts(lang);
+
   return (
     <PageTransition>
       {/* 1 · Hero: display headline, sub, CTA row inside the red arc, organizer marquee below. */}
@@ -48,7 +53,7 @@ export default function HomePage() {
             {hero.subtitle}
           </p>
           <p
-            className="hero-in text-[14px] font-medium text-snow/75"
+            className="hero-in text-[14px] font-medium text-snow/70"
             style={{ ["--hero-i" as string]: 2 }}
           >
             {hero.trustStat}
@@ -58,7 +63,7 @@ export default function HomePage() {
             style={{ ["--hero-i" as string]: 3 }}
           >
             <PillButton href="/contact">{hero.primaryCta}</PillButton>
-            <PillButton href="#products" variant="ghost">
+            <PillButton href="#solution" variant="ghost">
               {hero.secondaryCta}
             </PillButton>
           </div>
@@ -67,19 +72,19 @@ export default function HomePage() {
           <p className="page-width mb-7 text-center text-[12px] font-medium tracking-[0.14em] text-graphite-ink/80 uppercase">
             {hero.trustLabel}
           </p>
-          <LogoMarquee />
+          <LogoMarquee label={hero.trustLabel} />
         </div>
       </section>
 
       {/* 2 · The problem, as cited figures on glass over concrete */}
-      <Problem />
+      <Problem lang={lang} />
 
-      {/* 3 · What Pyrium is: one method, shown through each product */}
-      <Approach products={coreProducts} />
+      {/* 3 · The core: Agentic, Private, Cost-efficient */}
+      <Core copy={copy.core} />
 
-      {/* 4 · Products: wordmarks and numbers, the pinned showcase, then the rest of the lab */}
+      {/* 4 · Products: lockups and impact numbers, the pinned showcase, then the rest of the lab */}
       <section id="products" className="section scroll-mt-16 bg-fog">
-        <div className="flex flex-col gap-16 md:gap-20">
+        <div className="flex flex-col gap-16 md:gap-24">
           <div className="page-width">
             <Reveal>
               <SectionHeading
@@ -89,14 +94,14 @@ export default function HomePage() {
               />
             </Reveal>
           </div>
-          <ProductStrip products={coreProducts} />
-          <ProductShowcase products={coreProducts} />
-          <LabList />
+          <ProductStrip products={products} lang={lang} />
+          <ProductShowcase products={products} labels={copy.showcase} />
+          <LabList lang={lang} />
         </div>
       </section>
 
       {/* 5 · Testimonials */}
-      <Testimonials />
+      <Testimonials lang={lang} />
 
       {/* 6 · Working together: the path, its gates and the packages */}
       <section id="engagement" className="section bg-blueprint">
@@ -108,7 +113,7 @@ export default function HomePage() {
               body={engagement.body}
             />
           </Reveal>
-          <Engagement />
+          <Engagement lang={lang} />
         </div>
       </section>
 
@@ -117,14 +122,14 @@ export default function HomePage() {
         <div className="page-width flex flex-col gap-12">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <Reveal>
-              <SectionHeading eyebrow={teamSection.eyebrow} title={teamSection.title} />
+              <SectionHeading eyebrow={team.eyebrow} title={team.title} />
             </Reveal>
             <PillButton href="/about" variant="ghost">
-              About Pyrium
+              {team.about}
             </PillButton>
           </div>
-          <Founders />
-          <Vision />
+          <Founders lang={lang} />
+          <Vision lang={lang} />
         </div>
       </section>
 

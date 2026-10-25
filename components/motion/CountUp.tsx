@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motionLevel } from "@/lib/prefs";
 
 type CountUpProps = {
   /** Final text, e.g. "88%". Integer runs inside it are animated from zero. */
@@ -19,7 +20,7 @@ export function CountUp({ text, className = "" }: CountUpProps) {
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (motionLevel() === "off") return;
     // Decimals ("0.982") would roll through misleading intermediate values; show them as-is.
     if (/\d\.\d/.test(text)) return;
     const matches = [...text.matchAll(/\d+/g)];

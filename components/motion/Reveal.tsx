@@ -8,6 +8,8 @@ type RevealProps = {
   /** Stagger slot in multiples of 90ms, for sibling groups revealed together. */
   delay?: number;
   className?: string;
+  /** Spring "pop": rises, scales up from 94% and unblurs with a slight overshoot. */
+  pop?: boolean;
 };
 
 /**
@@ -15,7 +17,7 @@ type RevealProps = {
  * visible when JS never loads (the hiding rule requires html.js, added by an inline bootstrap
  * script) and when the visitor prefers reduced motion (globals.css overrides the transform).
  */
-export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
+export function Reveal({ children, delay = 0, className = "", pop = false }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   return (
     <div
       ref={ref}
-      className={`reveal ${className}`}
+      className={`reveal ${pop ? "pop" : ""} ${className}`}
       style={delay > 0 ? { ["--reveal-delay" as string]: `${delay * 90}ms` } : undefined}
     >
       {children}

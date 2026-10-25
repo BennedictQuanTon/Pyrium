@@ -3,7 +3,9 @@
 import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { hero, nav } from "@/content/copy";
+import { Settings } from "@/components/sound/Settings";
+import { getCopy } from "@/content/copy";
+import { localePath, splitPath } from "@/lib/i18n";
 import { PillButton, Wordmark } from "./Primitives";
 
 /** Red dot under the current page; it pulses while that link's navigation is pending. */
@@ -22,14 +24,17 @@ function LinkMark({ active }: { active: boolean }) {
 /**
  * The nav is a floating glass pill. On the home page it starts transparent over the red arc
  * with the reverse lockup; everywhere else, and once the visitor scrolls, it settles into the
- * glass pill with the primary lockup. It carries view-transition-name "site-header" so page
- * transitions slide content beneath a header that never moves.
+ * glass pill with the primary lockup. The preferences button sits beside the CTA. It carries
+ * view-transition-name "site-header" so page transitions slide content beneath a header that
+ * never moves.
  */
 export function Nav() {
   const pathname = usePathname();
+  const { lang, path } = splitPath(pathname);
+  const copy = getCopy(lang);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const overArc = pathname === "/" && !scrolled && !open;
+  const overArc = path === "/" && !scrolled && !open;
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 24);
@@ -42,7 +47,7 @@ export function Nav() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value read
   useEffect(() => setOpen(false), [pathname]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
   return (
     <header
@@ -56,21 +61,21 @@ export function Nav() {
         }`}
       >
         <Link
-          href="/"
+          href={localePath(lang, "/")}
           transitionTypes={["nav-back"]}
-          aria-label="Pyrium, home"
+          aria-label="Pyrium"
           className="shrink-0"
         >
-          <Wordmark variant={overArc ? "reverse" : "primary"} className="w-[124px] md:w-[160px]" />
+          <Wordmark variant={overArc ? "reverse" : "primary"} className="w-[118px] md:w-[150px]" />
         </Link>
-        <ul className="hidden items-center gap-8 md:flex">
-          {nav.map((item) => (
+        <ul className="hidden items-center gap-7 lg:flex">
+          {copy.nav.map((item) => (
             <li key={item.href}>
               <Link
-                href={item.href}
+                href={localePath(lang, item.href)}
                 transitionTypes={["nav-forward"]}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={`relative text-[14px] font-medium transition-colors ${
+                className={`relative text-[14px] font-medium whitespace-nowrap transition-colors ${
                   overArc
                     ? "text-snow/85 hover:text-snow"
                     : isActive(item.href)
@@ -84,13 +89,16 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <Settings onDark={overArc} />
           <span className="hidden sm:block">
-            <PillButton href="/contact">{hero.navCta}</PillButton>
+            <PillButton href="/contact" className="whitespace-nowrap">
+              {copy.hero.navCta}
+            </PillButton>
           </span>
           <button
             type="button"
-            className={`inline-flex size-12 items-center justify-center rounded-full md:hidden ${overArc ? "text-snow" : "text-ink"}`}
+            className={`inline-flex size-11 items-center justify-center rounded-full lg:hidden ${overArc ? "text-snow" : "text-ink"}`}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -110,13 +118,13 @@ export function Nav() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="glass glass-strong pointer-events-auto mx-auto mt-2 max-w-page p-3 md:hidden"
+        className="glass glass-strong pointer-events-auto mx-auto mt-2 max-w-page p-3 lg:hidden"
       >
         <ul className="flex flex-col">
-          {nav.map((item) => (
+          {copy.nav.map((item) => (
             <li key={item.href}>
               <Link
-                href={item.href}
+                href={localePath(lang, item.href)}
                 transitionTypes={["nav-forward"]}
                 className="flex items-center justify-between rounded-[18px] px-4 py-3.5 text-[17px] text-ink hover:bg-white/60"
               >
@@ -129,7 +137,7 @@ export function Nav() {
           ))}
         </ul>
         <PillButton href="/contact" className="mt-2 w-full">
-          {hero.navCta}
+          {copy.hero.navCta}
         </PillButton>
       </div>
     </header>

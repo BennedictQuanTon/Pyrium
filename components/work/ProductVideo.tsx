@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/content/types";
+import { motionLevel } from "@/lib/prefs";
 
 type Props = {
   product: Product;
@@ -21,11 +22,10 @@ export function ProductVideo({ product, active = true, className = "" }: Props) 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setStill(query.matches);
+    const update = () => setStill(motionLevel() === "off");
     update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
+    window.addEventListener("pyrium:prefs", update);
+    return () => window.removeEventListener("pyrium:prefs", update);
   }, []);
 
   useEffect(() => {

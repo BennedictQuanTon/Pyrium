@@ -5,17 +5,20 @@ import { Reveal } from "@/components/motion/Reveal";
 import { DraftTag, PillButton, SmartLink } from "@/components/ui/Primitives";
 import { ProductMetrics } from "@/components/work/Metrics";
 import { ProductFrame } from "@/components/work/ProductFrame";
-import { approach } from "@/content/copy";
+import { ProductLogo } from "@/components/work/ProductLogo";
+import { getCopy } from "@/content/copy";
 import { getProduct, nextProduct, productOrder } from "@/content/products";
+import { isLang } from "@/lib/i18n";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ lang: string; slug: string }> };
 
 export function generateStaticParams() {
   return productOrder.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = getProduct((await params).slug);
+  const { lang, slug } = await params;
+  const product = isLang(lang) ? getProduct(lang, slug) : undefined;
   if (!product) return {};
   return { title: `${product.name} — ${product.category}`, description: product.oneLine };
 }
@@ -26,16 +29,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  * screens, outcomes, a review and the next product.
  */
 export default async function CaseStudyPage({ params }: Props) {
-  const product = getProduct((await params).slug);
+  const { lang, slug } = await params;
+  if (!isLang(lang)) notFound();
+  const product = getProduct(lang, slug);
   if (!product) notFound();
-  const next = nextProduct(product.slug);
+  const copy = getCopy(lang);
+  const t = copy.caseStudy;
+  const next = nextProduct(lang, product.slug);
   const meta = [
-    { label: "Event", value: product.event },
-    { label: "With", value: product.organizers },
-    { label: "When", value: product.period },
-    ...(product.team ? [{ label: "Team", value: product.team }] : []),
-    ...(product.result ? [{ label: "Result", value: product.result }] : []),
+    { label: t.event, value: product.event },
+    { label: t.with, value: product.organizers },
+    { label: t.when, value: product.period },
+    ...(product.team ? [{ label: t.team, value: product.team }] : []),
+    ...(product.result ? [{ label: t.result, value: product.result }] : []),
   ];
+  const steps = [
+    { key: "model", name: t.steps.model },
+    { key: "code", name: t.steps.code },
+    { key: "human", name: t.steps.human },
+  ] as const;
 
   return (
     <PageTransition>
@@ -54,7 +66,7 @@ export default async function CaseStudyPage({ params }: Props) {
             <span aria-hidden="true" className="transition-transform group-hover:-translate-x-1">
               ←
             </span>
-            All products
+            {t.allProducts}
           </SmartLink>
           <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-end">
             <div className="flex flex-col gap-5">
@@ -66,11 +78,19 @@ export default async function CaseStudyPage({ params }: Props) {
                 {product.category}
               </p>
               <h1
-                className="hero-in text-[48px] leading-[1.02] tracking-[-1px] md:text-[80px] md:tracking-[-2px]"
+                className="hero-in py-1"
+                style={{ ["--hero-i" as string]: 2 }}
+                aria-label={product.name}
+              >
+                <ProductLogo slug={product.slug} size="lg" />
+              </h1>
+              <p
+                className="hero-in text-[14px] text-graphite-ink"
                 style={{ ["--hero-i" as string]: 2 }}
               >
-                {product.name}
-              </h1>
+                <span className="eyebrow mr-2">{copy.showcase.builtFor}</span>
+                {product.audience}
+              </p>
               <p
                 className="hero-in max-w-[30ch] font-display text-[22px] leading-[1.3] text-graphite-ink md:text-[28px]"
                 style={{ ["--hero-i" as string]: 3 }}
@@ -88,14 +108,14 @@ export default async function CaseStudyPage({ params }: Props) {
                 ))}
               </dl>
               <div className="flex flex-wrap gap-3">
-                <PillButton href={product.demo}>Open live demo</PillButton>
+                <PillButton href={product.demo}>{copy.showcase.tryLive}</PillButton>
                 <PillButton href={product.github} variant="ghost">
-                  Source on GitHub
+                  {t.source}
                 </PillButton>
               </div>
             </div>
           </div>
-          <ProductFrame product={product} morph caption={false} />
+          <ProductFrame product={product} morph />
         </div>
       </section>
 
@@ -112,13 +132,13 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="section bg-snow">
         <div className="page-width grid gap-14 md:grid-cols-2 md:gap-20">
           <Reveal className="flex flex-col gap-4">
-            <p className="eyebrow">The problem</p>
+            <p className="eyebrow">{t.problem}</p>
             <p className="font-display text-[22px] leading-[1.45] text-ink md:text-[26px]">
               {product.problem}
             </p>
           </Reveal>
           <Reveal delay={1} className="flex flex-col gap-4 md:pt-24">
-            <p className="eyebrow">What we built</p>
+            <p className="eyebrow">{t.built}</p>
             <p className="text-[17px] leading-[1.65] text-graphite-ink">{product.solution}</p>
             <ul className="mt-2 flex flex-wrap gap-2" aria-label="Stack">
               {product.stack.map((item) => (
@@ -138,7 +158,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="section relative overflow-hidden bg-deep-slate">
         {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo under glass */}
         <img
-          src={product.photo.src}
+          src={product.photo}
           alt=""
           loading="lazy"
           className="photo-mono absolute inset-0 size-full object-cover opacity-30"
@@ -147,15 +167,15 @@ export default async function CaseStudyPage({ params }: Props) {
           <Reveal className="flex flex-col gap-4">
             <p className="eyebrow flex items-center gap-2 text-silver">
               <span aria-hidden="true" className="h-px w-6 bg-signal" />
-              How the work is split
+              {t.split}
             </p>
             <h2 className="max-w-[22ch] text-heading text-snow md:text-heading-lg">
-              {approach.title}
+              {t.splitTitle}
             </h2>
           </Reveal>
           <Reveal delay={1}>
             <ol className="grid gap-4 md:grid-cols-3">
-              {approach.steps.map((step, index) => (
+              {steps.map((step, index) => (
                 <li key={step.key} className="glass-dark flex flex-col gap-5 p-7 md:p-8">
                   <div className="flex items-center gap-3">
                     <span
@@ -177,7 +197,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="section bg-fog">
         <div className="page-width grid gap-12 md:grid-cols-[1fr_2fr]">
           <Reveal className="self-start md:sticky md:top-32">
-            <h2 className="text-heading">How we built it</h2>
+            <h2 className="text-heading">{t.log}</h2>
           </Reveal>
           <ol className="flex flex-col">
             {product.process.map((step, index) => (
@@ -205,26 +225,28 @@ export default async function CaseStudyPage({ params }: Props) {
         <div className="page-width mb-10 flex items-end justify-between gap-6">
           <Reveal>
             <h2 id="screens-title" className="text-heading">
-              Inside the product
+              {t.inside}
             </h2>
           </Reveal>
-          <p className="hidden text-[13px] text-stone md:block">Scroll sideways →</p>
+          <p className="hidden text-[13px] text-stone md:block">{t.scroll}</p>
         </div>
         <Reveal delay={1}>
           <ul className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 md:px-[max(2rem,calc((100vw-1200px)/2+2rem))]">
-            {product.screens.map((screen) => (
-              <li key={screen.src} className="w-[85vw] shrink-0 snap-center md:w-[720px]">
+            {product.screens.map((src, index) => (
+              <li key={src} className="w-[85vw] shrink-0 snap-center md:w-[720px]">
                 <figure className="flex flex-col gap-4">
                   <div className="overflow-hidden rounded-cards bg-fog p-2 shadow-subtle">
                     {/* biome-ignore lint/performance/noImgElement: product screenshot; next/image adds nothing for these static webp files */}
                     <img
-                      src={screen.src}
-                      alt={screen.caption}
+                      src={src}
+                      alt={product.captions[index]}
                       loading="lazy"
                       className="aspect-[16/10] w-full rounded-[18px] object-cover object-top"
                     />
                   </div>
-                  <figcaption className="text-[14px] text-stone">{screen.caption}</figcaption>
+                  <figcaption className="text-[14px] text-stone">
+                    {product.captions[index]}
+                  </figcaption>
                 </figure>
               </li>
             ))}
@@ -236,7 +258,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="section bg-blueprint">
         <div className="page-width grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <Reveal className="flex flex-col gap-6">
-            <h2 className="text-heading">Outcomes</h2>
+            <h2 className="text-heading">{t.outcomes}</h2>
             <ul className="flex flex-col gap-4">
               {product.outcomes.map((outcome) => (
                 <li
@@ -259,9 +281,7 @@ export default async function CaseStudyPage({ params }: Props) {
                 </li>
               ))}
             </ul>
-            <p className="text-[12px] text-stone">
-              Measured at the event on the stated test sets and workloads, not on customer data.
-            </p>
+            <p className="text-[12px] text-stone">{t.outcomesNote}</p>
           </Reveal>
           <Reveal delay={1}>
             <figure className="glass flex flex-col gap-6 p-8 md:p-10">
@@ -276,7 +296,7 @@ export default async function CaseStudyPage({ params }: Props) {
               </blockquote>
               <figcaption className="flex items-center justify-between gap-3">
                 <span className="text-[13px] text-stone">{product.review.role}</span>
-                {product.review.draft ? <DraftTag /> : null}
+                {product.review.draft ? <DraftTag label={copy.showcase.draft} /> : null}
               </figcaption>
             </figure>
           </Reveal>
@@ -288,17 +308,17 @@ export default async function CaseStudyPage({ params }: Props) {
         <SmartLink
           href={`/work/${next.slug}`}
           className="group relative block overflow-hidden bg-deep-slate"
-          aria-label={`Next product: ${next.name}`}
+          aria-label={`${t.next}: ${next.name}`}
         >
           {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo */}
           <img
-            src={next.photo.src}
+            src={next.photo}
             alt=""
             loading="lazy"
             className="photo-mono absolute inset-0 size-full object-cover opacity-40 transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
           />
           <div className="page-width relative flex flex-col gap-4 py-24 md:py-32">
-            <span className="eyebrow text-silver">Next product</span>
+            <span className="eyebrow text-silver">{t.next}</span>
             <span className="flex items-center gap-6 text-[48px] leading-none tracking-[-1px] text-snow md:text-[88px]">
               <span className="font-display">{next.name}</span>
               <span

@@ -1,36 +1,51 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Founders, Vision } from "@/components/home/Sections";
+import { CountUp } from "@/components/motion/CountUp";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PillButton, SectionHeading } from "@/components/ui/Primitives";
-import { about, closing, teamSection } from "@/content/copy";
-import { reach } from "@/content/products";
+import { getCopy } from "@/content/copy";
+import { isLang } from "@/lib/i18n";
 
-export const metadata: Metadata = { title: "About", description: about.body };
+type Props = { params: Promise<{ lang: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLang(lang)) return {};
+  const t = getCopy(lang).about;
+  return { title: t.eyebrow, description: t.body };
+}
 
 /**
- * About: the brand essence, the founders, the four principles, the vision and the twelve-month
- * path from proof to repeatability, each phase with its gate.
+ * About: the brand line and reach, the founders, the four principles, the vision and the
+ * twelve-month path from proof to repeatability, each phase with its gate.
  */
-export default function AboutPage() {
+export default async function AboutPage({ params }: Props) {
+  const { lang } = await params;
+  if (!isLang(lang)) notFound();
+  const copy = getCopy(lang);
+  const t = copy.about;
+  const reach = copy.productsSection.stats[0];
+
   return (
     <PageTransition>
-      <PageHeader eyebrow={about.eyebrow} title={about.title} body={about.body} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
       {/* Brand line, large */}
       <section className="bg-fog py-20 md:py-28">
         <div className="page-width grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
           <Reveal>
             <p className="max-w-[18ch] font-display text-[40px] leading-[1.1] tracking-[-0.8px] text-ink md:text-[64px] md:tracking-[-1.4px]">
-              Private AI. <span className="text-signal">Built to act.</span>
+              {t.line[0]} <span className="text-signal">{t.line[1]}</span>
             </p>
           </Reveal>
-          <Reveal delay={1} className="flex flex-col gap-1 md:text-right">
-            <span className="font-display text-[56px] leading-none tracking-[-0.04em] text-ink">
-              {reach.users}
+          <Reveal pop delay={1} className="flex flex-col gap-1 md:text-right">
+            <span className="font-display text-[64px] leading-none tracking-[-0.04em] text-ink">
+              <CountUp text={reach.value} className="tabular" />
             </span>
-            <span className="text-[14px] text-stone">{reach.usersLabel}</span>
+            <span className="text-[14px] text-stone">{reach.label}</span>
           </Reveal>
         </div>
       </section>
@@ -39,9 +54,9 @@ export default function AboutPage() {
       <section className="section bg-snow">
         <div className="page-width flex flex-col gap-12">
           <Reveal>
-            <SectionHeading eyebrow={teamSection.eyebrow} title={teamSection.title} />
+            <SectionHeading eyebrow={copy.team.eyebrow} title={copy.team.title} />
           </Reveal>
-          <Founders />
+          <Founders lang={lang} />
         </div>
       </section>
 
@@ -49,12 +64,12 @@ export default function AboutPage() {
       <section className="section bg-blueprint">
         <div className="page-width flex flex-col gap-12">
           <Reveal>
-            <SectionHeading eyebrow="Principles" title="Four things we hold every system to." />
+            <SectionHeading eyebrow={t.principlesEyebrow} title={t.principlesTitle} />
           </Reveal>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {about.principles.map((principle, index) => (
+            {t.principles.map((principle, index) => (
               <li key={principle.title}>
-                <Reveal delay={index} className="glass flex h-full flex-col gap-4 p-7">
+                <Reveal pop delay={index} className="glass flex h-full flex-col gap-4 p-7">
                   <span className="tabular text-[13px] text-signal">0{index + 1}</span>
                   <h3 className="font-sans text-[17px] font-medium">{principle.title}</h3>
                   <p className="text-[15px] text-stone">{principle.body}</p>
@@ -68,13 +83,13 @@ export default function AboutPage() {
       {/* Vision and roadmap */}
       <section className="section bg-fog">
         <div className="page-width flex flex-col gap-14">
-          <Vision />
+          <Vision lang={lang} />
           <div className="flex flex-col gap-8">
             <Reveal>
               <SectionHeading
-                eyebrow="The next twelve months"
-                title="From proof to repeatability."
-                body="Each phase has a gate. If the evidence isn't there, we don't move on."
+                eyebrow={t.roadmapEyebrow}
+                title={t.roadmapTitle}
+                body={t.roadmapBody}
                 size="md"
               />
             </Reveal>
@@ -83,11 +98,11 @@ export default function AboutPage() {
                 aria-hidden="true"
                 className="absolute top-2 bottom-2 left-[7px] w-px bg-ink/10"
               />
-              {about.roadmap.map((phase, index) => (
+              {t.roadmap.map((phase, index) => (
                 <li key={phase.phase}>
                   <Reveal
                     delay={index}
-                    className="relative grid gap-2 py-5 pl-10 md:grid-cols-[14rem_1fr_1.4fr] md:gap-8"
+                    className="relative grid gap-2 py-5 pl-10 md:grid-cols-[12rem_1fr_1.4fr] md:gap-8"
                   >
                     <span
                       aria-hidden="true"
@@ -96,7 +111,7 @@ export default function AboutPage() {
                     <span className="tabular text-[13px] text-stone">{phase.time}</span>
                     <span className="text-[17px] font-medium text-ink">{phase.phase}</span>
                     <span className="text-[14px] text-graphite-ink">
-                      <span className="text-stone">Gate · </span>
+                      <span className="text-stone">{t.gate} · </span>
                       {phase.gate}
                     </span>
                   </Reveal>
@@ -110,10 +125,12 @@ export default function AboutPage() {
       <section className="signal-frame relative overflow-hidden">
         <div className="page-width relative flex flex-col items-center gap-5 py-28 text-center md:py-36">
           <Reveal>
-            <h2 className="max-w-[18ch] text-heading-md md:text-heading-lg">{closing.title}</h2>
+            <h2 className="max-w-[18ch] text-heading-md md:text-heading-lg">
+              {copy.closing.title}
+            </h2>
           </Reveal>
           <Reveal delay={1}>
-            <PillButton href="/contact">Talk to our team</PillButton>
+            <PillButton href="/contact">{copy.hero.primaryCta}</PillButton>
           </Reveal>
         </div>
       </section>

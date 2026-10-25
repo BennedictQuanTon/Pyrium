@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { MorphTarget } from "@/components/motion/PageTransition";
 import type { Product } from "@/content/types";
 import { ProductVideo } from "./ProductVideo";
@@ -7,55 +8,40 @@ type Props = {
   active?: boolean;
   /** Give the frame a view-transition name so it morphs into the case-study hero. */
   morph?: boolean;
-  /** Show the event chip in the corner. */
-  caption?: boolean;
   className?: string;
 };
 
 /**
- * The product's film set in a dark glass bezel, floating over its open-licence context photo
- * (rendered in monochrome). Used by the home showcase, the products index and the case-study
- * hero, which share a view-transition name so the frame morphs between pages.
+ * The product's film on a quiet stage. Rule: nothing is ever written on top of the picture —
+ * every label, event and result lives outside the frame. The stage is the product's
+ * open-licence context photo, blurred and washed into the page fog; the film sits in a
+ * graphite bezel with a hairline highlight, lifted by a soft glow in the product's own colour.
  */
-export function ProductFrame({
-  product,
-  active = true,
-  morph = false,
-  caption = true,
-  className = "",
-}: Props) {
+export function ProductFrame({ product, active = true, morph = false, className = "" }: Props) {
   const frame = (
-    <figure className={`relative overflow-hidden rounded-[32px] bg-deep-slate ${className}`}>
-      {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo under glass */}
+    <figure
+      className={`product-stage relative isolate overflow-hidden rounded-[36px] ${className}`}
+      style={{ "--accent": product.accent } as CSSProperties}
+    >
+      {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo behind the film */}
       <img
-        src={product.photo.src}
+        src={product.photo}
         alt=""
         loading="lazy"
-        className="photo-mono absolute inset-0 size-full scale-105 object-cover"
+        className="photo-mono absolute inset-0 -z-10 size-full scale-110 object-cover opacity-60 blur-[3px]"
       />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-midnight/20 via-midnight/35 to-midnight/70"
-      />
-      <div className="relative p-4 sm:p-7 lg:p-10">
-        <div className="glass-dark rounded-[22px] p-1.5 sm:p-2">
-          <div className="overflow-hidden rounded-[16px]">
+      <span aria-hidden="true" className="product-stage-wash absolute inset-0 -z-10" />
+      <div className="relative px-[6%] pt-[7%] pb-[9%]">
+        <span
+          aria-hidden="true"
+          className="product-glow absolute inset-x-[14%] bottom-[4%] h-[38%] -z-10"
+        />
+        <div className="device">
+          <div className="device-screen">
             <ProductVideo product={product} active={active} />
           </div>
         </div>
       </div>
-      {caption ? (
-        <figcaption className="relative flex flex-wrap items-center justify-between gap-2 px-4 pb-4 sm:px-7 sm:pb-6 lg:px-10 lg:pb-8">
-          <span className="glass-dark rounded-badges px-3.5 py-1.5 text-[12px] font-medium">
-            {product.event}
-          </span>
-          {product.result ? (
-            <span className="rounded-badges bg-signal px-3.5 py-1.5 text-[12px] font-medium text-snow">
-              {product.result}
-            </span>
-          ) : null}
-        </figcaption>
-      ) : null}
     </figure>
   );
   return morph ? <MorphTarget name={`media-${product.slug}`}>{frame}</MorphTarget> : frame;

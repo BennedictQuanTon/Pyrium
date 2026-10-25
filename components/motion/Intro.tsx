@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motionLevel } from "@/lib/prefs";
 
-const TAGLINE = "Private AI. Built to act.".split(" ");
 /** Matches the CSS timeline in globals.css: curtain starts at 2s and runs 0.95s. */
 const LIFETIME_MS = 3000;
 const COUNT_START_MS = 550;
@@ -15,14 +15,14 @@ const COUNT_MS = 1300;
  * beneath. Server-rendered so it covers the first paint; CSS hides it for repeat visits in the
  * session, JS-off and reduced-motion visitors. Any click, key or wheel skips it.
  */
-export function Intro() {
+export function Intro({ tagline, meter }: { tagline: string; meter: string }) {
+  const words = tagline.split(" ");
   const [done, setDone] = useState(false);
   const counter = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const root = document.documentElement;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (root.classList.contains("welcome-skip") || reduced) {
+    if (root.classList.contains("welcome-skip") || motionLevel() !== "full") {
       setDone(true);
       return;
     }
@@ -79,16 +79,16 @@ export function Intro() {
             className="intro-mark block h-auto w-[220px] md:w-[300px]"
           />
           <p className="font-display text-[18px] text-graphite-ink md:text-[20px]">
-            {TAGLINE.map((word, index) => (
+            {words.map((word, index) => (
               <span key={word} className="intro-word" style={{ ["--i" as string]: index }}>
                 {word}
-                {index < TAGLINE.length - 1 ? " " : ""}
+                {index < words.length - 1 ? " " : ""}
               </span>
             ))}
           </p>
         </div>
         <div className="intro-meter">
-          <span className="eyebrow">Private · Efficient · Domain-driven</span>
+          <span className="eyebrow hidden sm:inline">{meter}</span>
           <span className="intro-track">
             <span className="intro-fill" />
           </span>

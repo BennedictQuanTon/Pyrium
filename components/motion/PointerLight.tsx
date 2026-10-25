@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { motionLevel } from "@/lib/prefs";
 
 /**
  * Moves the specular sheen of the glass panel under the pointer (--mx / --my, read by
@@ -9,11 +10,11 @@ import { useEffect } from "react";
  */
 export function PointerLight() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
     let frame = 0;
     const onMove = (event: PointerEvent) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>(".glass, .glass-dark");
-      if (!target) return;
+      if (!target || motionLevel() !== "full") return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const rect = target.getBoundingClientRect();

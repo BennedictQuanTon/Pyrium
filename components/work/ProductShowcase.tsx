@@ -2,18 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import { DraftTag, PillButton } from "@/components/ui/Primitives";
+import type { Copy } from "@/content/copy";
 import type { Product } from "@/content/types";
 import { ProductMetrics } from "./Metrics";
 import { ProductFrame } from "./ProductFrame";
+import { ProductLogo } from "./ProductLogo";
+
+type Labels = Copy["showcase"];
 
 /**
  * Apple-style product walk-through. On large screens the stage on the right stays pinned while
- * the story on the left scrolls; whichever story block crosses the middle of the viewport
- * becomes active, and the stage crossfades to its film. On small screens every block carries
- * its own frame inline. Only the pinned stage carries view-transition names, so each product's
- * frame morphs into its case study.
+ * the story on the left scrolls; whichever story crosses the middle of the viewport becomes
+ * active and the stage crossfades to its film. Each story leads with the product's own logo,
+ * who it is for, what it changes in plain numbers, and its recognition — all outside the frame.
+ * On small screens every story carries its own frame inline.
  */
-export function ProductShowcase({ products }: { products: Product[] }) {
+export function ProductShowcase({ products, labels }: { products: Product[]; labels: Labels }) {
   const [active, setActive] = useState(0);
   const blocks = useRef<(HTMLElement | null)[]>([]);
 
@@ -31,7 +35,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
   }, []);
 
   return (
-    <div className="page-width grid gap-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+    <div className="page-width grid gap-20 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
       <div className="flex flex-col">
         {products.map((product, index) => (
           <article
@@ -41,41 +45,54 @@ export function ProductShowcase({ products }: { products: Product[] }) {
             }}
             data-index={index}
             aria-labelledby={`showcase-${product.slug}`}
-            className={`flex flex-col justify-center gap-7 py-6 transition-opacity duration-700 lg:min-h-[88vh] lg:py-0 ${
-              active === index ? "lg:opacity-100" : "lg:opacity-35"
+            className={`flex flex-col justify-center gap-7 transition-opacity duration-700 lg:min-h-[92vh] ${
+              active === index ? "lg:opacity-100" : "lg:opacity-30"
             }`}
           >
             <div className="lg:hidden">
               <ProductFrame product={product} />
             </div>
-            <div className="flex items-center gap-3">
-              <span className="tabular text-[13px] font-medium text-signal">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="h-px w-8 bg-ink/15" aria-hidden="true" />
-              <span className="eyebrow">{product.category}</span>
-            </div>
-            <div className="flex flex-col gap-3">
-              <h3 id={`showcase-${product.slug}`} className="text-heading md:text-heading-lg">
-                {product.name}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h3 id={`showcase-${product.slug}`} aria-label={product.name}>
+                <ProductLogo slug={product.slug} size="md" />
               </h3>
-              <p className="font-display text-[20px] leading-[1.35] text-graphite-ink md:text-[22px]">
+              <span className="tabular text-[13px] text-stone">
+                {String(index + 1).padStart(2, "0")} / {String(products.length).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="flex flex-col gap-4">
+              <p className="font-display text-[28px] leading-[1.18] tracking-[-0.02em] text-ink md:text-[36px]">
                 {product.tagline}
               </p>
-              <p className="max-w-[46ch] text-[15px] text-stone">{product.oneLine}</p>
+              <p className="max-w-[48ch] text-[16px] leading-[1.6] text-stone">{product.oneLine}</p>
+            </div>
+            <div className="flex items-start gap-3 rounded-[18px] bg-ink/[0.035] px-4 py-3">
+              <span className="eyebrow mt-[3px] shrink-0">{labels.builtFor}</span>
+              <span className="text-[14px] text-ink">{product.audience}</span>
             </div>
             <ProductMetrics product={product} />
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-stone">
+              <span className="eyebrow">{labels.recognition}</span>
+              <span>{product.event}</span>
+              <span aria-hidden="true">·</span>
+              <span className="tabular">{product.period}</span>
+              {product.result ? (
+                <span className="rounded-badges bg-signal px-3 py-1 text-[12px] font-medium text-snow">
+                  {product.result}
+                </span>
+              ) : null}
+            </div>
             <blockquote className="glass flex flex-col gap-3 p-5 md:p-6">
-              <p className="text-[15px] leading-[1.55] text-midnight">“{product.review.quote}”</p>
+              <p className="text-[15px] leading-[1.6] text-midnight">“{product.review.quote}”</p>
               <footer className="flex items-center justify-between gap-3">
                 <span className="text-[12px] text-stone">{product.review.role}</span>
-                {product.review.draft ? <DraftTag /> : null}
+                {product.review.draft ? <DraftTag label={labels.draft} /> : null}
               </footer>
             </blockquote>
             <div className="flex flex-wrap gap-3">
-              <PillButton href={`/work/${product.slug}`}>Read the case study</PillButton>
+              <PillButton href={`/work/${product.slug}`}>{labels.readCase}</PillButton>
               <PillButton href={product.demo} variant="ghost">
-                Live demo
+                {labels.tryLive}
               </PillButton>
             </div>
           </article>
@@ -83,7 +100,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
       </div>
 
       <div className="hidden lg:block">
-        <div className="sticky top-[max(6rem,calc(50vh-22rem))]">
+        <div className="sticky top-[max(6rem,calc(50vh-20rem))]">
           <div className="relative">
             {products.map((product, index) => (
               <div
