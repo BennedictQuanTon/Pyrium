@@ -2,11 +2,12 @@
 
 Landing page for **Pyrium** — private AI systems engineering. "Private AI. Built to act."
 
-One page, one voice: the layout language of `docs/Landing_DESIGN.md` (light showroom, light
-display headings, pill CTAs) with the brand kit's single Signal Red accent. The hero keeps the
-title on the left and a cluster of obsidian orbs — rims morphing red, blood and grey — on the
-right over a Dialog-style red gradient; a procession of the same orbs drifts full-bleed beneath
-it. The welcome curtain plays on the first visit of a session.
+A light, quiet site in the layout language of `docs/Landing_DESIGN.md` (light showroom, light
+display headings, pill CTAs) with the brand kit's single Signal Red accent, plus liquid-glass
+panels over open-licence monochrome photography. A first-visit intro wipes the lockup in and
+lifts a fog curtain; route changes animate with React `<ViewTransition>`, and product films morph
+from their cards into the case studies. The site is bilingual (English at `/`, Vietnamese at
+`/vi`), and a preferences panel beside the nav CTA sets language, motion level and sound.
 
 ## Running the site
 
@@ -21,36 +22,46 @@ pnpm dev                 # http://localhost:3000
 
 To see the page exactly as visitors would, run `pnpm build`, then `pnpm start`.
 
-## The page
+## The pages
 
-1. Hero — title, CTAs and email row on the left, obsidian orbs on the right, then the
-   organizer strip (NVIDIA, Viettel, SOVICO, Google, OpenACC, AssemblyAI, lablab.ai, OpenAI,
-   Devpost, AMD, Sea/Shopee) under the drifting orb band
-2. Problem — cited figures and the spending chart
-3. Solution — principles, system layers, audience, engagement metrics
-4. Projects — the team's hackathon work as a sideways carousel
-5. Testimonials
-6. Contact — engagement path, packages and the form
-7. Team and vision
-8. Closing statement, with the numbered sources in the footer
+Every route exists in English (`/…`) and Vietnamese (`/vi/…`). Pages live in `app/[lang]/`;
+`next.config.ts` rewrites un-prefixed paths to `/en` and redirects `/en/…` back to the clean URL.
 
-The top navigation jumps to each section.
+| Route | What it holds |
+| --- | --- |
+| `/` | Hero and organizer marquee · the problem as a cited glass bento · the core (Agentic, Private, Cost-efficient) · product lockups and impact numbers · the pinned product showcase · more from the lab · testimonials · engagement path and packages · founders and vision · closing |
+| `/work` | The four core products as editorial rows, then the smaller lab projects |
+| `/work/[slug]` | Case study per core product (Weatherise, The Lantern, IGNIS, Unfound) |
+| `/services` | Offer families, six-layer architecture, governance controls, audience, metrics, engagement path, claims policy |
+| `/about` | Brand line and reach, founders, principles, vision and the twelve-month roadmap |
+| `/contact` | Enquiry form, go / no-go criteria, packages and FAQ |
+
+### Preferences, motion and sound
+
+- **Preferences panel** (the sliders icon beside "Book a discovery call"): language, motion
+  (Full / Subtle / Off) and sound (ambient music, volume, interface sounds). Saved in
+  `localStorage` on the device and applied before first paint (`html[data-motion]`).
+- **Sound** is synthesized live with the Web Audio API in `lib/audio.ts` — no audio files, so
+  nothing to license or download. Browsers only allow audio after a user gesture, so the music
+  fades in on the first click or key press (dismissing the intro counts).
+- **Motion:** the intro plays once per session with full motion only; "Subtle" shortens movement
+  and turns page transitions into a crossfade; "Off" (or the OS reduced-motion setting) removes
+  animation and shows video posters.
 
 ### Things that are expected, not bugs
 
-- **Placeholders.** Testimonials, team roles and the Regional Codex project name are clearly
-  marked placeholders until the team confirms them.
+- **Hero.** Copy and layout are kept exactly as approved, including the trust line.
+- **Draft quotes.** Every testimonial and product review is a draft for a real person in the
+  named role to approve. Drafts carry a role, never a name, and show a "Draft" tag. Set
+  `draft: false` and add `name` in `content/people.ts` or `content/products.ts` once approved.
+- **Estimates.** "~80% lower AI running cost" is a team estimate, marked "est." with the method
+  beside it. "200+ people" is the team's own aggregate figure.
+- **Founder links.** LinkedIn and email for Yoshio and Tuong are not published yet, so those
+  buttons show as "coming soon"; their portfolio buttons point to GitHub for now.
 - **Contact form.** It isn't connected to anything yet, so it won't send.
-- **Organizer names.** They are plain text, not their logos, because logos need each brand's
-  permission. Pyrium's own logo comes from the brand kit.
-- **Welcome curtain, orbs and the band.** All motion-first: the curtain plays once per
-  session, the orbs need WebGL. With `prefers-reduced-motion` the curtain never plays, the
-  orbs hold still in signal red and the band freezes; without WebGL the hero shows the brand
-  block instead.
-- **Project loops.** They are H.264 MP4 and play in Chrome, Edge and Safari. In a browser
-  without that codec, such as open-source Chromium, you see the still image instead.
-- **Chart estimates.** In the spending chart, the 2025 and 2027 bars are calculated from
-  Gartner's growth rates, so they are dashed. Only 2026 is Gartner's published figure.
+- **Product films** are WebM with an MP4 fallback; nothing is ever overlaid on a product frame.
+- **Chart estimates.** In the spending chart, 2025 and 2027 are calculated from Gartner's growth
+  rates, so they are dashed. Only 2026 is Gartner's published figure.
 
 ## Brand sources
 
@@ -94,10 +105,21 @@ Node 24 (see `.node-version`) and pnpm 11 (pinned in `package.json`).
 - `PYRIUM_Brand_Identity_Kit/`: the brand kit, kept as delivered. Biome and TypeScript skip it.
 - `public/brand/`: the logo copied from the kit.
 - `app/`: routes. `/` is the landing page.
-- `components/ui/`: shared primitives and section blocks.
-- `components/motion/`: the welcome curtain, scroll reveals and the hero orbs (plus the
-  drifting band under the hero).
-- `content/`: all page copy and facts as typed data, with sources in `content/sources.ts`.
-- `motion/`: Remotion compositions (project loops). See `motion/CREDITS.md`. The skull
-  compositions are retired from the page but kept here until the team decides to delete them.
-- `public/motion/`: rendered loops, committed so the site builds without a renderer.
+- `components/ui/`: nav, footer, page header and shared primitives.
+- `components/home/`: home sections (problem bento, core, product strip, testimonials…).
+- `components/work/`: product film, glass frame, metrics and the pinned showcase.
+- `components/motion/`: intro, page transitions, scroll reveals, count-up and the glass
+  pointer light.
+- `content/`: all copy and facts as typed data in English and Vietnamese — `copy.ts` for page
+  text, `products.ts` for the core products, `people.ts` for founders and quotes, `sources.ts`
+  for citations (publication titles stay in their original language).
+- `lib/`: `i18n.ts` (language paths), `prefs.ts` (saved preferences), `audio.ts` (sound engine).
+- `components/sound/`: the preferences panel and the sound wiring.
+- `public/team/`: founder portraits — the team photos from The Lantern repo, cut out with
+  macOS Vision onto one studio backdrop, with the Pyrium lockup printed on each shirt.
+- `public/work/logos/`: each product's own logo, copied from its repository.
+- `public/work/`: the products' own films, posters and screenshots.
+- `public/images/open/`: CC0 / public-domain context photos, credited in `CREDITS.md` there.
+- `motion/`: Remotion compositions. See `motion/CREDITS.md`. The site no longer shows these
+  loops (the products use their own films); they are kept until the team decides to delete them.
+- `public/motion/`: the rendered loops, currently unused by any page.

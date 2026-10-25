@@ -5,6 +5,7 @@
  */
 
 export type SourceId =
+  | "gartner-cio-2026-10"
   | "gartner-spend-2026-09"
   | "gartner-spend-2026-05"
   | "gartner-agentic-2026-02"
@@ -72,16 +73,78 @@ export type Organizer = {
 export type TeamMember = {
   name: string;
   github: string;
-  /** Null until the team confirms each role; the UI shows a labelled placeholder. */
-  role: string | null;
-  /** Path to the member's monochrome portrait in /team, cropped from the brand trio. */
-  photo?: string;
+  /** Role in each language, e.g. { en: "AI Engineer", vi: "Kỹ sư AI" }. */
+  role: { en: string; vi: string };
+  /** Photo in /team: colour portrait on the shared studio backdrop. */
+  photo: string;
+  /** Contact links; a missing one renders as "coming soon". */
+  links: { linkedin?: string; email?: string; portfolio?: string };
 };
 
-export type Testimonial = {
-  /** Always true until real, permitted quotes arrive; the UI labels these cards. */
-  placeholder: true;
+/**
+ * A quote written by the team as a draft for a real person in the named role to approve or
+ * rewrite. Drafts carry a role, never an invented name, and the UI marks them until approved.
+ */
+export type Quote = {
+  draft: boolean;
   quote: string;
+  /** Who would say it, e.g. "Mentor · Vietnam AI Open Hackathon". */
+  role: string;
+  /** Filled only once the person approves the wording. */
+  name?: string;
+};
+
+export type ProductSlug = "weatherise" | "lantern" | "ignis" | "unfound";
+
+/** A plain-language impact number: what it means for the people using the product. */
+export type ProductMetric = { value: string; label: string };
+
+/** Language-independent facts about a product. */
+export type ProductBase = {
+  slug: ProductSlug;
   name: string;
-  context: string;
+  event: string;
+  organizers: string;
+  period: string;
+  demo: string;
+  github: string;
+  video: { webm: string; mp4: string; poster: string; background: string };
+  /** Open-licence context photo from public/images/open (see CREDITS.md there). */
+  photo: string;
+  /** The product's own brand colour, used only as a soft glow behind its film. */
+  accent: string;
+  screens: string[];
+  stack: string[];
+};
+
+/** Everything about a product that is written in a language. */
+export type ProductText = {
+  category: string;
+  /** Who the product is for, in a few words. */
+  audience: string;
+  tagline: string;
+  oneLine: string;
+  result?: string;
+  team?: string;
+  problem: string;
+  solution: string;
+  metrics: [ProductMetric, ProductMetric, ProductMetric];
+  split: { model: string; code: string; human: string };
+  process: { title: string; detail: string }[];
+  outcomes: string[];
+  /** Captions for ProductBase.screens, in the same order. */
+  captions: string[];
+  photoAlt: string;
+  review: Quote;
+};
+
+export type Product = ProductBase & ProductText;
+
+export type LabProject = {
+  name: string;
+  event: string;
+  period: string;
+  oneLine: string;
+  result?: string;
+  href?: string;
 };
