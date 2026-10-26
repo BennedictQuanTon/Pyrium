@@ -181,13 +181,13 @@ function Meet({ labels }: { labels: string[] }) {
           style={{ ["--tx" as string]: `${petal.tx}px`, ["--ty" as string]: `${petal.ty}px` }}
         />
       ))}
-      <circle cx="140" cy="140" r="26" className="meet-core" />
+      <circle cx="140" cy="140" r="30" className="meet-core" />
       <image
         href="/brand/pyrium-mark-reverse.png"
-        x="124"
-        y="124"
-        width="32"
-        height="32"
+        x="125"
+        y="125"
+        width="30"
+        height="30"
         className="meet-mark"
       />
       {petals.map((petal) => (

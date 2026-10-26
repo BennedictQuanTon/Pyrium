@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
-import { DraftTag, SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { Person } from "@/components/ui/Person";
+import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getTestimonials, organizers, team } from "@/content/people";
@@ -127,21 +128,9 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
   );
 }
 
-/** Monogram from the role's first letter, so drafts never imply a real name. */
-function Monogram({ text }: { text: string }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="flex size-10 shrink-0 items-center justify-center rounded-full bg-ink text-[14px] font-medium text-snow"
-    >
-      {text.charAt(0)}
-    </span>
-  );
-}
-
 /**
  * Two rows of glass quote cards drifting in opposite directions over a soft red-and-grey
- * field, pausing under the pointer. Drafts are labelled until each person approves them.
+ * field, pausing under the pointer. Each quote is credited to a role, with an illustration, never a name.
  */
 export function Testimonials({ lang }: { lang: Lang }) {
   const copy = getCopy(lang);
@@ -155,7 +144,6 @@ export function Testimonials({ lang }: { lang: Lang }) {
           <Reveal>
             <SectionHeading eyebrow={t.eyebrow} title={t.title} />
           </Reveal>
-          <p className="text-[13px] text-stone">{t.draftNote}</p>
         </div>
         <div className="flex flex-col gap-5">
           {rows.map((row, rowIndex) => (
@@ -169,7 +157,7 @@ export function Testimonials({ lang }: { lang: Lang }) {
                     aria-hidden={copyIndex > 0 || undefined}
                     className="flex gap-5 pr-5"
                   >
-                    {row.map((item) => (
+                    {row.map((item, index) => (
                       <li
                         key={item.role}
                         className="glass flex w-[300px] flex-col gap-6 p-6 md:w-[400px] md:p-7"
@@ -183,15 +171,12 @@ export function Testimonials({ lang }: { lang: Lang }) {
                         <blockquote className="-mt-4 text-[16px] leading-[1.55] text-midnight">
                           {item.quote}
                         </blockquote>
-                        <div className="mt-auto flex items-center gap-3">
-                          <Monogram text={item.name ?? item.role} />
-                          <span className="flex min-w-0 flex-1 flex-col">
-                            {item.name ? (
-                              <span className="text-[14px] font-medium">{item.name}</span>
-                            ) : null}
-                            <span className="text-[13px] text-stone">{item.role}</span>
-                          </span>
-                          {item.draft ? <DraftTag label={copy.showcase.draft} /> : null}
+                        <div className="mt-auto">
+                          <Person
+                            avatar={`home-${rowIndex * 3 + index}`}
+                            role={item.role}
+                            anonymous={copy.showcase.anonymous}
+                          />
                         </div>
                       </li>
                     ))}
@@ -210,20 +195,31 @@ export function Testimonials({ lang }: { lang: Lang }) {
  * How an engagement runs, laid out horizontally: four steps on one rail that draws itself in
  * red, then the three packages side by side in a single quiet panel split by hairlines.
  */
-export function Engagement({ lang, compact = false }: { lang: Lang; compact?: boolean }) {
+export function Engagement({
+  lang,
+  compact = false,
+  heading = true,
+}: {
+  lang: Lang;
+  compact?: boolean;
+  /** False on the How-we-work page, whose header already says it. */
+  heading?: boolean;
+}) {
   const t = getCopy(lang).engagement;
   return (
     <div className="flex flex-col gap-14 md:gap-16">
-      <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
-        <div className="flex flex-col gap-4">
-          <p className="eyebrow flex items-center gap-2">
-            <span aria-hidden="true" className="h-px w-6 bg-signal" />
-            {t.eyebrow}
-          </p>
-          <h2 className="max-w-[16ch] text-heading md:text-heading-lg">{t.title}</h2>
-        </div>
-        <p className="max-w-[40ch] text-body text-stone md:text-right">{t.body}</p>
-      </Reveal>
+      {heading ? (
+        <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
+          <div className="flex flex-col gap-4">
+            <p className="eyebrow flex items-center gap-2">
+              <span aria-hidden="true" className="h-px w-6 bg-signal" />
+              {t.eyebrow}
+            </p>
+            <h2 className="max-w-[16ch] text-heading md:text-heading-lg">{t.title}</h2>
+          </div>
+          <p className="max-w-[40ch] text-body text-stone md:text-right">{t.body}</p>
+        </Reveal>
+      ) : null}
 
       <Reveal>
         <ol className="relative grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-6">

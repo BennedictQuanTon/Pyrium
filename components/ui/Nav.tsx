@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Settings } from "@/components/sound/Settings";
 import { getCopy } from "@/content/copy";
 import { localePath, splitPath } from "@/lib/i18n";
+import { getMenus } from "@/lib/menus";
 import { PillButton, Wordmark } from "./Primitives";
 
 /** Red dot under the current page; it pulses while that link's navigation is pending. */
@@ -24,7 +25,8 @@ function LinkMark({ active }: { active: boolean }) {
 /**
  * The nav is a floating glass pill. On the home page it starts transparent over the red arc
  * with the reverse lockup; everywhere else, and once the visitor scrolls, it settles into the
- * glass pill with the primary lockup. The preferences button sits beside the CTA. It carries
+ * glass pill with the primary lockup. Hovering or focusing a section opens a small panel of
+ * its sub-pages. The preferences button sits beside the CTA. It carries
  * view-transition-name "site-header" so page transitions slide content beneath a header that
  * never moves.
  */
@@ -32,6 +34,7 @@ export function Nav() {
   const pathname = usePathname();
   const { lang, path } = splitPath(pathname);
   const copy = getCopy(lang);
+  const menus = getMenus(lang);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const overArc = path === "/" && !scrolled && !open;
@@ -74,25 +77,62 @@ export function Nav() {
           <Wordmark variant={overArc ? "reverse" : "primary"} className="w-[118px] md:w-[150px]" />
         </Link>
         <ul className="hidden items-center gap-7 lg:flex">
-          {copy.nav.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={localePath(lang, item.href)}
-                transitionTypes={["nav-forward"]}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className={`relative text-[14px] font-medium whitespace-nowrap transition-colors ${
-                  overArc
-                    ? "text-snow/85 hover:text-snow"
-                    : isActive(item.href)
-                      ? "text-ink"
-                      : "text-stone hover:text-ink"
-                }`}
-              >
-                {item.label}
-                <LinkMark active={isActive(item.href)} />
-              </Link>
-            </li>
-          ))}
+          {copy.nav.map((item) => {
+            const sub = menus[item.href as keyof typeof menus];
+            return (
+              <li key={item.href} className="group/menu relative">
+                <Link
+                  href={localePath(lang, item.href)}
+                  transitionTypes={["nav-forward"]}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className={`relative flex h-16 items-center text-[14px] font-medium whitespace-nowrap transition-colors ${
+                    overArc
+                      ? "text-snow/85 hover:text-snow"
+                      : isActive(item.href)
+                        ? "text-ink"
+                        : "text-stone hover:text-ink"
+                  }`}
+                >
+                  {item.label}
+                  <LinkMark active={isActive(item.href)} />
+                </Link>
+                {sub ? (
+                  <div className="menu-panel invisible absolute top-full left-1/2 pt-1 opacity-0 group-focus-within/menu:visible group-focus-within/menu:opacity-100 group-hover/menu:visible group-hover/menu:opacity-100">
+                    <ul className="flex w-[380px] flex-col rounded-[24px] bg-snow p-2 shadow-[0_24px_60px_-20px_rgba(17,17,17,0.25)] ring-1 ring-ink/[0.06]">
+                      {sub.map((entry, index) => (
+                        <li key={entry.href}>
+                          <Link
+                            href={localePath(lang, entry.href)}
+                            transitionTypes={["nav-forward"]}
+                            aria-current={path === entry.href ? "page" : undefined}
+                            className="group/item grid grid-cols-[1.75rem_1fr_auto] items-start gap-2 rounded-[18px] px-3.5 py-3 transition-colors duration-300 hover:bg-ink/[0.04]"
+                          >
+                            <span className="tabular pt-[2px] text-[12px] text-signal">
+                              0{index + 1}
+                            </span>
+                            <span className="flex flex-col gap-0.5">
+                              <span className="text-[14px] font-medium text-ink">
+                                {entry.label}
+                              </span>
+                              <span className="text-[12px] leading-[1.45] text-stone">
+                                {entry.desc}
+                              </span>
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className="pt-[2px] text-[13px] text-stone opacity-0 transition-all duration-300 group-hover/item:translate-x-0.5 group-hover/item:text-signal group-hover/item:opacity-100"
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
         <div className="flex items-center gap-1">
           <Settings onDark={overArc} />
@@ -126,20 +166,38 @@ export function Nav() {
         className="glass glass-strong pointer-events-auto mx-auto mt-2 max-w-page p-3 lg:hidden"
       >
         <ul className="flex flex-col">
-          {copy.nav.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={localePath(lang, item.href)}
-                transitionTypes={["nav-forward"]}
-                className="flex items-center justify-between rounded-[18px] px-4 py-3.5 text-[17px] text-ink hover:bg-white/60"
-              >
-                {item.label}
-                <span aria-hidden="true" className="text-stone">
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
+          {copy.nav.map((item) => {
+            const sub = menus[item.href as keyof typeof menus];
+            return (
+              <li key={item.href}>
+                <Link
+                  href={localePath(lang, item.href)}
+                  transitionTypes={["nav-forward"]}
+                  className="flex items-center justify-between rounded-[18px] px-4 py-3.5 text-[17px] text-ink hover:bg-white/60"
+                >
+                  {item.label}
+                  <span aria-hidden="true" className="text-stone">
+                    →
+                  </span>
+                </Link>
+                {sub ? (
+                  <ul className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-2">
+                    {sub.slice(1).map((entry) => (
+                      <li key={entry.href} className="shrink-0">
+                        <Link
+                          href={localePath(lang, entry.href)}
+                          transitionTypes={["nav-forward"]}
+                          className="block rounded-badges bg-white/60 px-3 py-1.5 text-[13px] text-graphite-ink"
+                        >
+                          {entry.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
         <PillButton href="/contact" className="mt-2 w-full">
           {copy.hero.navCta}

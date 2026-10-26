@@ -88,11 +88,19 @@ export type TeamMember = {
   photo: string;
   /** Contact links; a missing one renders as "coming soon". */
   links: { linkedin?: string; email?: string; portfolio?: string };
+  /** Longer profile for the team page; founders without one show "to be updated". */
+  profile?: Record<"en" | "vi", FounderProfile>;
+};
+
+export type FounderProfile = {
+  about: string;
+  strengths: string[];
+  contributions: string[];
 };
 
 /**
- * A quote written by the team as a draft for a real person in the named role to approve or
- * rewrite. Drafts carry a role, never an invented name, and the UI marks them until approved.
+ * A quote credited to a role, never a name; the UI shows it as "Anonymous" with an
+ * illustration. `draft` stays true until the person in that role approves the wording.
  */
 export type Quote = {
   draft: boolean;

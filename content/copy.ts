@@ -29,6 +29,32 @@ const en = {
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],
+  menu: {
+    allProducts: "All products",
+    allProductsDesc: "Every product, with the numbers behind it",
+    services: [
+      { href: "/services", label: "Overview", desc: "What we build, for whom, and how we compare" },
+      {
+        href: "/services/approach",
+        label: "How we work",
+        desc: "From discovery to managed operations",
+      },
+      {
+        href: "/services/security",
+        label: "Architecture & security",
+        desc: "The system layers and the controls we document",
+      },
+    ],
+    about: [
+      { href: "/about", label: "Company", desc: "Our numbers, our core in depth, our partners" },
+      { href: "/about/team", label: "Team", desc: "Three co-founders and what each one owns" },
+      {
+        href: "/about/vision",
+        label: "Vision & roadmap",
+        desc: "Where we're going, phase by phase",
+      },
+    ],
+  },
   intro: { tagline: "Private AI. Built to act.", meter: "Private · Agentic · Cost-efficient" },
   problem: {
     eyebrow: "The problem",
@@ -270,6 +296,9 @@ const en = {
     ],
     updated: "Last updated 26 Oct 2026",
     allProducts: "All products",
+    industriesEyebrow: "By industry",
+    industriesTitle: "Find the products built for your operation.",
+    productCount: ["product", "products"],
     groups: {
       fnb: {
         name: "FnB & Hospitality",
@@ -296,15 +325,26 @@ const en = {
     pilot: "From the pilot",
     readCase: "Read the case study",
     tryLive: "View demo",
-    draft: "Draft",
+    anonymous: "Anonymous",
     est: "est.",
   },
   testimonials: {
     eyebrow: "Testimonials",
     title: "What people say after using what we built.",
-    draftNote: "Draft quotes — wording is pending approval from the people in each role.",
   },
   services: {
+    pages: {
+      approach: {
+        eyebrow: "How we work",
+        title: "One workflow, one path, your call at every step.",
+        body: "How an engagement runs from the first call to managed operations, and the promises we won't make along the way.",
+      },
+      security: {
+        eyebrow: "Architecture & security",
+        title: "Six layers, every control documented.",
+        body: "What a Pyrium system is made of, and the evidence every deployment leaves behind.",
+      },
+    },
     eyebrow: "Services",
     title: "One workflow at a time, engineered end to end.",
     body: "Pyrium designs, integrates and operates agentic workflows that solve a defined business problem under explicit data, permission, quality and cost constraints.",
@@ -540,6 +580,22 @@ const en = {
     },
   },
   about: {
+    pages: {
+      team: {
+        eyebrow: "Team",
+        title: "Three engineers, one way of working.",
+        body: "Who builds Pyrium, what each of us owns, and what we've shipped together.",
+        about: "About",
+        strengths: "Strengths",
+        contributions: "Contributions",
+        pending: "Profile to be updated.",
+      },
+      vision: {
+        eyebrow: "Vision",
+        title: "Where we're going, and how we'll know.",
+        body: "The work we want to own, and the twelve-month path with a gate at every phase.",
+      },
+    },
     eyebrow: "About",
     title: "Controlled intelligence, in action.",
     body: "Pyrium is a private AI systems engineering company from Vietnam. We started as three founders building together under hackathon deadlines; we're building a company that brings the same discipline to real operations.",
@@ -643,6 +699,7 @@ const en = {
     ],
   },
   caseStudy: {
+    tabs: { overview: "Overview", build: "How it's built" },
     allProducts: "All products",
     event: "Event",
     with: "With",
@@ -721,6 +778,40 @@ const vi: Copy = {
     { href: "/about", label: "Giới thiệu" },
     { href: "/contact", label: "Liên hệ" },
   ],
+  menu: {
+    allProducts: "Tất cả sản phẩm",
+    allProductsDesc: "Mọi sản phẩm, kèm các con số phía sau",
+    services: [
+      {
+        href: "/services",
+        label: "Tổng quan",
+        desc: "Chúng tôi xây gì, cho ai, và khác biệt ở đâu",
+      },
+      {
+        href: "/services/approach",
+        label: "Cách hợp tác",
+        desc: "Từ khảo sát đến vận hành dài hạn",
+      },
+      {
+        href: "/services/security",
+        label: "Kiến trúc & bảo mật",
+        desc: "Các lớp hệ thống và những kiểm soát được ghi nhận",
+      },
+    ],
+    about: [
+      { href: "/about", label: "Công ty", desc: "Con số, giá trị cốt lõi và đối tác" },
+      {
+        href: "/about/team",
+        label: "Đội ngũ",
+        desc: "Ba nhà đồng sáng lập và phần việc của mỗi người",
+      },
+      {
+        href: "/about/vision",
+        label: "Tầm nhìn & lộ trình",
+        desc: "Chúng tôi đi đâu, từng giai đoạn",
+      },
+    ],
+  },
   intro: {
     tagline: "AI riêng tư. Hành động thực tế.",
     meter: "Riêng tư · Tác tử · Tối ưu chi phí",
@@ -966,6 +1057,9 @@ const vi: Copy = {
     ],
     updated: "Cập nhật lần cuối 26/10/2026",
     allProducts: "Tất cả sản phẩm",
+    industriesEyebrow: "Theo ngành",
+    industriesTitle: "Tìm sản phẩm được xây cho vận hành của bạn.",
+    productCount: ["sản phẩm", "sản phẩm"],
     groups: {
       fnb: {
         name: "FnB & Dịch vụ lưu trú",
@@ -995,15 +1089,26 @@ const vi: Copy = {
     pilot: "Từ đợt thí điểm",
     readCase: "Xem chi tiết dự án",
     tryLive: "Xem demo",
-    draft: "Bản nháp",
+    anonymous: "Ẩn danh",
     est: "ước tính",
   },
   testimonials: {
     eyebrow: "Cảm nhận",
     title: "Người dùng nói gì sau khi trải nghiệm.",
-    draftNote: "Trích dẫn bản nháp — nội dung đang chờ người ở từng vai trò xác nhận.",
   },
   services: {
+    pages: {
+      approach: {
+        eyebrow: "Cách hợp tác",
+        title: "Một quy trình, một lộ trình, bạn quyết ở mỗi bước.",
+        body: "Một dự án đi từ buổi trao đổi đầu tiên đến vận hành dài hạn như thế nào, và những lời hứa chúng tôi không đưa ra.",
+      },
+      security: {
+        eyebrow: "Kiến trúc & bảo mật",
+        title: "Sáu lớp, mọi kiểm soát đều được ghi nhận.",
+        body: "Một hệ thống Pyrium gồm những gì, và bằng chứng mà mỗi lần triển khai để lại.",
+      },
+    },
     eyebrow: "Dịch vụ",
     title: "Từng quy trình một, thiết kế trọn vẹn từ đầu đến cuối.",
     body: "Pyrium thiết kế, tích hợp và vận hành các quy trình agentic giải quyết một bài toán kinh doanh cụ thể, trong giới hạn rõ ràng về dữ liệu, phân quyền, chất lượng và chi phí.",
@@ -1253,6 +1358,22 @@ const vi: Copy = {
     },
   },
   about: {
+    pages: {
+      team: {
+        eyebrow: "Đội ngũ",
+        title: "Ba kỹ sư, một cách làm việc.",
+        body: "Ai đang xây Pyrium, mỗi người phụ trách gì, và chúng tôi đã cùng nhau làm ra những gì.",
+        about: "Giới thiệu",
+        strengths: "Thế mạnh",
+        contributions: "Đóng góp",
+        pending: "Hồ sơ sẽ được cập nhật.",
+      },
+      vision: {
+        eyebrow: "Tầm nhìn",
+        title: "Chúng tôi đi đâu, và đo bằng gì.",
+        body: "Phần việc chúng tôi muốn làm chủ, và lộ trình mười hai tháng với điều kiện ở mỗi giai đoạn.",
+      },
+    },
     eyebrow: "Giới thiệu",
     title: "Trí tuệ có kiểm soát, đi vào hành động.",
     body: "Pyrium là công ty kỹ thuật hệ thống AI riêng tư đến từ Việt Nam. Chúng tôi bắt đầu từ ba nhà sáng lập cùng làm việc dưới áp lực hackathon; giờ chúng tôi xây dựng một công ty mang cùng kỷ luật đó vào vận hành thực tế.",
@@ -1357,6 +1478,7 @@ const vi: Copy = {
     ],
   },
   caseStudy: {
+    tabs: { overview: "Tổng quan", build: "Cách xây dựng" },
     allProducts: "Tất cả sản phẩm",
     event: "Sự kiện",
     with: "Đơn vị",

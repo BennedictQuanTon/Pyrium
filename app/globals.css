@@ -832,6 +832,19 @@ html.js .reveal.is-visible .stat-rule {
 
 /* ---- Products: group nav ----------------------------------------------------------- */
 
+/* Nav sub-page panel: fades and lifts in on hover or keyboard focus. */
+.menu-panel {
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.35s;
+}
+.group\/menu:hover > .menu-panel,
+.group\/menu:focus-within > .menu-panel {
+  transform: translate(-50%, 0);
+}
+
 /* Group nav: four equal cells; the active one fills in ink and its rule draws in red. */
 .group-cell {
   transition:

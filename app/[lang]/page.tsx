@@ -117,7 +117,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             <Reveal>
               <SectionHeading eyebrow={team.eyebrow} title={team.title} />
             </Reveal>
-            <PillButton href="/about" variant="ghost">
+            <PillButton href="/about/team" variant="ghost">
               {team.about}
             </PillButton>
           </div>

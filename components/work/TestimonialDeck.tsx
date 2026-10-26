@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DraftTag } from "@/components/ui/Primitives";
+import { Person } from "@/components/ui/Person";
 import type { Quote } from "@/content/types";
 import { motionLevel } from "@/lib/prefs";
 
@@ -12,11 +12,14 @@ import { motionLevel } from "@/lib/prefs";
  */
 export function TestimonialDeck({
   quotes,
-  draftLabel,
+  avatar,
+  anonymous,
   label,
 }: {
   quotes: Quote[];
-  draftLabel: string;
+  /** Prefix of the illustrations in public/people; quote n uses `${avatar}-${n}`. */
+  avatar: string;
+  anonymous: string;
   label: string;
 }) {
   const [front, setFront] = useState(0);
@@ -51,20 +54,12 @@ export function TestimonialDeck({
               className={`deck-card glass flex w-full flex-col gap-4 p-5 text-left md:p-6 ${isFront ? "relative" : "absolute inset-x-0 top-0"}`}
             >
               <p className="text-[15px] leading-[1.6] text-midnight">“{quote.quote}”</p>
-              <span className="flex items-center justify-between gap-3">
-                <span className="flex items-center gap-2.5">
-                  <span
-                    aria-hidden="true"
-                    className="flex size-8 items-center justify-center rounded-full bg-ink text-[12px] font-medium text-snow"
-                  >
-                    {(quote.name ?? quote.role).charAt(0)}
-                  </span>
-                  <span className="text-[12px] text-stone">
-                    {quote.name ? `${quote.name} · ${quote.role}` : quote.role}
-                  </span>
-                </span>
-                {quote.draft ? <DraftTag label={draftLabel} /> : null}
-              </span>
+              <Person
+                avatar={`${avatar}-${index}`}
+                role={quote.role}
+                anonymous={anonymous}
+                size="sm"
+              />
             </button>
           );
         })}

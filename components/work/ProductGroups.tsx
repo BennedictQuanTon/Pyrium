@@ -10,7 +10,7 @@ import { ProductFrame } from "./ProductFrame";
 import { ProductLogo } from "./ProductLogo";
 import { TestimonialDeck } from "./TestimonialDeck";
 
-type Labels = ReturnType<typeof getCopy>["showcase"];
+export type Labels = ReturnType<typeof getCopy>["showcase"];
 
 /**
  * One product as a balanced pair of columns. One side holds the film, the event it was built at
@@ -18,7 +18,7 @@ type Labels = ReturnType<typeof getCopy>["showcase"];
  * pilot quotes and the actions. The first product of a group also carries the group's promise.
  * Sides alternate from row to row; nothing pins or scrolls on its own.
  */
-function ProductPanel({
+export function ProductPanel({
   product,
   labels,
   flip,
@@ -78,7 +78,8 @@ function ProductPanel({
           </dl>
           <TestimonialDeck
             quotes={product.testimonials}
-            draftLabel={labels.draft}
+            avatar={product.slug}
+            anonymous={labels.anonymous}
             label={labels.pilot}
           />
           <div className="flex flex-wrap gap-3">

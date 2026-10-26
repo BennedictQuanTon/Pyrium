@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Founders, Vision } from "@/components/home/Sections";
 import { CountUp } from "@/components/motion/CountUp";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { PillButton, SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { SubNav } from "@/components/ui/SubNav";
 import { getCopy } from "@/content/copy";
 import { organizers } from "@/content/people";
 import { getProduct } from "@/content/products";
 import { isLang } from "@/lib/i18n";
+import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -22,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /**
  * About: who we are, the numbers we can point to, our five-part core in depth (each commitment
- * tied to the product that proves it), the organizers and institutions behind the work, the
- * founders, and the vision with its twelve-month path, each phase behind a gate.
+ * tied to the product that proves it), and the organizers and institutions behind the work.
+ * The team and the vision each have their own page.
  */
 export default async function AboutPage({ params }: Props) {
   const { lang } = await params;
@@ -34,7 +35,9 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body}>
+        <SubNav items={getMenus(lang)["/about"]} current="/about" />
+      </PageHeader>
 
       {/* Numbers */}
       <section className="bg-fog py-20 md:py-28">
@@ -151,7 +154,7 @@ export default async function AboutPage({ params }: Props) {
               {organizers.map((organizer) => (
                 <li
                   key={organizer.id}
-                  className="logo-cell flex h-28 w-[calc(50%-6px)] items-center justify-center rounded-[20px] bg-fog px-6 text-graphite-ink sm:w-[calc(33.333%-8px)] md:h-32 lg:w-[calc(20%-9.6px)]"
+                  className="logo-cell flex h-28 w-[calc(50%_-_6px)] items-center justify-center rounded-[20px] bg-fog px-6 text-graphite-ink sm:w-[calc(33.333%_-_8px)] md:h-32 lg:w-[calc(20%_-_9.6px)]"
                 >
                   {organizer.logo ? (
                     // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
@@ -169,71 +172,6 @@ export default async function AboutPage({ params }: Props) {
                 </li>
               ))}
             </ul>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Founders */}
-      <section className="section bg-fog">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading eyebrow={copy.team.eyebrow} title={copy.team.title} />
-          </Reveal>
-          <Founders lang={lang} />
-        </div>
-      </section>
-
-      {/* Vision and roadmap */}
-      <section className="section bg-snow">
-        <div className="page-width flex flex-col gap-14">
-          <Vision lang={lang} />
-          <div className="flex flex-col gap-8">
-            <Reveal>
-              <SectionHeading
-                eyebrow={t.roadmapEyebrow}
-                title={t.roadmapTitle}
-                body={t.roadmapBody}
-                size="md"
-              />
-            </Reveal>
-            <ol className="relative flex flex-col">
-              <span
-                aria-hidden="true"
-                className="absolute top-2 bottom-2 left-[7px] w-px bg-ink/10"
-              />
-              {t.roadmap.map((phase, index) => (
-                <li key={phase.phase}>
-                  <Reveal
-                    delay={index}
-                    className="relative grid gap-2 py-5 pl-10 md:grid-cols-[12rem_1fr_1.4fr] md:gap-8"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`absolute top-7 left-0 size-[15px] rounded-full border-2 ${index === 0 ? "border-signal bg-signal" : "border-ink/20 bg-snow"}`}
-                    />
-                    <span className="tabular text-[13px] text-stone">{phase.time}</span>
-                    <span className="text-[17px] font-medium text-ink">{phase.phase}</span>
-                    <span className="text-[14px] text-graphite-ink">
-                      <span className="text-stone">{t.gate} · </span>
-                      {phase.gate}
-                    </span>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <section className="signal-frame relative overflow-hidden">
-        <div className="page-width relative flex flex-col items-center gap-5 py-28 text-center md:py-36">
-          <Reveal>
-            <h2 className="max-w-[18ch] text-heading-md md:text-heading-lg">
-              {copy.closing.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={1}>
-            <PillButton href="/contact">{copy.hero.primaryCta}</PillButton>
           </Reveal>
         </div>
       </section>

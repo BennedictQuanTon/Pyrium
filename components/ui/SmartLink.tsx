@@ -14,6 +14,8 @@ export type SmartLinkProps = {
   /** Page-transition direction for internal routes. */
   direction?: Direction;
   "aria-label"?: string;
+  "aria-current"?: "page";
+  title?: string;
 };
 
 /**
