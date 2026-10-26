@@ -5,25 +5,32 @@
  */
 
 export type SourceId =
-  | "gartner-cio-2026-10"
-  | "gartner-spend-2026-09"
-  | "gartner-spend-2026-05"
+  | "nra-2026-07"
+  | "ahla-2026-03"
+  | "siemens-2024"
+  | "ibm-2026"
+  | "ipos-2025"
+  | "r365-2026"
+  | "cisco-2024"
+  | "gartner-agentic-2025-06"
+  | "stanford-ai-index-2025"
   | "gartner-agentic-2026-02"
-  | "stanford-ai-index-2026"
-  | "deloitte-state-of-ai-2026"
-  | "econ-sea-2025"
-  | "vn-ai-strategy-2026"
+  | "gartner-cio-2026-10"
   | "vn-pdp-law-2025"
-  | "eu-ai-act"
-  | "nist-ai-rmf"
-  | "gartner-saas-2026-07";
+  | "openai-enterprise"
+  | "n8n-hosting"
+  | "copilot-studio"
+  | "litellm-routing";
 
 export type Source = {
   id: SourceId;
   publisher: string;
+  /** Publication date as the publisher states it. */
   date: string;
   title: string;
   url: string;
+  /** When the team last checked the figure against the page. */
+  accessed: string;
 };
 
 export type Stat = {
@@ -75,15 +82,25 @@ export type TeamMember = {
   github: string;
   /** Role in each language, e.g. { en: "AI Engineer", vi: "Kỹ sư AI" }. */
   role: { en: string; vi: string };
+  /** What the founder leads, in one line. */
+  focus: { en: string; vi: string };
   /** Photo in /team: colour portrait on the shared studio backdrop. */
   photo: string;
   /** Contact links; a missing one renders as "coming soon". */
   links: { linkedin?: string; email?: string; portfolio?: string };
+  /** Longer profile for the team page; founders without one show "to be updated". */
+  profile?: Record<"en" | "vi", FounderProfile>;
+};
+
+export type FounderProfile = {
+  about: string;
+  strengths: string[];
+  contributions: string[];
 };
 
 /**
- * A quote written by the team as a draft for a real person in the named role to approve or
- * rewrite. Drafts carry a role, never an invented name, and the UI marks them until approved.
+ * A quote credited to a role, never a name; the UI shows it as "Anonymous" with an
+ * illustration. `draft` stays true until the person in that role approves the wording.
  */
 export type Quote = {
   draft: boolean;
@@ -94,22 +111,31 @@ export type Quote = {
   name?: string;
 };
 
-export type ProductSlug = "weatherise" | "lantern" | "ignis" | "unfound";
+export type ProductSlug = "lantern" | "weatherise" | "ignis" | "unfound" | "inference";
 
-/** A plain-language impact number: what it means for the people using the product. */
-export type ProductMetric = { value: string; label: string };
+/** The industry group a product is shown under. */
+export type ProductGroup = "fnb" | "operations" | "trust" | "infrastructure";
+
+/** A plain-language number: what it means for the people using the product. */
+export type ProductMetric = {
+  value: string;
+  label: string;
+  /** True for team estimates; the UI marks them "est.". */
+  estimate?: boolean;
+};
 
 /** Language-independent facts about a product. */
 export type ProductBase = {
   slug: ProductSlug;
   name: string;
+  group: ProductGroup;
   event: string;
   organizers: string;
   period: string;
   demo: string;
   github: string;
-  video: { webm: string; mp4: string; poster: string; background: string };
-  /** Open-licence context photo from public/images/open (see CREDITS.md there). */
+  video: { webm?: string; mp4: string; poster: string; background: string };
+  /** Open-licence context photo from public/images (see CREDITS.md there). */
   photo: string;
   /** The product's own brand colour, used only as a soft glow behind its film. */
   accent: string;
@@ -122,29 +148,28 @@ export type ProductText = {
   category: string;
   /** Who the product is for, in a few words. */
   audience: string;
+  /** The business problem it optimizes, in one line. */
+  solves: string;
   tagline: string;
   oneLine: string;
   result?: string;
   team?: string;
   problem: string;
   solution: string;
-  metrics: [ProductMetric, ProductMetric, ProductMetric];
+  /**
+   * The three outputs every product reports: people who tested it, the money it is expected
+   * to save, and its core result. Tester counts and savings are team-reported pilot figures;
+   * savings are estimates and marked as such.
+   */
+  outputs: { testers: ProductMetric; saving: ProductMetric; core: ProductMetric };
   split: { model: string; code: string; human: string };
   process: { title: string; detail: string }[];
   outcomes: string[];
   /** Captions for ProductBase.screens, in the same order. */
   captions: string[];
   photoAlt: string;
-  review: Quote;
+  /** Two quotes from pilot testers (drafts until each person approves). */
+  testimonials: [Quote, Quote];
 };
 
 export type Product = ProductBase & ProductText;
-
-export type LabProject = {
-  name: string;
-  event: string;
-  period: string;
-  oneLine: string;
-  result?: string;
-  href?: string;
-};

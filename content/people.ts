@@ -35,36 +35,82 @@ export const organizers: Organizer[] = [
  */
 export const team: TeamMember[] = [
   {
-    name: "Yoshio Nomura",
-    github: "UniverseScripts",
-    role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
-    photo: "/team/yoshio.jpg",
-    links: { portfolio: "https://github.com/UniverseScripts" },
-  },
-  {
-    name: "Long Quan (Bennedict) Ton",
+    name: "Long Quan Ton",
     github: "BennedictQuanTon",
-    role: { en: "AI Engineer", vi: "Kỹ sư AI" },
+    role: { en: "AI Engineer · Product Design", vi: "Kỹ sư AI · Thiết kế sản phẩm" },
+    focus: {
+      en: "Agent architecture, product design and inference cost.",
+      vi: "Kiến trúc tác tử, thiết kế sản phẩm và chi phí suy luận.",
+    },
     photo: "/team/quan.jpg",
     links: {
       linkedin: "https://linkedin.com/in/bennedictquanton",
       email: "tonlongquanvn@gmail.com",
       portfolio: "https://bennedictquanton.vercel.app",
     },
+    // Draft profile, written for Quan to review.
+    profile: {
+      en: {
+        about:
+          "Quan leads Pyrium's AI and product work. He takes a messy operational problem, draws the boundary of what an agent may and may not do, and then designs the product people actually touch around it — so the model proposes, code decides and a person approves.",
+        strengths: [
+          "Agent architecture with deterministic checks and human approval",
+          "Product design, from workflow map to the screen staff use",
+          "Evaluation sets and cost per successful task",
+          "Voice and multilingual interfaces",
+        ],
+        contributions: [
+          "Designed the agent and ordering flow behind The Lantern",
+          "Built the routing and serving work behind Lean Inference",
+          "Shaped IGNIS so records, manuals and model output stay separate",
+          "Sets Pyrium's product direction and evaluation practice",
+        ],
+      },
+      vi: {
+        about:
+          "Quân phụ trách AI và sản phẩm của Pyrium. Anh bắt đầu từ một vấn đề vận hành còn rối, vạch rõ ranh giới tác tử được và không được làm gì, rồi thiết kế sản phẩm mà người dùng thực sự chạm vào — để mô hình đề xuất, mã nguồn quyết định và con người phê duyệt.",
+        strengths: [
+          "Kiến trúc tác tử với kiểm tra tất định và phê duyệt của con người",
+          "Thiết kế sản phẩm, từ bản đồ quy trình đến màn hình nhân viên dùng",
+          "Bộ đánh giá và chi phí trên mỗi tác vụ thành công",
+          "Giao diện giọng nói và đa ngôn ngữ",
+        ],
+        contributions: [
+          "Thiết kế tác tử và luồng gọi món của The Lantern",
+          "Xây phần định tuyến và phục vụ mô hình của Lean Inference",
+          "Định hình IGNIS để hồ sơ, tài liệu và đầu ra mô hình luôn tách bạch",
+          "Định hướng sản phẩm và quy trình đánh giá của Pyrium",
+        ],
+      },
+    },
+  },
+  {
+    name: "Yoshio Nomura",
+    github: "UniverseScripts",
+    role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
+    focus: {
+      en: "Private deployment, model serving and monitoring.",
+      vi: "Triển khai riêng tư, phục vụ mô hình và giám sát.",
+    },
+    photo: "/team/yoshio.jpg",
+    links: { portfolio: "https://github.com/UniverseScripts" },
   },
   {
     name: "Huynh Khanh Tuong",
     github: "khanhtuongnakitomo",
-    role: { en: "Software Engineer", vi: "Kỹ sư phần mềm" },
+    role: { en: "Software Engineer · Logic & QA", vi: "Kỹ sư phần mềm · Logic & Kiểm thử" },
+    focus: {
+      en: "System logic, testing and quality assurance.",
+      vi: "Logic hệ thống, kiểm thử và đảm bảo chất lượng.",
+    },
     photo: "/team/tuong.jpg",
     links: { portfolio: "https://github.com/khanhtuongnakitomo" },
   },
 ];
 
 /**
- * Draft testimonials, written by the team for a real person in each role to approve or
- * rewrite. They carry a role, never an invented name; set `draft: false` and add `name` once
- * the person signs off on the exact wording.
+ * Testimonials credited to roles, never names: the site shows each as "Anonymous" with an
+ * illustration. `draft` stays true until the person in that role approves the wording.
  */
 const quotes: Record<Lang, Quote[]> = {
   en: [

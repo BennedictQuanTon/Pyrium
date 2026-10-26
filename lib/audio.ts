@@ -1,15 +1,16 @@
 /**
- * Pyrium's sound, synthesized live with the Web Audio API — no audio files, so nothing to
- * license and nothing to download. Two layers:
+ * Pyrium's sound, on the Web Audio API. Two layers:
  *
- * - Music: a slow, warm ambient bed. Four extended chords in D major (Dmaj9 → Bm9 → Gmaj7♯11 →
- *   A6/9), each voice a sine and a softly detuned triangle through a low-pass filter, swelling
- *   over three seconds and overlapping into the next chord. A sparse "glass" melody from the D
- *   major pentatonic drifts over it. Everything runs through a generated hall reverb.
- * - Interface sounds: a soft wooden "tock" on press, a near-silent tick on hover, a rising or
- *   falling pair of notes for toggles, and an airy sweep when a panel opens.
+ * - Music: a slow, warm ambient bed synthesized live — four extended chords in D major
+ *   (Dmaj9 → Bm9 → Gmaj7♯11 → A6/9), each voice a sine with two softly detuned triangles
+ *   through a low-pass filter, swelling over four seconds and overlapping into the next chord,
+ *   with a sparse bell melody from the D major pentatonic. Everything runs through a generated
+ *   hall reverb. Synthesized, so there is no file to license or download.
+ * - Interface sounds: short samples from Kenney's "Interface Sounds" (CC0, public/sound/),
+ *   decoded once and played through the same hall at a low send — on press only, never on hover.
  *
- * Browsers only allow audio after a user gesture, so the context starts on the first press.
+ * Browsers decide when audio may start. The engine tries to start immediately (allowed when the
+ * browser trusts the site), and otherwise on the visitor's first press or key.
  */
 
 type Note = number;
@@ -25,19 +26,39 @@ const CHORDS: Note[][] = [
 ];
 const PENTATONIC: Note[] = [74, 76, 78, 81, 83, 86]; // D5 E5 F♯5 A5 B5 D6
 
-const CHORD_SECONDS = 9;
+const CHORD_SECONDS = 10;
+
+const SAMPLES = {
+  press: "/sound/press.m4a",
+  toggleOn: "/sound/toggle-on.m4a",
+  toggleOff: "/sound/toggle-off.m4a",
+  open: "/sound/open.m4a",
+  close: "/sound/close.m4a",
+} as const;
+
+type SampleName = keyof typeof SAMPLES;
+
+/** Per-sample level, balanced by ear against the music bed. */
+const LEVEL: Record<SampleName, number> = {
+  press: 0.42,
+  toggleOn: 0.45,
+  toggleOff: 0.45,
+  open: 0.38,
+  close: 0.34,
+};
 
 class Engine {
   private ctx: AudioContext | null = null;
   private musicBus: GainNode | null = null;
   private sfxBus: GainNode | null = null;
+  private buffers = new Map<SampleName, AudioBuffer>();
   private musicTimer = 0;
   private melodyTimer = 0;
   private chordIndex = 0;
   private playing = false;
-  private volume = 0.55;
+  private volume = 0.5;
 
-  /** Creates (or resumes) the audio graph. Call from a user gesture. */
+  /** Creates the audio graph (once) and asks the browser to run it. */
   start() {
     if (!this.ctx) {
       const Context =
@@ -46,16 +67,16 @@ class Engine {
       if (!Context) return;
       const ctx = new Context();
       const compressor = ctx.createDynamicsCompressor();
-      compressor.threshold.value = -18;
+      compressor.threshold.value = -20;
       compressor.ratio.value = 3;
       const master = ctx.createGain();
-      master.gain.value = 0.9;
+      master.gain.value = 0.85;
       master.connect(compressor).connect(ctx.destination);
 
       const reverb = ctx.createConvolver();
-      reverb.buffer = this.impulse(ctx, 3.4, 2.6);
+      reverb.buffer = this.impulse(ctx, 3.6, 2.8);
       const wet = ctx.createGain();
-      wet.gain.value = 0.55;
+      wet.gain.value = 0.5;
       reverb.connect(wet).connect(master);
 
       const musicBus = ctx.createGain();
@@ -64,19 +85,56 @@ class Engine {
       musicBus.connect(reverb);
 
       const sfxBus = ctx.createGain();
-      sfxBus.gain.value = 0.9;
+      sfxBus.gain.value = 1;
       sfxBus.connect(master);
       const sfxSend = ctx.createGain();
-      sfxSend.gain.value = 0.25;
+      sfxSend.gain.value = 0.18;
       sfxBus.connect(sfxSend).connect(reverb);
 
       Object.assign(this, { ctx, musicBus, sfxBus });
+      this.load(ctx);
     }
     if (this.ctx?.state === "suspended") this.ctx.resume().catch(() => {});
   }
 
+  /** True once the browser lets the context run. */
+  get running() {
+    return this.ctx?.state === "running";
+  }
+
   get ready() {
     return this.ctx !== null;
+  }
+
+  /** Resolves when the context is running, or false if the browser keeps it suspended. */
+  async unlock(): Promise<boolean> {
+    this.start();
+    if (!this.ctx) return false;
+    if (this.ctx.state === "running") return true;
+    try {
+      await Promise.race([
+        this.ctx.resume(),
+        new Promise((resolve) => window.setTimeout(resolve, 300)),
+      ]);
+    } catch {
+      return false;
+    }
+    // Re-read: resume() may have changed the state since the check above.
+    return (this.ctx.state as AudioContextState) === "running";
+  }
+
+  private async load(ctx: AudioContext) {
+    await Promise.all(
+      (Object.keys(SAMPLES) as SampleName[]).map(async (name) => {
+        try {
+          const response = await fetch(SAMPLES[name]);
+          const data = await response.arrayBuffer();
+          this.buffers.set(name, await ctx.decodeAudioData(data));
+        } catch {
+          // A missing sample just stays silent.
+        }
+      }),
+    );
   }
 
   /** Stereo noise with an exponential tail: a soft, wide hall. */
@@ -102,7 +160,7 @@ class Engine {
   }
 
   private musicLevel() {
-    return 0.16 * this.volume;
+    return 0.14 * this.volume;
   }
 
   playMusic() {
@@ -112,10 +170,10 @@ class Engine {
     this.playing = true;
     musicBus.gain.cancelScheduledValues(ctx.currentTime);
     musicBus.gain.setValueAtTime(musicBus.gain.value, ctx.currentTime);
-    musicBus.gain.linearRampToValueAtTime(this.musicLevel(), ctx.currentTime + 4);
+    musicBus.gain.linearRampToValueAtTime(this.musicLevel(), ctx.currentTime + 5);
     this.chord();
     this.musicTimer = window.setInterval(() => this.chord(), CHORD_SECONDS * 1000);
-    this.melody();
+    this.melodyTimer = window.setTimeout(() => this.melody(), 4000);
   }
 
   stopMusic() {
@@ -130,7 +188,7 @@ class Engine {
   }
 
   get musicPlaying() {
-    return this.playing;
+    return this.playing && this.running;
   }
 
   private chord() {
@@ -143,22 +201,22 @@ class Engine {
     for (const note of notes) {
       const filter = ctx.createBiquadFilter();
       filter.type = "lowpass";
-      filter.frequency.setValueAtTime(700, now);
-      filter.frequency.linearRampToValueAtTime(1300, now + length * 0.5);
-      filter.frequency.linearRampToValueAtTime(800, now + length);
-      filter.Q.value = 0.4;
+      filter.frequency.setValueAtTime(600, now);
+      filter.frequency.linearRampToValueAtTime(1100, now + length * 0.5);
+      filter.frequency.linearRampToValueAtTime(700, now + length);
+      filter.Q.value = 0.3;
       const env = ctx.createGain();
       env.gain.setValueAtTime(0, now);
-      env.gain.linearRampToValueAtTime(0.11, now + 3);
-      env.gain.setValueAtTime(0.11, now + length - 4.5);
+      env.gain.linearRampToValueAtTime(0.1, now + 4);
+      env.gain.setValueAtTime(0.1, now + length - 5);
       env.gain.linearRampToValueAtTime(0, now + length);
       const pan = ctx.createStereoPanner();
       pan.pan.value = (Math.random() - 0.5) * 0.7;
       filter.connect(env).connect(pan).connect(musicBus);
       for (const [type, detune, level] of [
         ["sine", 0, 1],
-        ["triangle", 5, 0.35],
-        ["triangle", -6, 0.35],
+        ["triangle", 5, 0.3],
+        ["triangle", -6, 0.3],
       ] as const) {
         const osc = ctx.createOscillator();
         osc.type = type;
@@ -173,15 +231,15 @@ class Engine {
     }
   }
 
-  /** A soft bell-like note every few seconds, never the same twice in a row. */
+  /** A soft bell-like note every few seconds. */
   private melody() {
     if (!this.playing) return;
     const { ctx, musicBus } = this;
     if (ctx && musicBus) {
       const note = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
-      this.bell(hz(note), 0.05, 3.2, musicBus);
+      this.bell(hz(note), 0.035, 3.6, musicBus);
     }
-    this.melodyTimer = window.setTimeout(() => this.melody(), 2600 + Math.random() * 4200);
+    this.melodyTimer = window.setTimeout(() => this.melody(), 3200 + Math.random() * 4800);
   }
 
   private bell(freq: number, level: number, decay: number, bus: AudioNode) {
@@ -190,13 +248,13 @@ class Engine {
     const now = ctx.currentTime;
     const env = ctx.createGain();
     env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(level, now + 0.02);
+    env.gain.linearRampToValueAtTime(level, now + 0.03);
     env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
     env.connect(bus);
     for (const [ratio, gain] of [
       [1, 1],
-      [2.01, 0.25],
-      [3.98, 0.08],
+      [2.01, 0.2],
+      [3.98, 0.06],
     ]) {
       const osc = ctx.createOscillator();
       osc.type = "sine";
@@ -211,77 +269,34 @@ class Engine {
 
   // ---- Interface sounds ----------------------------------------------------------------
 
-  /** A soft wooden press: a quick pitch drop with a whisper of air on the attack. */
-  press() {
+  private play(name: SampleName, rate = 1) {
     const { ctx, sfxBus } = this;
-    if (!ctx || !sfxBus) return;
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(620, now);
-    osc.frequency.exponentialRampToValueAtTime(330, now + 0.08);
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.11, now + 0.004);
-    env.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
-    osc.connect(env).connect(sfxBus);
-    osc.start(now);
-    osc.stop(now + 0.2);
-    this.air(now, 0.018, 0.025, 4200);
-  }
-
-  /** Barely-there tick for hovering a control. */
-  hover() {
-    const { ctx, sfxBus } = this;
-    if (!ctx || !sfxBus) return;
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    osc.type = "sine";
-    osc.frequency.value = 1760;
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.012, now + 0.004);
-    env.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
-    osc.connect(env).connect(sfxBus);
-    osc.start(now);
-    osc.stop(now + 0.07);
-  }
-
-  /** Two notes up for "on", down for "off". */
-  toggle(on: boolean) {
-    const { sfxBus } = this;
-    if (!sfxBus) return;
-    const [a, b] = on ? [hz(74), hz(81)] : [hz(81), hz(74)];
-    this.bell(a, 0.05, 0.6, sfxBus);
-    window.setTimeout(() => this.bell(b, 0.05, 0.9, sfxBus), 90);
-  }
-
-  /** An airy sweep for opening a panel. */
-  open() {
-    const ctx = this.ctx;
-    if (!ctx) return;
-    this.air(ctx.currentTime, 0.035, 0.28, 900, 5200);
-  }
-
-  private air(at: number, level: number, length: number, from: number, to = from) {
-    const { ctx, sfxBus } = this;
-    if (!ctx || !sfxBus) return;
-    const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
+    const buffer = this.buffers.get(name);
+    if (!ctx || !sfxBus || !buffer || ctx.state !== "running") return;
     const source = ctx.createBufferSource();
     source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.Q.value = 0.8;
-    filter.frequency.setValueAtTime(from, at);
-    filter.frequency.exponentialRampToValueAtTime(to, at + length);
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0, at);
-    env.gain.linearRampToValueAtTime(level, at + length * 0.3);
-    env.gain.exponentialRampToValueAtTime(0.0001, at + length);
-    source.connect(filter).connect(env).connect(sfxBus);
-    source.start(at);
+    // A hair of pitch variation keeps repeated clicks from sounding mechanical.
+    source.playbackRate.value = rate * (0.97 + Math.random() * 0.06);
+    const gain = ctx.createGain();
+    gain.gain.value = LEVEL[name];
+    source.connect(gain).connect(sfxBus);
+    source.start();
+  }
+
+  press() {
+    this.play("press");
+  }
+
+  toggle(on: boolean) {
+    this.play(on ? "toggleOn" : "toggleOff");
+  }
+
+  open() {
+    this.play("open");
+  }
+
+  close() {
+    this.play("close");
   }
 }
 

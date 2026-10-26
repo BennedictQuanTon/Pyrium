@@ -12,7 +12,7 @@ const CYCLE_MS = 6000;
 /** Agentic: three nodes linked by a path that work flows along. */
 function AgenticGlyph() {
   return (
-    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-14 w-auto">
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
       <path
         className="flow"
         d="M14 44 C 30 44, 30 18, 48 18 S 66 44, 82 44"
@@ -29,7 +29,7 @@ function AgenticGlyph() {
 /** Private: concentric perimeters around a single point that stays inside. */
 function PrivateGlyph() {
   return (
-    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-14 w-auto">
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
       <rect
         x="20"
         y="4"
@@ -59,7 +59,7 @@ function PrivateGlyph() {
 /** Cost-efficient: a falling cost curve with bars stepping down beneath it. */
 function EfficientGlyph() {
   return (
-    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-14 w-auto">
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
       {[0, 1, 2, 3].map((bar) => (
         <rect
           key={bar}
@@ -83,26 +83,134 @@ function EfficientGlyph() {
   );
 }
 
-const GLYPHS = { agentic: AgenticGlyph, private: PrivateGlyph, efficient: EfficientGlyph };
-
-/** Three loose circles that slide together; their shared centre turns signal red. */
-function Meet() {
+/** Deep domain: layered sheets (SOPs, data, rules) with the system shaped to the top one. */
+function DomainGlyph() {
   return (
-    <svg viewBox="0 0 160 120" aria-hidden="true" className="meet h-28 w-auto shrink-0">
-      <circle cx="62" cy="48" r="34" className="meet-a" />
-      <circle cx="98" cy="48" r="34" className="meet-b" />
-      <circle cx="80" cy="78" r="34" className="meet-c" />
-      <circle cx="80" cy="58" r="7" className="meet-core" />
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
+      <path
+        d="M18 40 L48 54 L78 40"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+        style={{ animationDelay: "0.8s" }}
+      />
+      <path
+        d="M18 30 L48 44 L78 30"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+        style={{ animationDelay: "0.4s" }}
+      />
+      <path
+        d="M18 20 L48 6 L78 20 L48 34 Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+      />
+      <circle cx="48" cy="20" r="5" className="node node-end" />
+    </svg>
+  );
+}
+
+/** Fast integration: two blocks snapping together along a connector. */
+function IntegrationGlyph() {
+  return (
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
+      <rect
+        x="10"
+        y="18"
+        width="28"
+        height="28"
+        rx="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+      />
+      <rect
+        x="58"
+        y="18"
+        width="28"
+        height="28"
+        rx="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+        style={{ animationDelay: "0.5s" }}
+      />
+      <path className="flow" d="M38 32 H58" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="48" cy="32" r="5" className="node node-end" />
+    </svg>
+  );
+}
+
+const GLYPHS = {
+  agentic: AgenticGlyph,
+  private: PrivateGlyph,
+  efficient: EfficientGlyph,
+  domain: DomainGlyph,
+  integration: IntegrationGlyph,
+};
+
+/**
+ * One circle per pillar, arranged around a centre and sliding in from apart until they overlap
+ * like petals; where all of them meet, the Pyrium mark appears. Labels sit outside each circle.
+ */
+function Meet({ labels }: { labels: string[] }) {
+  const count = labels.length;
+  const petals = labels.map((label, index) => {
+    const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
+    return {
+      label,
+      cx: 140 + Math.cos(angle) * 38,
+      cy: 140 + Math.sin(angle) * 38,
+      lx: 140 + Math.cos(angle) * 124,
+      ly: 144 + Math.sin(angle) * 118,
+      tx: Math.cos(angle) * 26,
+      ty: Math.sin(angle) * 26,
+    };
+  });
+  return (
+    <svg viewBox="-36 0 352 290" aria-hidden="true" className="meet h-auto w-full max-w-[380px]">
+      {petals.map((petal) => (
+        <circle
+          key={petal.label}
+          cx={petal.cx}
+          cy={petal.cy}
+          r="56"
+          className="meet-petal"
+          style={{ ["--tx" as string]: `${petal.tx}px`, ["--ty" as string]: `${petal.ty}px` }}
+        />
+      ))}
+      <circle cx="140" cy="140" r="30" className="meet-core" />
+      <image
+        href="/brand/pyrium-mark-reverse.png"
+        x="125"
+        y="125"
+        width="30"
+        height="30"
+        className="meet-mark"
+      />
+      {petals.map((petal) => (
+        <text
+          key={`${petal.label}-label`}
+          x={petal.lx}
+          y={petal.ly}
+          textAnchor="middle"
+          className="meet-label"
+        >
+          {petal.label}
+        </text>
+      ))}
     </svg>
   );
 }
 
 /**
- * Pyrium's core in one dark, quiet section: Agentic AI, Private AI and Cost-efficient. Each
- * pillar is a glass card with its own living glyph, the market shift it answers (the old way
- * struck through in red), what we do about it, and one cited fact. The highlight cycles on its
- * own with a progress line, and follows the pointer or keyboard focus when the visitor engages.
- * Underneath, three circles converge on the point where all three meet.
+ * Pyrium's core in one quiet, dark section: Agentic AI, Private AI, Cost-efficient and Deep
+ * Domain. Each pillar is a glass card with its own living glyph, the market shift it answers
+ * (the old way struck through in red), what we do about it, and one cited fact. The highlight
+ * cycles on its own with a progress line and follows the pointer or keyboard focus. Underneath,
+ * four circles converge on the point where all four meet.
  */
 export function Core({ copy }: { copy: CoreCopy }) {
   const [active, setActive] = useState(0);
@@ -114,7 +222,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
     const element = section.current;
     if (!element) return;
     const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.25,
+      threshold: 0.2,
     });
     observer.observe(element);
     return () => observer.disconnect();
@@ -144,7 +252,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
             <span aria-hidden="true" className="h-px w-6 bg-signal" />
             {copy.eyebrow}
           </p>
-          <h2 className="core-title max-w-[18ch] text-[42px] leading-[1.05] tracking-[-1px] text-snow md:text-[72px] md:tracking-[-2px]">
+          <h2 className="max-w-[20ch] text-[40px] leading-[1.06] tracking-[-1px] text-snow md:text-[64px] md:tracking-[-1.8px]">
             {copy.title.split(" ").map((word, index) => (
               <span
                 // biome-ignore lint/suspicious/noArrayIndexKey: a fixed sentence; position is identity
@@ -160,16 +268,15 @@ export function Core({ copy }: { copy: CoreCopy }) {
         </Reveal>
 
         <ol
-          className="grid gap-4 lg:grid-cols-3"
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-6"
           onPointerEnter={() => setHeld(true)}
           onPointerLeave={() => setHeld(false)}
         >
           {copy.pillars.map((pillar, index) => {
             const Glyph = GLYPHS[pillar.key as keyof typeof GLYPHS];
-            const on = active === index;
             return (
-              <li key={pillar.key}>
-                <Reveal pop delay={index} className="h-full">
+              <li key={pillar.key} className={index < 3 ? "lg:col-span-2" : "lg:col-span-3"}>
+                <Reveal pop delay={index % 3} className="h-full">
                   <article
                     // biome-ignore lint/a11y/noNoninteractiveTabindex: focus mirrors hover so keyboard visitors can move the highlight
                     tabIndex={0}
@@ -179,55 +286,60 @@ export function Core({ copy }: { copy: CoreCopy }) {
                       setHeld(true);
                     }}
                     onBlur={() => setHeld(false)}
-                    data-active={on}
-                    className="pillar glass-dark flex h-full flex-col gap-7 p-7 outline-none md:p-8"
+                    data-active={active === index}
+                    className="pillar glass-dark flex h-full flex-col gap-6 p-7 outline-none md:p-8"
                   >
                     <span
                       aria-hidden="true"
                       className="pillar-progress"
                       key={`${active}-${held}`}
                     />
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="pillar-glyph text-silver">
-                        <Glyph />
-                      </span>
-                      <span className="tabular text-[13px] text-silver">0{index + 1}</span>
-                    </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <span className="pillar-glyph text-silver">
+                          <Glyph />
+                        </span>
+                        <span className="tabular text-[13px] text-silver">0{index + 1}</span>
+                      </div>
                       <h3 className="text-[30px] leading-[1.1] tracking-[-0.6px] text-snow md:text-[34px]">
                         {pillar.name}
                       </h3>
                       <p className="text-[16px] leading-[1.5] text-mist">{pillar.promise}</p>
-                    </div>
-                    <div className="flex flex-col gap-2 border-t border-white/10 pt-5">
-                      <p className="eyebrow text-silver">{copy.shiftLabel}</p>
-                      <p className="shift-from w-fit text-[14px] text-silver">{pillar.from}</p>
-                      <p className="flex items-center gap-2 text-[15px] text-snow">
-                        <span aria-hidden="true" className="text-signal">
-                          →
+                      <div className="mt-auto flex flex-col gap-1 rounded-[18px] bg-white/[0.05] p-4">
+                        <span className="font-display text-[28px] leading-none tracking-[-0.03em] text-snow">
+                          {pillar.fact.value}
                         </span>
-                        {pillar.to}
-                      </p>
+                        <span className="text-[13px] leading-[1.45] text-silver">
+                          {pillar.fact.label}
+                          {pillar.fact.source ? <Citation id={pillar.fact.source} onDark /> : null}
+                        </span>
+                      </div>
                     </div>
-                    <ul className="flex flex-col gap-2.5">
-                      {pillar.capabilities.map((item) => (
-                        <li key={item} className="flex gap-2.5 text-[14px] leading-[1.5] text-mist">
-                          <span
-                            aria-hidden="true"
-                            className="mt-[9px] h-px w-3 shrink-0 bg-signal"
-                          />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-auto flex flex-col gap-1 rounded-[18px] bg-white/[0.05] p-4">
-                      <span className="font-display text-[30px] leading-none tracking-[-0.03em] text-snow">
-                        {pillar.fact.value}
-                      </span>
-                      <span className="text-[13px] text-silver">
-                        {pillar.fact.label}
-                        <Citation id={pillar.fact.source} onDark />
-                      </span>
+                    <div className="flex flex-col gap-5">
+                      <div className="flex flex-col gap-2">
+                        <p className="eyebrow text-silver">{copy.shiftLabel}</p>
+                        <p className="shift-from w-fit text-[14px] text-silver">{pillar.from}</p>
+                        <p className="flex items-start gap-2 text-[15px] leading-[1.45] text-snow">
+                          <span aria-hidden="true" className="text-signal">
+                            →
+                          </span>
+                          {pillar.to}
+                        </p>
+                      </div>
+                      <ul className="flex flex-col gap-2.5 border-t border-white/10 pt-5">
+                        {pillar.capabilities.map((item) => (
+                          <li
+                            key={item}
+                            className="flex gap-2.5 text-[14px] leading-[1.5] text-mist"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="mt-[9px] h-px w-3 shrink-0 bg-signal"
+                            />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </article>
                 </Reveal>
@@ -236,11 +348,14 @@ export function Core({ copy }: { copy: CoreCopy }) {
           })}
         </ol>
 
-        <Reveal className="flex flex-col items-start gap-6 border-t border-white/10 pt-12 md:flex-row md:items-center md:gap-10">
-          <Meet />
-          <div className="flex flex-col gap-2">
-            <p className="eyebrow text-silver">{copy.meet.title}</p>
-            <p className="max-w-[40ch] font-display text-[24px] leading-[1.3] text-snow md:text-[30px]">
+        <Reveal className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-white/[0.03] p-8 md:grid-cols-[minmax(0,380px)_1fr] md:gap-16 md:p-12">
+          <Meet labels={copy.meet.labels} />
+          <div className="flex flex-col gap-4">
+            <p className="eyebrow flex items-center gap-2 text-silver">
+              <span aria-hidden="true" className="h-px w-6 bg-signal" />
+              {copy.meet.title}
+            </p>
+            <p className="max-w-[26ch] font-display text-[30px] leading-[1.2] tracking-[-0.5px] text-snow md:text-[42px]">
               {copy.meet.body}
             </p>
           </div>

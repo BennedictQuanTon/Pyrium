@@ -13,7 +13,7 @@ export type Prefs = {
 
 export const PREFS_KEY = "pyrium-prefs";
 
-export const defaultPrefs: Prefs = { motion: "full", music: true, musicVolume: 0.55, sfx: true };
+export const defaultPrefs: Prefs = { motion: "full", music: true, musicVolume: 0.5, sfx: true };
 
 export function readPrefs(): Prefs {
   try {

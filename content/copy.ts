@@ -29,50 +29,111 @@ const en = {
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],
+  menu: {
+    allProducts: "All products",
+    allProductsDesc: "Every product, with the numbers behind it",
+    services: [
+      { href: "/services", label: "Overview", desc: "What we build, for whom, and how we compare" },
+      {
+        href: "/services/approach",
+        label: "How we work",
+        desc: "From discovery to managed operations",
+      },
+      {
+        href: "/services/security",
+        label: "Architecture & security",
+        desc: "The system layers and the controls we document",
+      },
+    ],
+    about: [
+      { href: "/about", label: "Company", desc: "Our numbers, our core in depth, our partners" },
+      { href: "/about/team", label: "Team", desc: "Three co-founders and what each one owns" },
+      {
+        href: "/about/vision",
+        label: "Vision & roadmap",
+        desc: "Where we're going, phase by phase",
+      },
+    ],
+  },
   intro: { tagline: "Private AI. Built to act.", meter: "Private · Agentic · Cost-efficient" },
   problem: {
     eyebrow: "The problem",
-    title: "AI adoption is broad. Value in production is not.",
-    body: "Most organizations already use AI somewhere, yet agents that do real work are rare and oversight lags behind. The hard part is no longer access to models — it's reliable workflows, governance and a cost a business can justify.",
-    funnel: {
-      title: "From using AI to running agents",
+    title: "AI could carry the work operators can't staff. Most can't use it safely — yet.",
+    body: "In restaurants, hotels, plants and anywhere sensitive data lives, the pressure is the same: thin margins, too few hands, and data that can't leave the building.",
+    industries: [
+      {
+        name: "Restaurants & FnB",
+        photo: "/images/open/chefs.jpg",
+        alt: "Chefs at the pass in a restaurant kitchen",
+        value: "42%",
+        label: "of US restaurant operators were not profitable in 2025",
+        source: "nra-2026-07" as SourceId,
+      },
+      {
+        name: "Hotels & hospitality",
+        photo: "/images/open/hotel.jpg",
+        alt: "An empty hotel reception desk",
+        value: "1 in 2",
+        label: "US hotels say they are understaffed",
+        source: "ahla-2026-03" as SourceId,
+      },
+      {
+        name: "Plants & operations",
+        photo: "/images/open/generator.jpg",
+        alt: "A generator hall in a power station",
+        value: "$1.4T",
+        label: "lost each year to unplanned downtime by the 500 largest companies — 11% of revenue",
+        source: "siemens-2024" as SourceId,
+      },
+      {
+        name: "Clinics, finance & sensitive data",
+        photo: "/images/solution-racks.jpg",
+        alt: "Server racks in a data centre",
+        value: "$4.99M",
+        label: "average cost of a data breach — a record high",
+        source: "ibm-2026" as SourceId,
+      },
+    ],
+    adoption: {
+      title: "AI is arriving fast",
+      caption: "of US restaurant operators now use or pilot AI in the back office",
+      from: { value: 25, label: "Start of 2026" },
+      to: { value: 69, label: "Mid-2026" },
+      source: "r365-2026" as SourceId,
+    },
+    barriers: {
+      title: "…but three things hold the rest back",
+      answerLabel: "Our answer",
       rows: [
-        { label: "Used AI in 2025", value: 88, display: "88%" },
-        { label: "Used generative AI in a business function", value: 70, display: "70%" },
-        { label: "Run AI agents, in nearly every function", value: 8, display: "Single digits" },
+        { value: 37, label: "Data privacy and security", answer: "Private AI" },
+        { value: 34, label: "Accuracy of AI output", answer: "Agentic AI with checks" },
+        { value: 29, label: "Implementation cost", answer: "Cost-efficient by design" },
       ],
-      gap: "The gap",
-      note: "The last bar marks “single digits”, not a measured value.",
+      source: "r365-2026" as SourceId,
     },
-    cio: {
-      label:
-        "of CIOs say their enterprise has realized significant or transformational value from AI.",
-    },
-    governance: {
-      label: "companies has mature governance for autonomous AI agents.",
-      detail: "3,235 senior leaders · 24 countries",
-    },
-    gates: {
-      title: "Few know when to stop",
-      rows: [
-        { value: 31, label: "of CIOs have rules for stopping pilots before production" },
-        { value: 17, label: "have rules for abandoning low-value AI in production" },
-      ],
-    },
-    chart: {
-      title: "Worldwide AI spending",
-      unit: "US$ trillions",
-      published: "Published forecast",
-      derived: "Derived from growth rate",
-      note: "2026 is Gartner's published forecast (US$2.7T, +49.5%). 2025 and 2027 are calculated from the growth rates in the same release. Global spending is context, not Pyrium's market.",
-    },
-    closer:
-      "The gap isn't adoption. It's getting AI to do real work, safely and at a sensible cost — and that's where Pyrium works.",
+    facts: [
+      {
+        value: "27%",
+        label: "of organizations had banned GenAI over data risk",
+        source: "cisco-2024" as SourceId,
+      },
+      {
+        value: "40%+",
+        label: "of agentic AI projects will be canceled by 2027",
+        source: "gartner-agentic-2025-06" as SourceId,
+      },
+      {
+        value: "280×",
+        label: "cheaper to run GPT-3.5-level AI than in 2022",
+        source: "stanford-ai-index-2025" as SourceId,
+      },
+    ],
+    sourcesNote: "Sources and the date each figure was checked are listed in the footer.",
   },
   core: {
     eyebrow: "Our core",
-    title: "Agentic. Private. Cost-efficient.",
-    body: "Three commitments define every system we build. Each answers a shift already under way in how businesses adopt AI.",
+    title: "Agentic. Private. Cost-efficient. Domain-deep. Fast to integrate.",
+    body: "Five commitments define every system we build — and each one answers a reason operators hold back from AI today.",
     shiftLabel: "The shift",
     pillars: [
       {
@@ -87,9 +148,9 @@ const en = {
           "Human approval wherever money or customers are involved",
         ],
         fact: {
-          value: "US$985B",
-          label: "forecast agentic AI software spend by 2030",
-          source: "gartner-agentic-2026-02" as SourceId,
+          value: "40%+",
+          label: "of agentic AI projects will be canceled by 2027 — control is the difference",
+          source: "gartner-agentic-2025-06" as SourceId,
         },
       },
       {
@@ -121,52 +182,169 @@ const en = {
           "Cost and quality measured before and after",
         ],
         fact: {
-          value: "58%",
-          label: "of CIOs face more pressure to cut AI costs",
-          source: "gartner-cio-2026-10" as SourceId,
+          value: "280×",
+          label: "cheaper to run GPT-3.5-level AI than two years earlier",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
+      },
+      {
+        key: "domain",
+        name: "Deep Domain",
+        promise: "Built around how your business actually runs.",
+        from: "One generic assistant for every company",
+        to: "A system shaped by your SOPs, data and rules",
+        capabilities: [
+          "Discovery of your workflows, SOPs and exceptions",
+          "Bespoke design, evaluation sets and tuning for your domain",
+          "Support packages: monitoring, updates and a named team",
+        ],
+        fact: {
+          value: "69%",
+          label: "of US restaurant operators now use or pilot AI in the back office",
+          source: "r365-2026" as SourceId,
+        },
+      },
+      {
+        key: "integration",
+        name: "Fast Integration",
+        promise: "Live in weeks, not quarters — without cutting corners.",
+        from: "Six-month integration projects",
+        to: "A measured pilot in 6–8 weeks",
+        capabilities: [
+          "Connectors for the POS, ERP, chat and document tools you already use",
+          "Reusable evaluators, guardrails and deployment templates",
+          "Staged rollout with a rollback at every step",
+        ],
+        fact: {
+          value: "6–8 wks",
+          label: "from discovery to a measured pilot, with acceptance criteria agreed up front",
         },
       },
     ],
     meet: {
-      title: "Where all three meet",
-      body: "AI that does real work, inside your boundary, at a cost per task you can defend.",
+      title: "Where all five meet",
+      body: "AI that does real work, inside your boundary, built around your operation, live in weeks, at a cost per task you can defend.",
+      labels: ["Agentic", "Private", "Efficient", "Domain", "Fast"],
+    },
+    compare: {
+      eyebrow: "How we compare",
+      title: "What you get with Pyrium that you don't get elsewhere.",
+      body: "Categories, not named vendors. Ratings are our assessment of what each category typically offers today.",
+      columns: [
+        "Pyrium",
+        "AI chat assistants",
+        "Automation platforms",
+        "Large integrators",
+        "Freelancers & in-house",
+      ],
+      legend: { full: "Yes", partial: "Partly", none: "No" },
+      rows: [
+        {
+          label: "Fast integration with the tools you already use",
+          values: ["full", "partial", "full", "none", "partial"],
+        },
+        {
+          label: "Agentic workflows that finish the task",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Private deployment on your own infrastructure",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Cost per task optimized (routing, small models)",
+          values: ["full", "none", "partial", "partial", "none"],
+        },
+        {
+          label: "Deep domain knowledge: FnB, operations, finance",
+          values: ["full", "none", "none", "partial", "partial"],
+        },
+        {
+          label: "Bespoke design and tuning for your workflow",
+          values: ["full", "none", "partial", "full", "full"],
+        },
+        {
+          label: "Support packages and managed operations",
+          values: ["full", "partial", "partial", "full", "none"],
+        },
+        {
+          label: "Mid-market price and a 6–8 week pilot",
+          values: ["full", "full", "full", "none", "partial"],
+        },
+      ],
+      sourcesLabel: "Category references",
+      sources: [
+        "openai-enterprise",
+        "n8n-hosting",
+        "copilot-studio",
+        "litellm-routing",
+      ] as SourceId[],
     },
   },
   productsSection: {
     eyebrow: "Products",
-    title: "Built under deadline. Used by real people.",
-    body: "Four products the founders designed, built and shipped — each solving a real problem for a specific kind of user.",
+    title: "Built for real operations. Tested by real people.",
+    body: "Our products, grouped by the industry they serve. Each shows who it's for, what it fixes, and what changed for the people who tested it.",
     stats: [
-      { value: "200+", label: "people have used our products" },
-      { value: "~80%", label: "lower AI running cost than cloud-only pipelines", estimate: true },
-      { value: "6", label: "hackathon awards & recognitions" },
+      { value: "200+", label: "people have tested our products" },
+      { value: "~80%", label: "lower AI running cost than cloud-only pipelines", note: 1 },
+      { value: "10+", label: "hackathon awards and recognitions across the founding team" },
     ],
-    estimateMark: "est.",
-    estimateNote:
-      "est. — team estimate from our benchmark runs: local and routed models vs. an equivalent cloud-API pipeline on the same tasks.",
-    awards: [
-      "Top 10 · Vietnam AI Open",
-      "6th & 18th · RMIT",
-      "#77 / 300+ · Viettel AI Race",
-      "Silver · AI Riser",
-      "Round 2 · VN Youth Start-up",
+    notes: [
+      "Team estimate from our benchmark runs: local and routed models vs. an equivalent cloud-API pipeline on the same tasks.",
+      "Product tester counts and savings are pilot figures reported by the team; savings are estimates, to be confirmed against each customer's own baseline.",
     ],
-    moreTitle: "And more from the lab",
+    updated: "Last updated 26 Oct 2026",
     allProducts: "All products",
+    industriesEyebrow: "By industry",
+    industriesTitle: "Find the products built for your operation.",
+    productCount: ["product", "products"],
+    groups: {
+      fnb: {
+        name: "FnB & Hospitality",
+        body: "Restaurants, cafés, tours and venues — faster service, fewer errors, fewer lost bookings.",
+      },
+      operations: {
+        name: "Industrial operations",
+        body: "Plants, central kitchens and factories — evidence a manager can sign.",
+      },
+      trust: { name: "Trust & privacy", body: "Sensitive data that insiders should never see." },
+      infrastructure: {
+        name: "Cost & infrastructure",
+        body: "Running LLMs for less, on the hardware you already have.",
+      },
+    },
   },
   showcase: {
     builtFor: "Built for",
+    solves: "Solves",
     recognition: "Recognition",
+    testers: "Tested by",
+    saving: "Expected saving",
+    core: "Core result",
+    pilot: "From the pilot",
     readCase: "Read the case study",
-    tryLive: "Try it live",
-    draft: "Draft",
+    tryLive: "View demo",
+    anonymous: "Anonymous",
+    est: "est.",
   },
   testimonials: {
     eyebrow: "Testimonials",
     title: "What people say after using what we built.",
-    draftNote: "Draft quotes — wording is pending approval from the people in each role.",
   },
   services: {
+    pages: {
+      approach: {
+        eyebrow: "How we work",
+        title: "One workflow, one path, your call at every step.",
+        body: "How an engagement runs from the first call to managed operations, and the promises we won't make along the way.",
+      },
+      security: {
+        eyebrow: "Architecture & security",
+        title: "Six layers, every control documented.",
+        body: "What a Pyrium system is made of, and the evidence every deployment leaves behind.",
+      },
+    },
     eyebrow: "Services",
     title: "One workflow at a time, engineered end to end.",
     body: "Pyrium designs, integrates and operates agentic workflows that solve a defined business problem under explicit data, permission, quality and cost constraints.",
@@ -176,6 +354,7 @@ const en = {
     offers: [
       {
         name: "Pyrium Agents",
+        core: "agentic",
         role: "Core implementation",
         detail:
           "Agentic workflows, orchestration, tool calls and automation — with validations and human handoffs.",
@@ -183,19 +362,22 @@ const en = {
       },
       {
         name: "Pyrium Inference",
+        core: "efficient",
         role: "Efficiency",
         detail:
           "Model routing, caching, model selection, evaluation and fine-tuning to lower cost per successful task.",
-        proof: "weatherise" as const,
+        proof: "inference" as const,
       },
       {
         name: "Pyrium Private",
+        core: "private",
         role: "Trust & readiness",
         detail: "Private deployment, data-access design, auditability and operational controls.",
         proof: "unfound" as const,
       },
       {
         name: "Pyrium Domain",
+        core: "domain",
         role: "Repeatable IP",
         detail:
           "Reusable modules for FnB, finance and business operations, built from repeated delivery.",
@@ -279,29 +461,24 @@ const en = {
   engagement: {
     eyebrow: "Working together",
     title: "Start with one workflow.",
-    body: "Every engagement follows the same path, and each step has a go / no-go gate before the next.",
+    body: "One path from first call to running in production. You decide at every step whether to go on.",
     stepLabel: "Step",
-    gate: "Go / no-go gate",
     steps: [
       {
         name: "Paid discovery",
-        time: "Fixed fee",
         detail: "Map systems, workflow steps, failure modes, privacy needs and acceptance metrics.",
       },
       {
         name: "Workflow pilot",
-        time: "6–8 weeks",
         detail:
           "Prove one workflow in a bounded environment with success thresholds, logging and rollback.",
       },
       {
         name: "Production",
-        time: "Milestones",
         detail: "Harden identity, monitoring, retries, auditability and support.",
       },
       {
         name: "Managed operations",
-        time: "Monthly",
         detail: "Ongoing monitoring, model updates, cost reviews and regression testing.",
       },
     ],
@@ -378,14 +555,97 @@ const en = {
     links: { linkedin: "LinkedIn", email: "Email", portfolio: "Portfolio", soon: "Coming soon" },
     vision: {
       title: "Where we're going",
-      body: "Pyrium should own the work between AI capability and business value: complete the right workflow, within the right boundaries, at a cost the customer can justify. We earn product by repetition — the same workflow, controls and outcome, proven across customers — before we build a platform.",
+      statement: "Own the work between AI capability and business value.",
+      body: "Complete the right workflow, within the right boundaries, at a cost the customer can justify. We earn product by repetition — the same workflow, controls and outcome, proven across customers — before we build a platform.",
+      horizons: [
+        {
+          when: "Now",
+          title: "Prove it in pilots",
+          detail:
+            "Paid discovery and 6–8 week pilots with FnB and operations teams, measured against an agreed baseline.",
+        },
+        {
+          when: "12 months",
+          title: "Repeatable delivery",
+          detail:
+            "Reusable connectors, evaluators and guardrails, so each deployment ships faster without losing quality.",
+        },
+        {
+          when: "Beyond",
+          title: "A private operations copilot",
+          detail:
+            "A product earned by repetition: the same workflow, controls and outcome, proven across customers.",
+        },
+      ],
     },
   },
   about: {
+    pages: {
+      team: {
+        eyebrow: "Team",
+        title: "Three engineers, one way of working.",
+        body: "Who builds Pyrium, what each of us owns, and what we've shipped together.",
+        about: "About",
+        strengths: "Strengths",
+        contributions: "Contributions",
+        pending: "Profile to be updated.",
+      },
+      vision: {
+        eyebrow: "Vision",
+        title: "Where we're going, and how we'll know.",
+        body: "The work we want to own, and the twelve-month path with a gate at every phase.",
+      },
+    },
     eyebrow: "About",
     title: "Controlled intelligence, in action.",
     body: "Pyrium is a private AI systems engineering company from Vietnam. We started as three founders building together under hackathon deadlines; we're building a company that brings the same discipline to real operations.",
     line: ["Private AI.", "Built to act."],
+    numbersEyebrow: "Pyrium in numbers",
+    numbersTitle: "Proof we can point to.",
+    numbers: [
+      { value: "200+", label: "people have tested our products" },
+      { value: "10+", label: "hackathon awards and recognitions" },
+      { value: "5", label: "products shipped with working demos" },
+      { value: "11", label: "events built at with NVIDIA, Viettel, Google, OpenAI and AMD" },
+      { value: "−85%", label: "API tokens per task with hybrid routing" },
+      { value: "10/10", label: "multi-turn orders taken correctly on local models" },
+      { value: "0", label: "sensitive records stored in plain text" },
+      { value: "6–8 wks", label: "from discovery to a measured pilot" },
+    ],
+    numbersNote:
+      "Product figures come from each project's measured results; tester counts are team-reported.",
+    depthEyebrow: "Our core, in depth",
+    depthTitle: "Five commitments, and what each one means in practice.",
+    depth: [
+      {
+        key: "agentic",
+        body: "An agent that only talks is a cost. We build agents that finish defined work — reconcile an invoice, take an order, draft a report — inside the systems you already run. The model interprets and proposes; deterministic code validates every change and computes every number; a named person approves anything that touches money, customers or records.",
+        proof: "lantern" as const,
+      },
+      {
+        key: "private",
+        body: "Private means a boundary you can inspect, not a promise. We deploy on your infrastructure or a private cloud, connect only to approved sources with least-privilege identities, and keep an audit trail of every tool call and action. You can see where data goes, who can see it, and how the system is stopped.",
+        proof: "unfound" as const,
+      },
+      {
+        key: "efficient",
+        body: "Most AI spend is the wrong model on the wrong task. We measure cost per successful task before we change anything, then route: small fine-tuned or local models where they are enough, caching where answers repeat, and a large model only when the task needs one.",
+        proof: "inference" as const,
+      },
+      {
+        key: "domain",
+        body: "Generic assistants fail on the details that make your operation yours. We start from your SOPs, data and exceptions, write evaluation cases from them, and tune the system to pass them — then keep it passing with support packages, monitoring and a named team.",
+        proof: "ignis" as const,
+      },
+      {
+        key: "integration",
+        body: "Speed comes from reuse, not shortcuts. Connectors, evaluators, guardrails and deployment templates we have already built let a measured pilot go live in six to eight weeks, rolled out in stages with a way back at every step.",
+        proof: "weatherise" as const,
+      },
+    ],
+    proofLabel: "Proof",
+    partnersEyebrow: "Built and studied with",
+    partnersTitle: "Organizers, platforms and institutions behind our work.",
     principlesEyebrow: "Principles",
     principlesTitle: "Four things we hold every system to.",
     principles: [
@@ -439,6 +699,7 @@ const en = {
     ],
   },
   caseStudy: {
+    tabs: { overview: "Overview", build: "How it's built" },
     allProducts: "All products",
     event: "Event",
     with: "With",
@@ -470,7 +731,7 @@ const en = {
     company: "Company",
     country: "Vietnam",
     photos:
-      "Photography: open-licence images from Wikimedia Commons and StockSnap (CC0 / public domain).",
+      "Photography: open-licence images from Wikimedia Commons and StockSnap (CC0, public domain; food court photo © Martin Lewison, CC BY 2.0). Interface sounds: Kenney, CC0.",
   },
   settings: {
     open: "Preferences",
@@ -488,6 +749,7 @@ const en = {
     volume: "Volume",
     sfx: "Interface sounds",
     saved: "Saved on this device.",
+    soundPrompt: "Tap anywhere for ambient sound",
   },
   notFound: { title: "This page doesn't exist.", back: "Back to home" },
 };
@@ -516,53 +778,123 @@ const vi: Copy = {
     { href: "/about", label: "Giới thiệu" },
     { href: "/contact", label: "Liên hệ" },
   ],
+  menu: {
+    allProducts: "Tất cả sản phẩm",
+    allProductsDesc: "Mọi sản phẩm, kèm các con số phía sau",
+    services: [
+      {
+        href: "/services",
+        label: "Tổng quan",
+        desc: "Chúng tôi xây gì, cho ai, và khác biệt ở đâu",
+      },
+      {
+        href: "/services/approach",
+        label: "Cách hợp tác",
+        desc: "Từ khảo sát đến vận hành dài hạn",
+      },
+      {
+        href: "/services/security",
+        label: "Kiến trúc & bảo mật",
+        desc: "Các lớp hệ thống và những kiểm soát được ghi nhận",
+      },
+    ],
+    about: [
+      { href: "/about", label: "Công ty", desc: "Con số, giá trị cốt lõi và đối tác" },
+      {
+        href: "/about/team",
+        label: "Đội ngũ",
+        desc: "Ba nhà đồng sáng lập và phần việc của mỗi người",
+      },
+      {
+        href: "/about/vision",
+        label: "Tầm nhìn & lộ trình",
+        desc: "Chúng tôi đi đâu, từng giai đoạn",
+      },
+    ],
+  },
   intro: {
     tagline: "AI riêng tư. Hành động thực tế.",
     meter: "Riêng tư · Tác tử · Tối ưu chi phí",
   },
   problem: {
     eyebrow: "Vấn đề",
-    title: "AI được dùng rộng rãi. Giá trị thực tế thì chưa.",
-    body: "Hầu hết tổ chức đã dùng AI ở đâu đó, nhưng tác tử AI thực sự làm được việc vẫn hiếm và khâu giám sát còn chậm. Khó khăn không còn là tiếp cận mô hình — mà là quy trình vận hành tin cậy, quản trị chặt chẽ và chi phí doanh nghiệp chấp nhận được.",
-    funnel: {
-      title: "Từ dùng AI đến vận hành tác tử",
+    title:
+      "AI có thể gánh phần việc thiếu người làm. Nhưng phần lớn doanh nghiệp chưa dùng nó an toàn được.",
+    body: "Ở nhà hàng, khách sạn, nhà máy hay bất cứ nơi nào giữ dữ liệu nhạy cảm, áp lực đều giống nhau: biên lợi nhuận mỏng, thiếu nhân lực và dữ liệu không được phép rời khỏi doanh nghiệp.",
+    industries: [
+      {
+        name: "Nhà hàng & FnB",
+        photo: "/images/open/chefs.jpg",
+        alt: "Đầu bếp ở quầy ra món trong bếp nhà hàng",
+        value: "42%",
+        label: "chủ nhà hàng tại Mỹ không có lãi trong năm 2025",
+        source: "nra-2026-07" as SourceId,
+      },
+      {
+        name: "Khách sạn & lưu trú",
+        photo: "/images/open/hotel.jpg",
+        alt: "Quầy lễ tân khách sạn không có người",
+        value: "1/2",
+        label: "khách sạn tại Mỹ cho biết đang thiếu nhân sự",
+        source: "ahla-2026-03" as SourceId,
+      },
+      {
+        name: "Nhà máy & vận hành",
+        photo: "/images/open/generator.jpg",
+        alt: "Gian máy phát điện trong nhà máy điện",
+        value: "1.400 tỷ USD",
+        label: "mất mỗi năm vì dừng máy ngoài kế hoạch ở 500 công ty lớn nhất — 11% doanh thu",
+        source: "siemens-2024" as SourceId,
+      },
+      {
+        name: "Y tế, tài chính & dữ liệu nhạy cảm",
+        photo: "/images/solution-racks.jpg",
+        alt: "Dãy máy chủ trong trung tâm dữ liệu",
+        value: "4,99 triệu USD",
+        label: "chi phí trung bình một vụ rò rỉ dữ liệu — cao kỷ lục",
+        source: "ibm-2026" as SourceId,
+      },
+    ],
+    adoption: {
+      title: "AI đang đến rất nhanh",
+      caption: "chủ nhà hàng tại Mỹ đang dùng hoặc thí điểm AI cho back-office",
+      from: { value: 25, label: "Đầu 2026" },
+      to: { value: 69, label: "Giữa 2026" },
+      source: "r365-2026" as SourceId,
+    },
+    barriers: {
+      title: "…nhưng ba điều khiến số còn lại chần chừ",
+      answerLabel: "Câu trả lời",
       rows: [
-        { label: "Đã dùng AI trong năm 2025", value: 88, display: "88%" },
-        { label: "Dùng AI tạo sinh trong ít nhất một bộ phận", value: 70, display: "70%" },
-        { label: "Vận hành tác tử AI, ở gần như mọi bộ phận", value: 8, display: "Dưới 10%" },
+        { value: 37, label: "Quyền riêng tư và bảo mật dữ liệu", answer: "Private AI" },
+        { value: 34, label: "Độ chính xác của AI", answer: "Agentic AI có kiểm tra" },
+        { value: 29, label: "Chi phí triển khai", answer: "Tối ưu chi phí từ thiết kế" },
       ],
-      gap: "Khoảng trống",
-      note: "Thanh cuối thể hiện mức “dưới 10%”, không phải số đo chính xác.",
+      source: "r365-2026" as SourceId,
     },
-    cio: {
-      label:
-        "CIO cho biết doanh nghiệp đã thu được giá trị đáng kể hoặc mang tính chuyển đổi từ AI.",
-    },
-    governance: {
-      label: "doanh nghiệp có mô hình quản trị trưởng thành cho tác tử AI tự hành.",
-      detail: "3.235 lãnh đạo cấp cao · 24 quốc gia",
-    },
-    gates: {
-      title: "Ít ai biết khi nào nên dừng",
-      rows: [
-        { value: 31, label: "CIO có quy định dừng dự án thí điểm trước khi triển khai" },
-        { value: 17, label: "có quy định loại bỏ AI kém hiệu quả đang vận hành" },
-      ],
-    },
-    chart: {
-      title: "Chi tiêu AI toàn cầu",
-      unit: "nghìn tỷ USD",
-      published: "Dự báo công bố",
-      derived: "Tính từ tốc độ tăng trưởng",
-      note: "Năm 2026 là dự báo do Gartner công bố (2,7 nghìn tỷ USD, +49,5%). Năm 2025 và 2027 được tính từ tốc độ tăng trưởng trong cùng báo cáo. Chi tiêu toàn cầu là bối cảnh, không phải thị trường của Pyrium.",
-    },
-    closer:
-      "Khoảng trống không nằm ở việc dùng AI. Mà ở việc để AI làm việc thật, an toàn và với chi phí hợp lý — đó là nơi Pyrium hoạt động.",
+    facts: [
+      {
+        value: "27%",
+        label: "tổ chức từng cấm GenAI vì rủi ro dữ liệu",
+        source: "cisco-2024" as SourceId,
+      },
+      {
+        value: "40%+",
+        label: "dự án agentic AI sẽ bị huỷ trước 2027",
+        source: "gartner-agentic-2025-06" as SourceId,
+      },
+      {
+        value: "280×",
+        label: "chi phí chạy AI cấp GPT-3.5 rẻ hơn năm 2022",
+        source: "stanford-ai-index-2025" as SourceId,
+      },
+    ],
+    sourcesNote: "Nguồn và ngày kiểm tra từng số liệu được liệt kê ở cuối trang.",
   },
   core: {
     eyebrow: "Cốt lõi",
-    title: "Tác tử. Riêng tư. Tối ưu chi phí.",
-    body: "Ba cam kết định hình mọi hệ thống chúng tôi xây dựng. Mỗi cam kết đáp lại một chuyển dịch đang diễn ra trong cách doanh nghiệp ứng dụng AI.",
+    title: "Tác tử. Riêng tư. Tối ưu chi phí. Am hiểu nghiệp vụ. Tích hợp nhanh.",
+    body: "Năm cam kết định hình mọi hệ thống chúng tôi xây dựng — mỗi cam kết giải đúng một lý do khiến doanh nghiệp còn ngần ngại với AI.",
     shiftLabel: "Chuyển dịch",
     pillars: [
       {
@@ -577,15 +909,15 @@ const vi: Copy = {
           "Con người phê duyệt khi liên quan đến tiền hoặc khách hàng",
         ],
         fact: {
-          value: "985 tỷ USD",
-          label: "dự báo chi tiêu phần mềm agentic AI vào năm 2030",
-          source: "gartner-agentic-2026-02" as SourceId,
+          value: "40%+",
+          label: "dự án agentic AI sẽ bị huỷ trước 2027 — khả năng kiểm soát tạo nên khác biệt",
+          source: "gartner-agentic-2025-06" as SourceId,
         },
       },
       {
         key: "private",
         name: "Private AI",
-        promise: "Dữ liệu của bạn. Mô hình của bạn. Hạ tầng của bạn. Quyền kiểm soát của bạn.",
+        promise: "Dữ liệu, mô hình, hạ tầng và quyền kiểm soát đều thuộc về bạn.",
         from: "Gửi dữ liệu ra ngoài cho mô hình",
         to: "Đưa mô hình vào nơi dữ liệu nằm",
         capabilities: [
@@ -611,56 +943,172 @@ const vi: Copy = {
           "Đo lường chi phí và chất lượng trước và sau",
         ],
         fact: {
-          value: "58%",
-          label: "CIO chịu áp lực lớn hơn về cắt giảm chi phí AI",
-          source: "gartner-cio-2026-10" as SourceId,
+          value: "280×",
+          label: "chi phí chạy AI cấp GPT-3.5 rẻ hơn so với hai năm trước",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
+      },
+      {
+        key: "domain",
+        name: "Am hiểu nghiệp vụ",
+        promise: "Xây quanh cách doanh nghiệp của bạn thực sự vận hành.",
+        from: "Một trợ lý chung cho mọi công ty",
+        to: "Hệ thống định hình theo SOP, dữ liệu và quy tắc của bạn",
+        capabilities: [
+          "Khảo sát quy trình, SOP và các ngoại lệ của bạn",
+          "Thiết kế riêng, bộ đánh giá và tinh chỉnh theo nghiệp vụ",
+          "Gói hỗ trợ: giám sát, cập nhật và đội ngũ phụ trách riêng",
+        ],
+        fact: {
+          value: "69%",
+          label: "chủ nhà hàng tại Mỹ đang dùng hoặc thí điểm AI cho back-office",
+          source: "r365-2026" as SourceId,
+        },
+      },
+      {
+        key: "integration",
+        name: "Tích hợp nhanh",
+        promise: "Vận hành sau vài tuần, không phải vài quý — mà không đánh đổi chất lượng.",
+        from: "Dự án tích hợp kéo dài sáu tháng",
+        to: "Thí điểm có đo lường trong 6–8 tuần",
+        capabilities: [
+          "Kết nối sẵn với POS, ERP, chat và tài liệu bạn đang dùng",
+          "Bộ đánh giá, cơ chế an toàn và mẫu triển khai dùng lại được",
+          "Triển khai theo giai đoạn, có phương án khôi phục ở mọi bước",
+        ],
+        fact: {
+          value: "6–8 tuần",
+          label: "từ khảo sát đến thí điểm có đo lường, tiêu chí nghiệm thu thống nhất từ đầu",
         },
       },
     ],
     meet: {
-      title: "Nơi cả ba gặp nhau",
-      body: "AI làm việc thật, trong phạm vi của bạn, với chi phí mỗi tác vụ mà bạn có thể chứng minh.",
+      title: "Nơi cả năm gặp nhau",
+      body: "AI làm việc thật, trong phạm vi của bạn, xây quanh cách bạn vận hành, chạy được sau vài tuần, với chi phí mỗi tác vụ mà bạn có thể chứng minh.",
+      labels: ["Tác tử", "Riêng tư", "Tối ưu", "Nghiệp vụ", "Nhanh"],
+    },
+    compare: {
+      eyebrow: "So sánh",
+      title: "Điều bạn có ở Pyrium mà khó tìm ở nơi khác.",
+      body: "So sánh theo nhóm, không nêu tên nhà cung cấp. Đánh giá là nhận định của chúng tôi về những gì mỗi nhóm thường cung cấp hiện nay.",
+      columns: [
+        "Pyrium",
+        "Trợ lý AI dạng chat",
+        "Nền tảng tự động hoá",
+        "Đơn vị tích hợp lớn",
+        "Freelancer & tự làm",
+      ],
+      legend: { full: "Có", partial: "Một phần", none: "Không" },
+      rows: [
+        {
+          label: "Tích hợp nhanh với công cụ bạn đang dùng",
+          values: ["full", "partial", "full", "none", "partial"],
+        },
+        {
+          label: "Quy trình agentic hoàn thành trọn tác vụ",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Triển khai riêng tư trên hạ tầng của bạn",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Tối ưu chi phí mỗi tác vụ (định tuyến, mô hình nhỏ)",
+          values: ["full", "none", "partial", "partial", "none"],
+        },
+        {
+          label: "Am hiểu nghiệp vụ: FnB, vận hành, tài chính",
+          values: ["full", "none", "none", "partial", "partial"],
+        },
+        {
+          label: "Thiết kế và tinh chỉnh riêng cho quy trình của bạn",
+          values: ["full", "none", "partial", "full", "full"],
+        },
+        {
+          label: "Gói hỗ trợ và vận hành trọn gói",
+          values: ["full", "partial", "partial", "full", "none"],
+        },
+        {
+          label: "Giá cho doanh nghiệp vừa, thí điểm 6–8 tuần",
+          values: ["full", "full", "full", "none", "partial"],
+        },
+      ],
+      sourcesLabel: "Tham khảo theo nhóm",
+      sources: [
+        "openai-enterprise",
+        "n8n-hosting",
+        "copilot-studio",
+        "litellm-routing",
+      ] as SourceId[],
     },
   },
   productsSection: {
     eyebrow: "Sản phẩm",
-    title: "Làm trong áp lực thời gian. Được người thật sử dụng.",
-    body: "Bốn sản phẩm do các nhà sáng lập thiết kế, xây dựng và ra mắt — mỗi sản phẩm giải một bài toán thật cho một nhóm người dùng cụ thể.",
+    title: "Xây cho vận hành thực tế. Được người thật kiểm chứng.",
+    body: "Các sản phẩm của chúng tôi, chia theo ngành phục vụ. Mỗi sản phẩm cho thấy dành cho ai, giải quyết gì và thay đổi gì với người đã dùng thử.",
     stats: [
-      { value: "200+", label: "người đã sử dụng sản phẩm của chúng tôi" },
-      {
-        value: "~80%",
-        label: "chi phí vận hành AI thấp hơn so với chỉ dùng đám mây",
-        estimate: true,
-      },
-      { value: "6", label: "giải thưởng & ghi nhận tại hackathon" },
+      { value: "200+", label: "người đã dùng thử sản phẩm của chúng tôi" },
+      { value: "~80%", label: "chi phí vận hành AI thấp hơn so với chỉ dùng đám mây", note: 1 },
+      { value: "10+", label: "giải thưởng và ghi nhận tại hackathon của đội ngũ sáng lập" },
     ],
-    estimateMark: "ước tính",
-    estimateNote:
-      "ước tính — từ các lần đo kiểm của đội: mô hình chạy cục bộ và có định tuyến so với pipeline gọi API đám mây tương đương trên cùng tác vụ.",
-    awards: [
-      "Top 10 · Vietnam AI Open",
-      "Hạng 6 & 18 · RMIT",
-      "#77 / 300+ · Viettel AI Race",
-      "Silver · AI Riser",
-      "Vòng 2 · VN Youth Start-up",
+    notes: [
+      "Ước tính của đội từ các lần đo kiểm: mô hình cục bộ và có định tuyến so với pipeline API đám mây tương đương trên cùng tác vụ.",
+      "Số người dùng thử và mức tiết kiệm của từng sản phẩm là số liệu thí điểm do đội báo cáo; mức tiết kiệm là ước tính, cần đối chiếu với số liệu gốc của từng khách hàng.",
     ],
-    moreTitle: "Và nhiều dự án khác",
+    updated: "Cập nhật lần cuối 26/10/2026",
     allProducts: "Tất cả sản phẩm",
+    industriesEyebrow: "Theo ngành",
+    industriesTitle: "Tìm sản phẩm được xây cho vận hành của bạn.",
+    productCount: ["sản phẩm", "sản phẩm"],
+    groups: {
+      fnb: {
+        name: "FnB & Dịch vụ lưu trú",
+        body: "Nhà hàng, quán cà phê, tour và địa điểm sự kiện — phục vụ nhanh hơn, ít sai sót hơn, ít mất booking hơn.",
+      },
+      operations: {
+        name: "Vận hành công nghiệp",
+        body: "Nhà máy, bếp trung tâm và xưởng sản xuất — bằng chứng mà quản lý có thể ký duyệt.",
+      },
+      trust: {
+        name: "Tin cậy & riêng tư",
+        body: "Dữ liệu nhạy cảm mà người nội bộ không bao giờ được xem.",
+      },
+      infrastructure: {
+        name: "Chi phí & hạ tầng",
+        body: "Chạy LLM rẻ hơn, trên chính phần cứng bạn đang có.",
+      },
+    },
   },
   showcase: {
     builtFor: "Dành cho",
+    solves: "Giải quyết",
     recognition: "Ghi nhận",
+    testers: "Người dùng thử",
+    saving: "Tiết kiệm dự kiến",
+    core: "Kết quả cốt lõi",
+    pilot: "Từ đợt thí điểm",
     readCase: "Xem chi tiết dự án",
-    tryLive: "Dùng thử",
-    draft: "Bản nháp",
+    tryLive: "Xem demo",
+    anonymous: "Ẩn danh",
+    est: "ước tính",
   },
   testimonials: {
     eyebrow: "Cảm nhận",
     title: "Người dùng nói gì sau khi trải nghiệm.",
-    draftNote: "Trích dẫn bản nháp — nội dung đang chờ người ở từng vai trò xác nhận.",
   },
   services: {
+    pages: {
+      approach: {
+        eyebrow: "Cách hợp tác",
+        title: "Một quy trình, một lộ trình, bạn quyết ở mỗi bước.",
+        body: "Một dự án đi từ buổi trao đổi đầu tiên đến vận hành dài hạn như thế nào, và những lời hứa chúng tôi không đưa ra.",
+      },
+      security: {
+        eyebrow: "Kiến trúc & bảo mật",
+        title: "Sáu lớp, mọi kiểm soát đều được ghi nhận.",
+        body: "Một hệ thống Pyrium gồm những gì, và bằng chứng mà mỗi lần triển khai để lại.",
+      },
+    },
     eyebrow: "Dịch vụ",
     title: "Từng quy trình một, thiết kế trọn vẹn từ đầu đến cuối.",
     body: "Pyrium thiết kế, tích hợp và vận hành các quy trình agentic giải quyết một bài toán kinh doanh cụ thể, trong giới hạn rõ ràng về dữ liệu, phân quyền, chất lượng và chi phí.",
@@ -670,6 +1118,7 @@ const vi: Copy = {
     offers: [
       {
         name: "Pyrium Agents",
+        core: "agentic",
         role: "Triển khai cốt lõi",
         detail:
           "Quy trình agentic, điều phối, gọi công cụ và tự động hoá — có kiểm tra và bàn giao cho con người.",
@@ -677,13 +1126,15 @@ const vi: Copy = {
       },
       {
         name: "Pyrium Inference",
+        core: "efficient",
         role: "Hiệu quả",
         detail:
           "Định tuyến mô hình, bộ nhớ đệm, chọn mô hình, đánh giá và tinh chỉnh để giảm chi phí mỗi tác vụ thành công.",
-        proof: "weatherise" as const,
+        proof: "inference" as const,
       },
       {
         name: "Pyrium Private",
+        core: "private",
         role: "Tin cậy & sẵn sàng",
         detail:
           "Triển khai riêng tư, thiết kế quyền truy cập dữ liệu, khả năng kiểm toán và kiểm soát vận hành.",
@@ -691,6 +1142,7 @@ const vi: Copy = {
       },
       {
         name: "Pyrium Domain",
+        core: "domain",
         role: "Tài sản tái sử dụng",
         detail:
           "Module dùng lại cho FnB, tài chính và vận hành doanh nghiệp, đúc kết từ nhiều lần triển khai.",
@@ -786,30 +1238,25 @@ const vi: Copy = {
   engagement: {
     eyebrow: "Hợp tác",
     title: "Bắt đầu từ một quy trình.",
-    body: "Mọi dự án đi theo cùng một lộ trình, và mỗi bước đều có điểm quyết định tiếp tục hay dừng trước khi sang bước sau.",
+    body: "Một lộ trình từ buổi trao đổi đầu tiên đến khi vận hành thật. Ở mỗi bước, bạn quyết định có đi tiếp hay không.",
     stepLabel: "Bước",
-    gate: "Điểm quyết định",
     steps: [
       {
         name: "Khảo sát có phí",
-        time: "Phí cố định",
         detail:
           "Lập bản đồ hệ thống, các bước quy trình, rủi ro, yêu cầu bảo mật và chỉ số nghiệm thu.",
       },
       {
         name: "Thí điểm quy trình",
-        time: "6–8 tuần",
         detail:
           "Chứng minh một quy trình trong môi trường giới hạn, có ngưỡng thành công, nhật ký và phương án khôi phục.",
       },
       {
         name: "Triển khai thực tế",
-        time: "Theo mốc",
         detail: "Hoàn thiện định danh, giám sát, cơ chế thử lại, khả năng kiểm toán và hỗ trợ.",
       },
       {
         name: "Vận hành trọn gói",
-        time: "Hằng tháng",
         detail: "Giám sát liên tục, cập nhật mô hình, rà soát chi phí và kiểm thử hồi quy.",
       },
     ],
@@ -886,14 +1333,97 @@ const vi: Copy = {
     links: { linkedin: "LinkedIn", email: "Email", portfolio: "Portfolio", soon: "Sắp cập nhật" },
     vision: {
       title: "Định hướng",
-      body: "Pyrium muốn làm chủ khoảng giữa năng lực AI và giá trị kinh doanh: hoàn thành đúng quy trình, trong đúng giới hạn, với chi phí khách hàng thấy xứng đáng. Chúng tôi xây sản phẩm từ sự lặp lại — cùng một quy trình, cơ chế kiểm soát và kết quả, được chứng minh qua nhiều khách hàng — trước khi xây nền tảng.",
+      statement: "Làm chủ khoảng giữa năng lực AI và giá trị kinh doanh.",
+      body: "Hoàn thành đúng quy trình, trong đúng giới hạn, với chi phí khách hàng thấy xứng đáng. Chúng tôi xây sản phẩm từ sự lặp lại — cùng một quy trình, cơ chế kiểm soát và kết quả, được chứng minh qua nhiều khách hàng — trước khi xây nền tảng.",
+      horizons: [
+        {
+          when: "Hiện tại",
+          title: "Chứng minh qua thí điểm",
+          detail:
+            "Khảo sát có phí và thí điểm 6–8 tuần cùng các đội FnB và vận hành, đo trên mốc so sánh đã thống nhất.",
+        },
+        {
+          when: "12 tháng",
+          title: "Triển khai lặp lại",
+          detail:
+            "Bộ kết nối, bộ đánh giá và cơ chế an toàn dùng lại được, để mỗi lần triển khai nhanh hơn mà không giảm chất lượng.",
+        },
+        {
+          when: "Xa hơn",
+          title: "Trợ lý vận hành riêng tư",
+          detail:
+            "Một sản phẩm đến từ sự lặp lại: cùng quy trình, kiểm soát và kết quả, được chứng minh qua nhiều khách hàng.",
+        },
+      ],
     },
   },
   about: {
+    pages: {
+      team: {
+        eyebrow: "Đội ngũ",
+        title: "Ba kỹ sư, một cách làm việc.",
+        body: "Ai đang xây Pyrium, mỗi người phụ trách gì, và chúng tôi đã cùng nhau làm ra những gì.",
+        about: "Giới thiệu",
+        strengths: "Thế mạnh",
+        contributions: "Đóng góp",
+        pending: "Hồ sơ sẽ được cập nhật.",
+      },
+      vision: {
+        eyebrow: "Tầm nhìn",
+        title: "Chúng tôi đi đâu, và đo bằng gì.",
+        body: "Phần việc chúng tôi muốn làm chủ, và lộ trình mười hai tháng với điều kiện ở mỗi giai đoạn.",
+      },
+    },
     eyebrow: "Giới thiệu",
     title: "Trí tuệ có kiểm soát, đi vào hành động.",
     body: "Pyrium là công ty kỹ thuật hệ thống AI riêng tư đến từ Việt Nam. Chúng tôi bắt đầu từ ba nhà sáng lập cùng làm việc dưới áp lực hackathon; giờ chúng tôi xây dựng một công ty mang cùng kỷ luật đó vào vận hành thực tế.",
     line: ["AI riêng tư.", "Hành động thực tế."],
+    numbersEyebrow: "Pyrium qua những con số",
+    numbersTitle: "Bằng chứng chúng tôi chỉ ra được.",
+    numbers: [
+      { value: "200+", label: "người đã dùng thử sản phẩm của chúng tôi" },
+      { value: "10+", label: "giải thưởng và ghi nhận tại hackathon" },
+      { value: "5", label: "sản phẩm đã ra mắt kèm demo chạy được" },
+      { value: "11", label: "sự kiện cùng NVIDIA, Viettel, Google, OpenAI và AMD" },
+      { value: "−85%", label: "token API mỗi tác vụ nhờ định tuyến lai" },
+      { value: "10/10", label: "order nhiều lượt chính xác trên mô hình cục bộ" },
+      { value: "0", label: "bản ghi nhạy cảm lưu dạng văn bản thường" },
+      { value: "6–8 tuần", label: "từ khảo sát đến thí điểm có đo lường" },
+    ],
+    numbersNote:
+      "Số liệu sản phẩm lấy từ kết quả đo của từng dự án; số người dùng thử do đội báo cáo.",
+    depthEyebrow: "Đi sâu vào cốt lõi",
+    depthTitle: "Năm cam kết, và ý nghĩa thực tế của từng cam kết.",
+    depth: [
+      {
+        key: "agentic",
+        body: "Một tác tử chỉ biết trò chuyện là chi phí. Chúng tôi xây tác tử hoàn thành công việc cụ thể — đối soát hoá đơn, nhận order, soạn báo cáo — ngay trong hệ thống bạn đang dùng. Mô hình diễn giải và đề xuất; mã nguồn cố định kiểm tra mọi thay đổi và tính mọi con số; người phụ trách phê duyệt mọi thứ liên quan đến tiền, khách hàng hay hồ sơ.",
+        proof: "lantern" as const,
+      },
+      {
+        key: "private",
+        body: "Riêng tư là một ranh giới kiểm chứng được, không phải lời hứa. Chúng tôi triển khai trên hạ tầng của bạn hoặc đám mây riêng, chỉ kết nối nguồn đã duyệt với quyền tối thiểu, và lưu vết mọi lệnh gọi công cụ, mọi hành động. Bạn thấy rõ dữ liệu đi đâu, ai được xem và dừng hệ thống bằng cách nào.",
+        proof: "unfound" as const,
+      },
+      {
+        key: "efficient",
+        body: "Phần lớn chi phí AI là dùng sai mô hình cho sai tác vụ. Chúng tôi đo chi phí mỗi tác vụ thành công trước khi thay đổi gì, rồi định tuyến: mô hình nhỏ, tinh chỉnh hoặc chạy cục bộ khi như vậy là đủ, bộ nhớ đệm khi câu trả lời lặp lại, và chỉ gọi mô hình lớn khi tác vụ thật sự cần.",
+        proof: "inference" as const,
+      },
+      {
+        key: "domain",
+        body: "Trợ lý chung thất bại ở chính những chi tiết làm nên cách bạn vận hành. Chúng tôi bắt đầu từ SOP, dữ liệu và các ngoại lệ của bạn, viết bộ ca kiểm thử từ đó, tinh chỉnh hệ thống để vượt qua — rồi duy trì bằng gói hỗ trợ, giám sát và đội ngũ phụ trách riêng.",
+        proof: "ignis" as const,
+      },
+      {
+        key: "integration",
+        body: "Tốc độ đến từ việc dùng lại, không phải đi tắt. Bộ kết nối, bộ đánh giá, cơ chế an toàn và mẫu triển khai đã xây sẵn giúp một đợt thí điểm có đo lường chạy được sau sáu đến tám tuần, triển khai theo giai đoạn và luôn có đường lui ở mọi bước.",
+        proof: "weatherise" as const,
+      },
+    ],
+    proofLabel: "Bằng chứng",
+    partnersEyebrow: "Đã đồng hành cùng",
+    partnersTitle: "Ban tổ chức, nền tảng và trường đại học phía sau công việc của chúng tôi.",
     principlesEyebrow: "Nguyên tắc",
     principlesTitle: "Bốn chuẩn mực cho mọi hệ thống.",
     principles: [
@@ -948,6 +1478,7 @@ const vi: Copy = {
     ],
   },
   caseStudy: {
+    tabs: { overview: "Tổng quan", build: "Cách xây dựng" },
     allProducts: "Tất cả sản phẩm",
     event: "Sự kiện",
     with: "Đơn vị",
@@ -979,7 +1510,7 @@ const vi: Copy = {
     company: "Công ty",
     country: "Việt Nam",
     photos:
-      "Hình ảnh: ảnh giấy phép mở từ Wikimedia Commons và StockSnap (CC0 / phạm vi công cộng).",
+      "Hình ảnh: ảnh giấy phép mở từ Wikimedia Commons và StockSnap (CC0, phạm vi công cộng; ảnh khu ẩm thực © Martin Lewison, CC BY 2.0). Âm thanh giao diện: Kenney, CC0.",
   },
   settings: {
     open: "Tuỳ chỉnh",
@@ -997,6 +1528,7 @@ const vi: Copy = {
     volume: "Âm lượng",
     sfx: "Âm thanh giao diện",
     saved: "Đã lưu trên thiết bị này.",
+    soundPrompt: "Chạm bất kỳ đâu để bật nhạc nền",
   },
   notFound: { title: "Trang này không tồn tại.", back: "Về trang chủ" },
 };

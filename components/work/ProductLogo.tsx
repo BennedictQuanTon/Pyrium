@@ -15,7 +15,8 @@ const IGNIS = { sm: "h-[18px]", md: "h-[22px]", lg: "h-[32px]" };
 /**
  * Each product's own lockup, taken from its repository: the Weatherise mark (favicon.svg) with
  * its sans wordmark, The Lantern's lantern glyph with its Libre Baskerville name, the IGNIS
- * wordmark with its yellow flame, and Unfound's open-arch pin with its lowercase name.
+ * wordmark with its yellow flame, and Unfound's open-arch pin with its lowercase name. Lean
+ * Inference has no repository logo, so it gets a plain wordmark with stepping-down bars.
  */
 export function ProductLogo({ slug, size = "md", tone = "dark", className = "" }: Props) {
   const ink = tone === "light" ? "text-snow" : "text-[#111111]";
@@ -72,6 +73,18 @@ export function ProductLogo({ slug, size = "md", tone = "dark", className = "" }
         >
           The Lantern
         </span>
+      </span>
+    );
+  }
+  if (slug === "inference") {
+    return (
+      <span className={`inline-flex items-center gap-2.5 ${ink} ${className}`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" className={MARK[size]}>
+          <rect x="3" y="4" width="18" height="4" rx="2" fill="currentColor" opacity="0.25" />
+          <rect x="3" y="10" width="12" height="4" rx="2" fill="currentColor" opacity="0.55" />
+          <rect x="3" y="16" width="6" height="4" rx="2" fill="#d9292f" />
+        </svg>
+        <span className={`font-semibold tracking-[-0.02em] ${TEXT[size]}`}>Lean Inference</span>
       </span>
     );
   }

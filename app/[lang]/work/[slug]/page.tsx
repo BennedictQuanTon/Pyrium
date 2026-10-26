@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
-import { DraftTag, PillButton, SmartLink } from "@/components/ui/Primitives";
-import { ProductMetrics } from "@/components/work/Metrics";
+import { PillButton, SmartLink } from "@/components/ui/Primitives";
+import { CaseTabs } from "@/components/work/CaseTabs";
+import { ProductOutputs } from "@/components/work/Metrics";
 import { ProductFrame } from "@/components/work/ProductFrame";
 import { ProductLogo } from "@/components/work/ProductLogo";
+import { TestimonialDeck } from "@/components/work/TestimonialDeck";
 import { getCopy } from "@/content/copy";
-import { getProduct, nextProduct, productOrder } from "@/content/products";
+import { getProduct, productOrder } from "@/content/products";
 import { isLang } from "@/lib/i18n";
 
 type Props = { params: Promise<{ lang: string; slug: string }> };
@@ -24,9 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Case study: hero with the film (morphed in from the card), the numbers, the story (problem
- * → what we built), how the work is split between model, code and people, the build log,
- * screens, outcomes, a review and the next product.
+ * Case study overview: hero with the film (morphed in from the card) and the three outputs, the
+ * story (problem → what we built), then the technical outcomes and two pilot quotes. How the
+ * product is built lives on its own tab at /work/[slug]/build.
  */
 export default async function CaseStudyPage({ params }: Props) {
   const { lang, slug } = await params;
@@ -35,7 +37,6 @@ export default async function CaseStudyPage({ params }: Props) {
   if (!product) notFound();
   const copy = getCopy(lang);
   const t = copy.caseStudy;
-  const next = nextProduct(lang, product.slug);
   const meta = [
     { label: t.event, value: product.event },
     { label: t.with, value: product.organizers },
@@ -43,20 +44,11 @@ export default async function CaseStudyPage({ params }: Props) {
     ...(product.team ? [{ label: t.team, value: product.team }] : []),
     ...(product.result ? [{ label: t.result, value: product.result }] : []),
   ];
-  const steps = [
-    { key: "model", name: t.steps.model },
-    { key: "code", name: t.steps.code },
-    { key: "human", name: t.steps.human },
-  ] as const;
 
   return (
     <PageTransition>
       {/* Hero */}
       <section className="relative overflow-hidden bg-fog">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-48 left-1/2 size-[720px] -translate-x-1/2 rounded-full bg-signal/15 blur-[140px]"
-        />
         <div className="page-width relative flex flex-col gap-10 pt-32 pb-16 md:pt-40">
           <SmartLink
             href="/work"
@@ -115,15 +107,12 @@ export default async function CaseStudyPage({ params }: Props) {
               </div>
             </div>
           </div>
+          <div className="hero-in" style={{ ["--hero-i" as string]: 5 }}>
+            <CaseTabs slug={product.slug} labels={t.tabs} current="overview" />
+          </div>
           <ProductFrame product={product} morph />
-        </div>
-      </section>
-
-      {/* Numbers */}
-      <section className="bg-fog pb-20 md:pb-28">
-        <div className="page-width">
           <Reveal className="glass p-7 md:p-10">
-            <ProductMetrics product={product} size="lg" />
+            <ProductOutputs product={product} labels={copy.showcase} size="lg" />
           </Reveal>
         </div>
       </section>
@@ -154,107 +143,7 @@ export default async function CaseStudyPage({ params }: Props) {
         </div>
       </section>
 
-      {/* The split */}
-      <section className="section relative overflow-hidden bg-deep-slate">
-        {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo under glass */}
-        <img
-          src={product.photo}
-          alt=""
-          loading="lazy"
-          className="photo-mono absolute inset-0 size-full object-cover opacity-30"
-        />
-        <div className="page-width relative flex flex-col gap-12">
-          <Reveal className="flex flex-col gap-4">
-            <p className="eyebrow flex items-center gap-2 text-silver">
-              <span aria-hidden="true" className="h-px w-6 bg-signal" />
-              {t.split}
-            </p>
-            <h2 className="max-w-[22ch] text-heading text-snow md:text-heading-lg">
-              {t.splitTitle}
-            </h2>
-          </Reveal>
-          <Reveal delay={1}>
-            <ol className="grid gap-4 md:grid-cols-3">
-              {steps.map((step, index) => (
-                <li key={step.key} className="glass-dark flex flex-col gap-5 p-7 md:p-8">
-                  <div className="flex items-center gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="rail-node size-3 rounded-full"
-                      style={{ ["--d" as string]: `${index * 0.4}s` }}
-                    />
-                    <span className="text-[13px] font-medium text-silver">{step.name}</span>
-                  </div>
-                  <p className="text-[17px] leading-[1.55] text-snow">{product.split[step.key]}</p>
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Build log */}
-      <section className="section bg-fog">
-        <div className="page-width grid gap-12 md:grid-cols-[1fr_2fr]">
-          <Reveal className="self-start md:sticky md:top-32">
-            <h2 className="text-heading">{t.log}</h2>
-          </Reveal>
-          <ol className="flex flex-col">
-            {product.process.map((step, index) => (
-              <li key={step.title}>
-                <Reveal
-                  delay={index}
-                  className="grid grid-cols-[3rem_1fr] gap-4 border-t border-ink/10 py-7"
-                >
-                  <span className="tabular text-[14px] text-signal">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="font-sans text-[18px] font-medium">{step.title}</h3>
-                    <p className="text-[15px] text-stone">{step.detail}</p>
-                  </div>
-                </Reveal>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* Screens */}
-      <section className="section bg-snow" aria-labelledby="screens-title">
-        <div className="page-width mb-10 flex items-end justify-between gap-6">
-          <Reveal>
-            <h2 id="screens-title" className="text-heading">
-              {t.inside}
-            </h2>
-          </Reveal>
-          <p className="hidden text-[13px] text-stone md:block">{t.scroll}</p>
-        </div>
-        <Reveal delay={1}>
-          <ul className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 md:px-[max(2rem,calc((100vw-1200px)/2+2rem))]">
-            {product.screens.map((src, index) => (
-              <li key={src} className="w-[85vw] shrink-0 snap-center md:w-[720px]">
-                <figure className="flex flex-col gap-4">
-                  <div className="overflow-hidden rounded-cards bg-fog p-2 shadow-subtle">
-                    {/* biome-ignore lint/performance/noImgElement: product screenshot; next/image adds nothing for these static webp files */}
-                    <img
-                      src={src}
-                      alt={product.captions[index]}
-                      loading="lazy"
-                      className="aspect-[16/10] w-full rounded-[18px] object-cover object-top"
-                    />
-                  </div>
-                  <figcaption className="text-[14px] text-stone">
-                    {product.captions[index]}
-                  </figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </section>
-
-      {/* Outcomes and review */}
+      {/* Outcomes and pilot quotes */}
       <section className="section bg-blueprint">
         <div className="page-width grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <Reveal className="flex flex-col gap-6">
@@ -282,55 +171,19 @@ export default async function CaseStudyPage({ params }: Props) {
               ))}
             </ul>
             <p className="text-[12px] text-stone">{t.outcomesNote}</p>
+            <PillButton href={`/work/${product.slug}/build`} variant="ghost" className="self-start">
+              {t.tabs.build} →
+            </PillButton>
           </Reveal>
           <Reveal delay={1}>
-            <figure className="glass flex flex-col gap-6 p-8 md:p-10">
-              <span
-                aria-hidden="true"
-                className="font-display text-[56px] leading-none text-signal"
-              >
-                “
-              </span>
-              <blockquote className="-mt-6 font-display text-[22px] leading-[1.4] text-ink">
-                {product.review.quote}
-              </blockquote>
-              <figcaption className="flex items-center justify-between gap-3">
-                <span className="text-[13px] text-stone">{product.review.role}</span>
-                {product.review.draft ? <DraftTag label={copy.showcase.draft} /> : null}
-              </figcaption>
-            </figure>
+            <TestimonialDeck
+              quotes={product.testimonials}
+              avatar={product.slug}
+              anonymous={copy.showcase.anonymous}
+              label={copy.showcase.pilot}
+            />
           </Reveal>
         </div>
-      </section>
-
-      {/* Next product */}
-      <section className="bg-fog">
-        <SmartLink
-          href={`/work/${next.slug}`}
-          className="group relative block overflow-hidden bg-deep-slate"
-          aria-label={`${t.next}: ${next.name}`}
-        >
-          {/* biome-ignore lint/performance/noImgElement: decorative open-licence photo */}
-          <img
-            src={next.photo}
-            alt=""
-            loading="lazy"
-            className="photo-mono absolute inset-0 size-full object-cover opacity-40 transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-          />
-          <div className="page-width relative flex flex-col gap-4 py-24 md:py-32">
-            <span className="eyebrow text-silver">{t.next}</span>
-            <span className="flex items-center gap-6 text-[48px] leading-none tracking-[-1px] text-snow md:text-[88px]">
-              <span className="font-display">{next.name}</span>
-              <span
-                aria-hidden="true"
-                className="text-signal transition-transform duration-500 group-hover:translate-x-3"
-              >
-                →
-              </span>
-            </span>
-            <span className="max-w-[48ch] text-[16px] text-silver">{next.tagline}</span>
-          </div>
-        </SmartLink>
       </section>
     </PageTransition>
   );

@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
+import { Compare } from "@/components/home/Compare";
 import { Core } from "@/components/home/Core";
 import { Problem } from "@/components/home/Problem";
 import {
   Engagement,
   Founders,
-  LabList,
   LogoMarquee,
   ProductStrip,
   Testimonials,
@@ -13,22 +13,22 @@ import {
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PillButton, SectionHeading } from "@/components/ui/Primitives";
-import { ProductShowcase } from "@/components/work/ProductShowcase";
+import { ProductGroups } from "@/components/work/ProductGroups";
 import { getCopy } from "@/content/copy";
 import { getProducts } from "@/content/products";
 import { isLang } from "@/lib/i18n";
 
 /**
- * The Pyrium home page: hero over the red arc with the organizer marquee; the problem as a
- * liquid-glass bento; the core (Agentic, Private, Cost-efficient); the four products with
- * their impact numbers and the pinned showcase; testimonials; the engagement path; the
- * founders; and the closing statement. Sources are listed in the site footer.
+ * The Pyrium home page: hero over the red arc with the organizer marquee; the problem told for
+ * FnB operators; the core (Agentic, Private, Cost-efficient, Deep Domain) and how it compares;
+ * the products grouped by industry; testimonials; working together; the founders and where
+ * we're going; and the closing statement. Sources are listed, with dates, in the footer.
  */
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const copy = getCopy(lang);
-  const { hero, productsSection, engagement, team, closing } = copy;
+  const { hero, productsSection, team, closing } = copy;
   const products = getProducts(lang);
 
   return (
@@ -79,10 +79,11 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       {/* 2 · The problem, as cited figures on glass over concrete */}
       <Problem lang={lang} />
 
-      {/* 3 · The core: Agentic, Private, Cost-efficient */}
+      {/* 3 · The core: Agentic, Private, Cost-efficient, Deep Domain — and how it compares */}
       <Core copy={copy.core} />
+      <Compare lang={lang} />
 
-      {/* 4 · Products: lockups and impact numbers, the pinned showcase, then the rest of the lab */}
+      {/* 4 · Products: lockups and headline numbers, then every product grouped by industry */}
       <section id="products" className="section scroll-mt-16 bg-fog">
         <div className="flex flex-col gap-16 md:gap-24">
           <div className="page-width">
@@ -95,24 +96,16 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             </Reveal>
           </div>
           <ProductStrip products={products} lang={lang} />
-          <ProductShowcase products={products} labels={copy.showcase} />
-          <LabList lang={lang} />
+          <ProductGroups lang={lang} />
         </div>
       </section>
 
       {/* 5 · Testimonials */}
       <Testimonials lang={lang} />
 
-      {/* 6 · Working together: the path, its gates and the packages */}
-      <section id="engagement" className="section bg-blueprint">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading
-              eyebrow={engagement.eyebrow}
-              title={engagement.title}
-              body={engagement.body}
-            />
-          </Reveal>
+      {/* 6 · Working together: the journey, its gates and the packages */}
+      <section id="engagement" className="section bg-fog">
+        <div className="page-width">
           <Engagement lang={lang} />
         </div>
       </section>
@@ -124,7 +117,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             <Reveal>
               <SectionHeading eyebrow={team.eyebrow} title={team.title} />
             </Reveal>
-            <PillButton href="/about" variant="ghost">
+            <PillButton href="/about/team" variant="ghost">
               {team.about}
             </PillButton>
           </div>
