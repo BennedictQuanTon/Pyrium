@@ -43,6 +43,11 @@ export function Nav() {
     return () => window.removeEventListener("scroll", update);
   }, []);
 
+  // Keep <html lang> in step with the page language.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   // Close the mobile sheet on navigation.
   // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value read
   useEffect(() => setOpen(false), [pathname]);

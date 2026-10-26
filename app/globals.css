@@ -97,83 +97,16 @@
   );
 }
 
-/* Background fields from the brand sheet's "Landing Page Background Templates": 02 Problem /
-   Control Grid — a faint diagonal grid of grey diagonals with isolated red crosses and solid
-   red nodes, weighted to the section edges so the center stays clear for content. */
+/* Section grounds are plain on purpose: no decorative grids, dots or traces. The names stay so
+   sections keep their rhythm: blueprint = the fog ground, signal-frame = the closing ground with
+   a single red hairline above the statement. */
 @utility bg-blueprint {
-  background-image:
-    /* red nodes on the upper-left and right edges */
-    radial-gradient(3px 3px at 92% 12%, rgba(217, 41, 47, 0.5) 50%, transparent 51%),
-    radial-gradient(2.5px 2.5px at 7% 38%, rgba(217, 41, 47, 0.42) 50%, transparent 51%),
-    radial-gradient(2.5px 2.5px at 96% 72%, rgba(217, 41, 47, 0.36) 50%, transparent 51%),
-    /* grey diagonal construction lines */
-    linear-gradient(
-      63deg,
-      transparent 49.92%,
-      rgba(72, 71, 88, 0.05) 49.92%,
-      rgba(72, 71, 88, 0.05) 50.08%,
-      transparent 50.08%
-    ),
-    linear-gradient(
-      -63deg,
-      transparent 49.94%,
-      rgba(72, 71, 88, 0.04) 49.94%,
-      rgba(72, 71, 88, 0.04) 50.06%,
-      transparent 50.06%
-    ),
-    linear-gradient(
-      24deg,
-      transparent 49.95%,
-      rgba(72, 71, 88, 0.035) 49.95%,
-      rgba(72, 71, 88, 0.035) 50.05%,
-      transparent 50.05%
-    );
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    220px 220px,
-    260px 260px,
-    340px 340px;
+  background-color: var(--color-fog);
 }
 
-/* 03 Capabilities / Architectural Planes — faint grey facet planes sweeping from the top-left,
-like folded architectural sheets, with a whisper of red along one fold. */ @utility bg-planes {
-  background-image:
-    linear-gradient(
-      118deg,
-      rgba(72, 71, 88, 0.055) 0%,
-      rgba(72, 71, 88, 0.028) 17%,
-      transparent 34%
-    ),
-    linear-gradient(
-      118deg,
-      transparent 20%,
-      rgba(72, 71, 88, 0.035) 38%,
-      rgba(72, 71, 88, 0.016) 52%,
-      transparent 66%
-    ),
-    linear-gradient(298deg, rgba(217, 41, 47, 0.045) 0%, transparent 22%),
-    linear-gradient(0deg, rgba(72, 71, 88, 0.022) 0%, transparent 12%);
-}
-
-/* 04 CTA / Signal Frame — hairline red circuit traces running in from the corners with small
-   red terminals, framing the closing statement without touching the copy. */
 @utility signal-frame {
-  background-image:
-    radial-gradient(4px 4px at 11.5% 21%, rgba(217, 41, 47, 0.55) 50%, transparent 51%),
-    radial-gradient(4px 4px at 88.5% 79%, rgba(217, 41, 47, 0.55) 50%, transparent 51%),
-    linear-gradient(
-      to right,
-      transparent 10.5%,
-      rgba(217, 41, 47, 0.16) 10.5%,
-      rgba(217, 41, 47, 0.16) calc(10.5% + 1px),
-      transparent calc(10.5% + 1px),
-      transparent 89.5%,
-      rgba(217, 41, 47, 0.16) 89.5%,
-      rgba(217, 41, 47, 0.16) calc(89.5% + 1px),
-      transparent calc(89.5% + 1px)
-    );
+  background-color: var(--color-snow);
+  border-top: 1px solid rgba(17, 17, 17, 0.06);
 }
 
 @layer base {
@@ -617,59 +550,34 @@ html.welcome-skip .hero-in {
   animation: none;
 }
 
-/* Forward: the old page recedes up and softens; the new page rises through a rounded
-   aperture that opens to full bleed. Back mirrors the direction. */
-::view-transition-old(.page-forward) {
-  animation: 280ms cubic-bezier(0.4, 0, 1, 1) both vt-recede-up;
+/* Forward: the old page fades and lifts a few pixels; the new page rises in after it. Only
+   opacity and transform animate — both stay on the compositor, so the change is smooth even on
+   long pages with video. Back mirrors the direction. */
+::view-transition-old(.page-forward),
+::view-transition-old(.page-back) {
+  animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
 }
 ::view-transition-new(.page-forward) {
-  animation: 720ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-rise;
-}
-::view-transition-old(.page-back) {
-  animation: 280ms cubic-bezier(0.4, 0, 1, 1) both vt-recede-down;
+  animation: 460ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both vt-in-up;
 }
 ::view-transition-new(.page-back) {
-  animation: 720ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-drop;
+  animation: 460ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both vt-in-down;
 }
-
-@keyframes vt-recede-up {
+@keyframes vt-out {
   to {
     opacity: 0;
-    transform: translateY(-28px) scale(0.985);
-    filter: blur(8px);
   }
 }
-@keyframes vt-recede-down {
-  to {
-    opacity: 0;
-    transform: translateY(28px) scale(0.985);
-    filter: blur(8px);
-  }
-}
-@keyframes vt-rise {
+@keyframes vt-in-up {
   from {
     opacity: 0;
-    transform: translateY(56px);
-    clip-path: inset(6% 3% 0 3% round 40px);
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    clip-path: inset(0 0 0 0 round 0);
-    filter: blur(0);
+    transform: translateY(18px);
   }
 }
-@keyframes vt-drop {
+@keyframes vt-in-down {
   from {
     opacity: 0;
-    transform: translateY(-40px);
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
+    transform: translateY(-18px);
   }
 }
 
@@ -980,11 +888,8 @@ html.js .reveal.is-visible .stat-rule {
 }
 .core-field {
   background:
-    radial-gradient(60% 50% at 85% 0%, rgba(217, 41, 47, 0.22), transparent 70%),
-    radial-gradient(50% 45% at 0% 100%, rgba(72, 71, 88, 0.35), transparent 70%),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 64px 64px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 64px 64px;
-  mask-image: linear-gradient(180deg, black, rgba(0, 0, 0, 0.6) 70%, transparent);
+    radial-gradient(55% 45% at 88% 0%, rgba(217, 41, 47, 0.2), transparent 70%),
+    radial-gradient(45% 40% at 0% 100%, rgba(72, 71, 88, 0.32), transparent 70%);
 }
 
 /* The title arrives word by word. */
@@ -1132,8 +1037,22 @@ html.js .reveal.is-visible .core-word {
   stroke-width: 1.2;
 }
 .meet .meet-core {
-  fill: var(--color-signal);
-  stroke: none;
+  fill: #111111;
+  stroke: var(--color-signal);
+  stroke-width: 1.5;
+}
+.meet .meet-label {
+  fill: var(--color-silver);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+html.js .reveal .meet-mark {
+  opacity: 0;
+}
+html.js .reveal.is-visible .meet-mark {
+  opacity: 1;
+  transition: opacity 0.6s ease 1.5s;
 }
 html.js .reveal .meet-a {
   transform: translate(-18px, -6px);
@@ -1142,7 +1061,10 @@ html.js .reveal .meet-b {
   transform: translate(18px, -6px);
 }
 html.js .reveal .meet-c {
-  transform: translateY(16px);
+  transform: translate(-18px, 18px);
+}
+html.js .reveal .meet-d {
+  transform: translate(18px, 18px);
 }
 html.js .reveal .meet-core {
   transform: scale(0);
@@ -1151,7 +1073,8 @@ html.js .reveal .meet-core {
 }
 html.js .reveal.is-visible .meet-a,
 html.js .reveal.is-visible .meet-b,
-html.js .reveal.is-visible .meet-c {
+html.js .reveal.is-visible .meet-c,
+html.js .reveal.is-visible .meet-d {
   transform: none;
   transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
@@ -1283,4 +1206,97 @@ html[data-motion="off"]::view-transition-new(*),
 html[data-motion="off"]::view-transition-group(*) {
   /* biome-ignore lint/complexity/noImportantStyles: the visitor's "motion off" must beat every utility */
   animation: none !important;
+}
+
+/* ---- Photography, decks, journey, vision, comparison ----------------------------------- */
+
+/* Editorial photos stay natural but quiet: a touch less saturation, a touch more contrast. */
+.photo-soft {
+  filter: saturate(0.82) contrast(1.04);
+}
+
+/* Two pilot quotes stacked: the back card peeks out tilted; turning slides it forward. */
+.deck-card {
+  transition:
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease,
+    filter 0.5s ease;
+  transform-origin: 50% 100%;
+}
+.deck-card[data-front="false"] {
+  z-index: 0;
+  transform: translateY(14px) scale(0.95) rotate(-1.6deg);
+  opacity: 0.55;
+  filter: blur(1px);
+}
+.deck-card[data-front="true"] {
+  z-index: 1;
+}
+.deck:hover .deck-card[data-front="false"] {
+  transform: translateY(20px) scale(0.95) rotate(-3deg);
+}
+
+/* The journey rail fills red as each step reveals. */
+html.js .reveal .journey-fill {
+  transform: scaleY(0);
+}
+html.js .reveal.is-visible .journey-fill {
+  transform: none;
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.4s;
+}
+.journey-node {
+  transition:
+    border-color 0.5s ease,
+    background 0.5s ease,
+    color 0.5s ease;
+}
+html.js .reveal.is-visible .journey-node {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-snow);
+}
+
+/* Vision panel: the photo darkens toward the text. */
+.vision-wash {
+  background: linear-gradient(
+    110deg,
+    rgba(17, 17, 17, 0.94) 0%,
+    rgba(17, 17, 17, 0.78) 45%,
+    rgba(17, 17, 17, 0.55) 100%
+  );
+}
+
+/* The Pyrium column in the comparison table. */
+.compare .compare-us {
+  background: rgba(217, 41, 47, 0.045);
+  box-shadow:
+    inset 1px 0 0 rgba(217, 41, 47, 0.18),
+    inset -1px 0 0 rgba(217, 41, 47, 0.18);
+}
+.compare th.compare-us {
+  box-shadow:
+    inset 1px 0 0 rgba(217, 41, 47, 0.18),
+    inset -1px 0 0 rgba(217, 41, 47, 0.18),
+    inset 0 2px 0 var(--color-signal);
+}
+.compare tr:last-child .compare-us {
+  box-shadow:
+    inset 1px 0 0 rgba(217, 41, 47, 0.18),
+    inset -1px 0 0 rgba(217, 41, 47, 0.18),
+    inset 0 -1px 0 rgba(217, 41, 47, 0.18);
+}
+.compare tbody tr:hover th,
+.compare tbody tr:hover td {
+  background-color: rgba(17, 17, 17, 0.02);
+}
+
+/* The sound chip rises in from the corner. */
+.sound-chip {
+  animation: sound-chip-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+}
+@keyframes sound-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }

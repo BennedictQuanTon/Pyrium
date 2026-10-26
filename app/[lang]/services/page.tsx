@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Compare } from "@/components/home/Compare";
 import { Engagement } from "@/components/home/Sections";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
@@ -69,9 +70,9 @@ export default async function ServicesPage({ params }: Props) {
                         </span>
                         <span className="max-w-[18ch] text-right text-[13px] text-graphite-ink">
                           <span className="block font-display text-[24px] text-ink">
-                            {proof.metrics[0].value}
+                            {proof.outputs.core.value}
                           </span>
-                          {proof.metrics[0].label}
+                          {proof.outputs.core.label}
                         </span>
                       </SmartLink>
                     ) : null}
@@ -190,16 +191,12 @@ export default async function ServicesPage({ params }: Props) {
         </div>
       </section>
 
+      {/* How we compare */}
+      <Compare lang={lang} />
+
       {/* Engagement */}
-      <section className="section bg-blueprint">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading
-              eyebrow={copy.engagement.eyebrow}
-              title={copy.engagement.title}
-              body={copy.engagement.body}
-            />
-          </Reveal>
+      <section className="section bg-fog">
+        <div className="page-width">
           <Engagement lang={lang} />
         </div>
       </section>

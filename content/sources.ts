@@ -1,32 +1,68 @@
 import type { Source, SourceId } from "./types";
 
 /**
- * Sources from the proposal's register (§16), with URLs taken from the PDF's own links.
- * Checked 2026-10-20. Gartner's May 2026 spending forecast was superseded by its September 2026
- * update, so the page cites the newer one and keeps the May release for reference.
+ * Every source the site cites, with the date the team last checked the figure on the
+ * publisher's page. Survey and vendor figures keep the scope their publishers state; the page
+ * text says which market each number describes.
  */
 export const sources = {
-  "gartner-cio-2026-10": {
-    id: "gartner-cio-2026-10",
-    publisher: "Gartner",
-    date: "Oct 2026",
+  "nra-2026-07": {
+    id: "nra-2026-07",
+    publisher: "National Restaurant Association",
+    date: "8 Jul 2026",
+    title: "Elevated costs continue to pressure restaurant profitability",
+    url: "https://www.restaurant.org/research-and-media/research/restaurant-economic-insights/analysis-commentary/elevated-costs-continue-to-pressure-restaurant-profitability/",
+    accessed: "26 Oct 2026",
+  },
+  "bls-2026-10": {
+    id: "bls-2026-10",
+    publisher: "U.S. Bureau of Labor Statistics",
+    date: "13 Oct 2026",
+    title: "Quits rate 3.5 percent in accommodation and food services, August 2026",
+    url: "https://www.bls.gov/opub/ted/2026/quits-rate-3-5-percent-in-accommodation-and-food-services-august-2026.htm",
+    accessed: "26 Oct 2026",
+  },
+  "ipos-2025": {
+    id: "ipos-2025",
+    publisher: "iPOS.vn & Nestlé Professional, via Thời báo Tài chính Việt Nam",
+    date: "8 Apr 2026",
+    title: "Vietnam F&B market report 2025 (Thị trường kinh doanh ẩm thực tại Việt Nam năm 2025)",
+    url: "https://thoibaotaichinhvietnam.vn/nganh-fb-huong-toi-760-nghin-ty-dong-doanh-thu-mo-tam-ve-vang-cho-tang-truong-ben-vung-195278.html",
+    accessed: "26 Oct 2026",
+  },
+  "r365-2026": {
+    id: "r365-2026",
+    publisher: "Restaurant365",
+    date: "Mid-2026",
     title:
-      "Only 13% of CIOs Say Their Enterprise Has Realized Significant or Transformational Value from AI",
-    url: "https://www.gartner.com/en/newsroom/press-releases/2026-10-19-gartner-survey-finds-only-13-percent-of-cios-say-their-enterprise-has-realized-significant-or-transformational-value-from-ai",
+      "2026 State of the Restaurant Industry: Mid-Year Report (420+ operators, ~10,000 locations)",
+    url: "https://www.restaurant365.com/guides/2026-state-of-the-restaurant-industry-mid-year-report/",
+    accessed: "26 Oct 2026",
   },
-  "gartner-spend-2026-09": {
-    id: "gartner-spend-2026-09",
-    publisher: "Gartner",
-    date: "Sep 2026",
-    title: "Gartner Forecasts Worldwide AI Spending to Grow 49.5% in 2026",
-    url: "https://www.gartner.com/en/newsroom/press-releases/2026-09-16-gartner-forecasts-worldwide-ai-spending-to-grow-49-point-5-percent-in-2026",
+  "cisco-2024": {
+    id: "cisco-2024",
+    publisher: "Cisco",
+    date: "25 Jan 2024",
+    title:
+      "More than 1 in 4 organizations banned use of GenAI over privacy and data security risks",
+    url: "https://investor.cisco.com/news/news-details/2024/More-than-1-in-4-Organizations-Banned-Use-of-GenAI-Over-Privacy-and-Data-Security-Risks---New-Cisco-Study/default.aspx",
+    accessed: "26 Oct 2026",
   },
-  "gartner-spend-2026-05": {
-    id: "gartner-spend-2026-05",
+  "gartner-agentic-2025-06": {
+    id: "gartner-agentic-2025-06",
     publisher: "Gartner",
-    date: "May 2026",
-    title: "Gartner Forecasts Worldwide AI Spending to Grow 47% in 2026",
-    url: "https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-forecasts-worldwide-ai-spending-to-grow-47-percent-in-2026",
+    date: "25 Jun 2025",
+    title: "Gartner predicts over 40% of agentic AI projects will be canceled by end of 2027",
+    url: "https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027",
+    accessed: "26 Oct 2026",
+  },
+  "stanford-ai-index-2025": {
+    id: "stanford-ai-index-2025",
+    publisher: "Stanford HAI",
+    date: "Apr 2025",
+    title: "AI Index Report 2025 — inference cost at GPT-3.5 level, Nov 2022 → Oct 2024",
+    url: "https://hai.stanford.edu/ai-index/2025-ai-index-report",
+    accessed: "26 Oct 2026",
   },
   "gartner-agentic-2026-02": {
     id: "gartner-agentic-2026-02",
@@ -34,79 +70,75 @@ export const sources = {
     date: "Feb 2026",
     title: "Forecast Analysis: Agentic AI Spending in Software Markets",
     url: "https://www.gartner.com/en/documents/7455226",
+    accessed: "20 Oct 2026",
   },
-  "stanford-ai-index-2026": {
-    id: "stanford-ai-index-2026",
-    publisher: "Stanford HAI",
-    date: "2026",
-    title: "AI Index Report 2026 — Economy",
-    url: "https://hai.stanford.edu/ai-index/2026-ai-index-report/economy",
-  },
-  "deloitte-state-of-ai-2026": {
-    id: "deloitte-state-of-ai-2026",
-    publisher: "Deloitte",
-    date: "2026",
-    title: "The State of AI in the Enterprise",
-    url: "https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html",
-  },
-  "econ-sea-2025": {
-    id: "econ-sea-2025",
-    publisher: "Google, Temasek & Bain",
-    date: "Nov 2025",
-    title: "e-Conomy SEA 2025",
-    url: "https://www.temasek.com.sg/en/news-and-resources/news-room/news/2025/e-conomy-sea-2025-report-aseans-digital-economy-poised-to-surpass-300-billion",
-  },
-  "vn-ai-strategy-2026": {
-    id: "vn-ai-strategy-2026",
-    publisher: "Government of Viet Nam",
-    date: "Aug 2026",
-    title: "Gov't approves National AI Strategy",
-    url: "https://en.baochinhphu.vn/govt-approves-national-ai-strategy-111260829094257423.htm",
+  "gartner-cio-2026-10": {
+    id: "gartner-cio-2026-10",
+    publisher: "Gartner",
+    date: "19 Oct 2026",
+    title:
+      "Only 13% of CIOs say their enterprise has realized significant or transformational value from AI",
+    url: "https://www.gartner.com/en/newsroom/press-releases/2026-10-19-gartner-survey-finds-only-13-percent-of-cios-say-their-enterprise-has-realized-significant-or-transformational-value-from-ai",
+    accessed: "20 Oct 2026",
   },
   "vn-pdp-law-2025": {
     id: "vn-pdp-law-2025",
     publisher: "Government of Viet Nam",
-    date: "in force 1 Jan 2026",
+    date: "In force 1 Jan 2026",
     title: "Law No. 91/2025/QH15 on Personal Data Protection",
     url: "https://vanban.chinhphu.vn/?docid=214590&pageid=27160",
+    accessed: "20 Oct 2026",
   },
-  "eu-ai-act": {
-    id: "eu-ai-act",
-    publisher: "European Commission",
-    date: "2026",
-    title: "AI Act Service Desk — enforcement timing",
-    url: "https://ai-act-service-desk.ec.europa.eu/en/ai-act/faq/when-does-enforcement-start",
+  "openai-enterprise": {
+    id: "openai-enterprise",
+    publisher: "OpenAI",
+    date: "Current page",
+    title: "Enterprise privacy at OpenAI",
+    url: "https://openai.com/enterprise-privacy/",
+    accessed: "26 Oct 2026",
   },
-  "nist-ai-rmf": {
-    id: "nist-ai-rmf",
-    publisher: "NIST",
-    date: "2024, updated 2026",
-    title: "AI Risk Management Framework",
-    url: "https://www.nist.gov/itl/ai-risk-management-framework",
+  "n8n-hosting": {
+    id: "n8n-hosting",
+    publisher: "n8n",
+    date: "Current docs",
+    title: "n8n Docs — hosting and self-hosting",
+    url: "https://docs.n8n.io/hosting/",
+    accessed: "26 Oct 2026",
   },
-  "gartner-saas-2026-07": {
-    id: "gartner-saas-2026-07",
-    publisher: "Gartner",
-    date: "Jul 2026",
-    title: "$234 Billion in Enterprise Application Software Spend Is at Risk from Agentic AI",
-    url: "https://www.gartner.com/en/newsroom/press-releases/2026-07-01-gartner-says-us-dollars-234-billion-in-enterprise-application-software-spend-is-at-risk-from-agentic-artificial-intelligence",
+  "copilot-studio": {
+    id: "copilot-studio",
+    publisher: "Microsoft Learn",
+    date: "Updated 2026",
+    title: "Copilot Studio — security and governance guidance",
+    url: "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/sec-gov-phase2",
+    accessed: "20 Oct 2026",
+  },
+  "litellm-routing": {
+    id: "litellm-routing",
+    publisher: "LiteLLM",
+    date: "Current docs",
+    title: "LiteLLM Docs — routing and load balancing",
+    url: "https://docs.litellm.ai/docs/routing",
+    accessed: "20 Oct 2026",
   },
 } satisfies Record<SourceId, Source>;
 
 /** Display order for the numbered citation list; a source's number is its position here + 1. */
 export const sourceOrder: SourceId[] = [
-  "stanford-ai-index-2026",
-  "gartner-cio-2026-10",
-  "deloitte-state-of-ai-2026",
-  "gartner-spend-2026-09",
-  "econ-sea-2025",
-  "vn-ai-strategy-2026",
-  "vn-pdp-law-2025",
-  "eu-ai-act",
-  "nist-ai-rmf",
+  "nra-2026-07",
+  "bls-2026-10",
+  "ipos-2025",
+  "r365-2026",
+  "cisco-2024",
+  "gartner-agentic-2025-06",
+  "stanford-ai-index-2025",
   "gartner-agentic-2026-02",
-  "gartner-saas-2026-07",
-  "gartner-spend-2026-05",
+  "gartner-cio-2026-10",
+  "vn-pdp-law-2025",
+  "openai-enterprise",
+  "n8n-hosting",
+  "copilot-studio",
+  "litellm-routing",
 ];
 
 export function citationNumber(id: SourceId): number {

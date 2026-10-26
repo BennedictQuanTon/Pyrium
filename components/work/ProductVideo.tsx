@@ -69,7 +69,7 @@ export function ProductVideo({ product, active = true, className = "" }: Props) 
           preload="metadata"
           aria-label={`${name}: product film`}
         >
-          <source src={media.webm} type="video/webm" />
+          {media.webm ? <source src={media.webm} type="video/webm" /> : null}
           <source src={media.mp4} type="video/mp4" />
         </video>
       )}

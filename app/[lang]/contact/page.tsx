@@ -35,10 +35,6 @@ export default async function ContactPage({ params }: Props) {
       <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
       <section className="relative overflow-hidden bg-fog pb-24 md:pb-32">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-20 -left-40 size-[520px] rounded-full bg-signal/15 blur-[130px]"
-        />
         <div className="page-width relative grid gap-6 lg:grid-cols-[1.25fr_1fr]">
           <Reveal pop>
             <form
@@ -147,15 +143,8 @@ export default async function ContactPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="section bg-blueprint">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading
-              eyebrow={copy.engagement.eyebrow}
-              title={copy.engagement.title}
-              body={copy.engagement.body}
-            />
-          </Reveal>
+      <section className="section bg-fog">
+        <div className="page-width">
           <Engagement lang={lang} />
         </div>
       </section>

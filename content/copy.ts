@@ -32,47 +32,110 @@ const en = {
   intro: { tagline: "Private AI. Built to act.", meter: "Private · Agentic · Cost-efficient" },
   problem: {
     eyebrow: "The problem",
-    title: "AI adoption is broad. Value in production is not.",
-    body: "Most organizations already use AI somewhere, yet agents that do real work are rare and oversight lags behind. The hard part is no longer access to models — it's reliable workflows, governance and a cost a business can justify.",
-    funnel: {
-      title: "From using AI to running agents",
+    title: "FnB runs on thin margins. AI could help — if it were safe, accurate and affordable.",
+    body: "Operators face rising costs and staff who don't stay. AI is arriving in the back office fast, but most tools ask owners to hand over their data, trust answers they can't check and pay bills they can't predict.",
+    squeezeTitle: "The squeeze",
+    squeeze: [
+      {
+        photo: "/images/open/chefs.jpg",
+        alt: "Chefs at the pass in a restaurant kitchen",
+        value: "42%",
+        label: "of US restaurant operators were not profitable in 2025",
+        detail: "Average restaurant costs rose 36% between 2019 and 2026.",
+        source: "nra-2026-07" as SourceId,
+      },
+      {
+        photo: "/images/open/workers.jpg",
+        alt: "A cook at work in a steaming market kitchen",
+        value: "3.5%",
+        label: "of food-service staff quit every month",
+        detail: "Almost double the 1.9% rate across all US industries (Aug 2026).",
+        source: "bls-2026-10" as SourceId,
+      },
+      {
+        photo: "/images/open/foodcourt.jpg",
+        alt: "A food counter at a food court in Da Nang",
+        value: "₫726.5T",
+        label: "Vietnam's FnB market in 2025 (726,500 billion VND), up 5.5%",
+        detail: "Spread across about 329,500 outlets, from street stalls to national chains.",
+        source: "ipos-2025" as SourceId,
+      },
+    ],
+    adoption: {
+      title: "AI is arriving in the back office",
+      caption: "of US restaurant operators use or pilot AI for back-office reporting",
+      from: { value: 25, label: "Start of 2026" },
+      to: { value: 69, label: "Mid-2026" },
+      result: { value: "62%", label: "of operators already using AI report lower labor costs" },
+      source: "r365-2026" as SourceId,
+    },
+    barriers: {
+      title: "What holds the rest back",
+      caption: "Top reasons US operators give for not adopting AI",
+      answerLabel: "Our answer",
       rows: [
-        { label: "Used AI in 2025", value: 88, display: "88%" },
-        { label: "Used generative AI in a business function", value: 70, display: "70%" },
-        { label: "Run AI agents, in nearly every function", value: 8, display: "Single digits" },
+        { value: 37, label: "Data privacy and security", answer: "Private AI" },
+        { value: 34, label: "Accuracy of AI output", answer: "Agentic AI with checks" },
+        { value: 29, label: "Implementation cost", answer: "Cost-efficient by design" },
       ],
-      gap: "The gap",
-      note: "The last bar marks “single digits”, not a measured value.",
+      source: "r365-2026" as SourceId,
     },
-    cio: {
-      label:
-        "of CIOs say their enterprise has realized significant or transformational value from AI.",
-    },
-    governance: {
-      label: "companies has mature governance for autonomous AI agents.",
-      detail: "3,235 senior leaders · 24 countries",
-    },
-    gates: {
-      title: "Few know when to stop",
-      rows: [
-        { value: 31, label: "of CIOs have rules for stopping pilots before production" },
-        { value: 17, label: "have rules for abandoning low-value AI in production" },
+    evidence: {
+      title: "Beyond restaurants",
+      items: [
+        {
+          value: "27%",
+          label: "of organizations had banned GenAI over privacy and data risk",
+          source: "cisco-2024" as SourceId,
+        },
+        {
+          value: "40%+",
+          label: "of agentic AI projects will be canceled by 2027 over cost, value or risk",
+          source: "gartner-agentic-2025-06" as SourceId,
+        },
+        {
+          value: "280×",
+          label: "cheaper to run GPT-3.5-level AI in late 2024 than in late 2022",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
       ],
     },
-    chart: {
-      title: "Worldwide AI spending",
-      unit: "US$ trillions",
-      published: "Published forecast",
-      derived: "Derived from growth rate",
-      note: "2026 is Gartner's published forecast (US$2.7T, +49.5%). 2025 and 2027 are calculated from the growth rates in the same release. Global spending is context, not Pyrium's market.",
+    segments: {
+      title: "From a single café to a 100-outlet chain",
+      body: "The need changes with size. The answer has to fit.",
+      needLabel: "The need",
+      fitLabel: "What fits",
+      items: [
+        {
+          photo: "/images/open/baristas.jpg",
+          alt: "Baristas working behind a café counter",
+          name: "Independent café or restaurant",
+          need: "No IT team. The owner runs the books, the rota and the ordering.",
+          fit: "A done-for-you automation, run and supported by us.",
+        },
+        {
+          photo: "/images/open/host-pos.jpg",
+          alt: "A restaurant host at a tablet point of sale",
+          name: "Multi-outlet chain",
+          need: "10–100 sites, with POS, inventory and supplier data split across systems.",
+          fit: "Private workflows across outlets, with one view of the business.",
+        },
+        {
+          photo: "/images/solution-racks.jpg",
+          alt: "Server racks in a data centre",
+          name: "Group & enterprise",
+          need: "Data governance, its own infrastructure and LLM bills at scale.",
+          fit: "Private deployment and cost control on your own stack.",
+        },
+      ],
     },
-    closer:
-      "The gap isn't adoption. It's getting AI to do real work, safely and at a sensible cost — and that's where Pyrium works.",
+    sourcesNote:
+      "Figures checked against each publisher's page on 26 Oct 2026. US figures describe the US market; Vietnam figures describe Vietnam.",
   },
   core: {
     eyebrow: "Our core",
-    title: "Agentic. Private. Cost-efficient.",
-    body: "Three commitments define every system we build. Each answers a shift already under way in how businesses adopt AI.",
+    title: "Agentic. Private. Cost-efficient. Domain-deep.",
+    body: "Four commitments define every system we build — and each one answers a reason operators hold back from AI today.",
     shiftLabel: "The shift",
     pillars: [
       {
@@ -87,9 +150,9 @@ const en = {
           "Human approval wherever money or customers are involved",
         ],
         fact: {
-          value: "US$985B",
-          label: "forecast agentic AI software spend by 2030",
-          source: "gartner-agentic-2026-02" as SourceId,
+          value: "40%+",
+          label: "of agentic AI projects will be canceled by 2027 — control is the difference",
+          source: "gartner-agentic-2025-06" as SourceId,
         },
       },
       {
@@ -121,29 +184,97 @@ const en = {
           "Cost and quality measured before and after",
         ],
         fact: {
-          value: "58%",
-          label: "of CIOs face more pressure to cut AI costs",
-          source: "gartner-cio-2026-10" as SourceId,
+          value: "280×",
+          label: "cheaper to run GPT-3.5-level AI than two years earlier",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
+      },
+      {
+        key: "domain",
+        name: "Deep Domain",
+        promise: "Built around how your business actually runs.",
+        from: "One generic assistant for every company",
+        to: "A system shaped by your SOPs, data and rules",
+        capabilities: [
+          "Discovery of your workflows, SOPs and exceptions",
+          "Bespoke design, evaluation sets and tuning for your domain",
+          "Support packages: monitoring, updates and a named team",
+        ],
+        fact: {
+          value: "69%",
+          label: "of US restaurant operators now use or pilot AI in the back office",
+          source: "r365-2026" as SourceId,
         },
       },
     ],
     meet: {
-      title: "Where all three meet",
-      body: "AI that does real work, inside your boundary, at a cost per task you can defend.",
+      title: "Where all four meet",
+      body: "AI that does real work, inside your boundary, built around your operation, at a cost per task you can defend.",
+      labels: ["Agentic", "Private", "Efficient", "Domain"],
+    },
+    compare: {
+      eyebrow: "How we compare",
+      title: "What you get with Pyrium that you don't get elsewhere.",
+      body: "Categories, not named vendors. Ratings are our assessment of what each category typically offers today.",
+      columns: [
+        "Pyrium",
+        "AI chat assistants",
+        "Automation platforms",
+        "Large integrators",
+        "Freelancers & in-house",
+      ],
+      legend: { full: "Yes", partial: "Partly", none: "No" },
+      rows: [
+        {
+          label: "Agentic workflows that finish the task",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Private deployment on your own infrastructure",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Cost per task optimized (routing, small models)",
+          values: ["full", "none", "partial", "partial", "none"],
+        },
+        {
+          label: "Deep domain knowledge: FnB, operations, finance",
+          values: ["full", "none", "none", "partial", "partial"],
+        },
+        {
+          label: "Bespoke design and tuning for your workflow",
+          values: ["full", "none", "partial", "full", "full"],
+        },
+        {
+          label: "Support packages and managed operations",
+          values: ["full", "partial", "partial", "full", "none"],
+        },
+        {
+          label: "Mid-market price and a 6–8 week pilot",
+          values: ["full", "full", "full", "none", "partial"],
+        },
+      ],
+      sourcesLabel: "Category references",
+      sources: [
+        "openai-enterprise",
+        "n8n-hosting",
+        "copilot-studio",
+        "litellm-routing",
+      ] as SourceId[],
     },
   },
   productsSection: {
     eyebrow: "Products",
-    title: "Built under deadline. Used by real people.",
-    body: "Four products the founders designed, built and shipped — each solving a real problem for a specific kind of user.",
+    title: "Built for real operations. Tested by real people.",
+    body: "Our products, grouped by the industry they serve. Each shows who it's for, what it fixes, and what changed for the people who tested it.",
     stats: [
-      { value: "200+", label: "people have used our products" },
+      { value: "200+", label: "people have tested our products" },
       { value: "~80%", label: "lower AI running cost than cloud-only pipelines", estimate: true },
       { value: "6", label: "hackathon awards & recognitions" },
     ],
     estimateMark: "est.",
     estimateNote:
-      "est. — team estimate from our benchmark runs: local and routed models vs. an equivalent cloud-API pipeline on the same tasks.",
+      "est. — team estimates. Running cost: our benchmark runs, local and routed models vs. an equivalent cloud-API pipeline on the same tasks. Product savings: modelled from pilot results; to be confirmed with each customer's own baseline.",
     awards: [
       "Top 10 · Vietnam AI Open",
       "6th & 18th · RMIT",
@@ -151,15 +282,35 @@ const en = {
       "Silver · AI Riser",
       "Round 2 · VN Youth Start-up",
     ],
-    moreTitle: "And more from the lab",
     allProducts: "All products",
+    groups: {
+      fnb: {
+        name: "FnB & Hospitality",
+        body: "Restaurants, cafés, tours and venues — faster service, fewer errors, fewer lost bookings.",
+      },
+      operations: {
+        name: "Industrial operations",
+        body: "Plants, central kitchens and factories — evidence a manager can sign.",
+      },
+      trust: { name: "Trust & privacy", body: "Sensitive data that insiders should never see." },
+      infrastructure: {
+        name: "Cost & infrastructure",
+        body: "Running LLMs for less, on the hardware you already have.",
+      },
+    },
   },
   showcase: {
     builtFor: "Built for",
+    solves: "Solves",
     recognition: "Recognition",
+    testers: "Tested by",
+    saving: "Expected saving",
+    core: "Core result",
+    pilot: "From the pilot",
     readCase: "Read the case study",
-    tryLive: "Try it live",
+    tryLive: "View demo",
     draft: "Draft",
+    est: "est.",
   },
   testimonials: {
     eyebrow: "Testimonials",
@@ -176,6 +327,7 @@ const en = {
     offers: [
       {
         name: "Pyrium Agents",
+        core: "agentic",
         role: "Core implementation",
         detail:
           "Agentic workflows, orchestration, tool calls and automation — with validations and human handoffs.",
@@ -183,19 +335,22 @@ const en = {
       },
       {
         name: "Pyrium Inference",
+        core: "efficient",
         role: "Efficiency",
         detail:
           "Model routing, caching, model selection, evaluation and fine-tuning to lower cost per successful task.",
-        proof: "weatherise" as const,
+        proof: "inference" as const,
       },
       {
         name: "Pyrium Private",
+        core: "private",
         role: "Trust & readiness",
         detail: "Private deployment, data-access design, auditability and operational controls.",
         proof: "unfound" as const,
       },
       {
         name: "Pyrium Domain",
+        core: "domain",
         role: "Repeatable IP",
         detail:
           "Reusable modules for FnB, finance and business operations, built from repeated delivery.",
@@ -378,7 +533,28 @@ const en = {
     links: { linkedin: "LinkedIn", email: "Email", portfolio: "Portfolio", soon: "Coming soon" },
     vision: {
       title: "Where we're going",
-      body: "Pyrium should own the work between AI capability and business value: complete the right workflow, within the right boundaries, at a cost the customer can justify. We earn product by repetition — the same workflow, controls and outcome, proven across customers — before we build a platform.",
+      statement: "Own the work between AI capability and business value.",
+      body: "Complete the right workflow, within the right boundaries, at a cost the customer can justify. We earn product by repetition — the same workflow, controls and outcome, proven across customers — before we build a platform.",
+      horizons: [
+        {
+          when: "Now",
+          title: "Prove it in pilots",
+          detail:
+            "Paid discovery and 6–8 week pilots with FnB and operations teams, measured against an agreed baseline.",
+        },
+        {
+          when: "12 months",
+          title: "Repeatable delivery",
+          detail:
+            "Reusable connectors, evaluators and guardrails, so each deployment ships faster without losing quality.",
+        },
+        {
+          when: "Beyond",
+          title: "A private operations copilot",
+          detail:
+            "A product earned by repetition: the same workflow, controls and outcome, proven across customers.",
+        },
+      ],
     },
   },
   about: {
@@ -470,7 +646,7 @@ const en = {
     company: "Company",
     country: "Vietnam",
     photos:
-      "Photography: open-licence images from Wikimedia Commons and StockSnap (CC0 / public domain).",
+      "Photography: open-licence images from Wikimedia Commons and StockSnap (CC0, public domain; food court photo © Martin Lewison, CC BY 2.0). Interface sounds: Kenney, CC0.",
   },
   settings: {
     open: "Preferences",
@@ -488,6 +664,7 @@ const en = {
     volume: "Volume",
     sfx: "Interface sounds",
     saved: "Saved on this device.",
+    soundPrompt: "Tap anywhere for ambient sound",
   },
   notFound: { title: "This page doesn't exist.", back: "Back to home" },
 };
@@ -522,47 +699,111 @@ const vi: Copy = {
   },
   problem: {
     eyebrow: "Vấn đề",
-    title: "AI được dùng rộng rãi. Giá trị thực tế thì chưa.",
-    body: "Hầu hết tổ chức đã dùng AI ở đâu đó, nhưng tác tử AI thực sự làm được việc vẫn hiếm và khâu giám sát còn chậm. Khó khăn không còn là tiếp cận mô hình — mà là quy trình vận hành tin cậy, quản trị chặt chẽ và chi phí doanh nghiệp chấp nhận được.",
-    funnel: {
-      title: "Từ dùng AI đến vận hành tác tử",
+    title:
+      "FnB vận hành trên biên lợi nhuận mỏng. AI có thể giúp — nếu nó an toàn, chính xác và vừa túi tiền.",
+    body: "Chủ kinh doanh đối mặt với chi phí tăng và nhân sự khó giữ. AI đang vào khâu back-office rất nhanh, nhưng phần lớn công cụ buộc họ giao dữ liệu ra ngoài, tin vào câu trả lời không kiểm chứng được và trả những hoá đơn không dự đoán được.",
+    squeezeTitle: "Áp lực",
+    squeeze: [
+      {
+        photo: "/images/open/chefs.jpg",
+        alt: "Đầu bếp ở quầy ra món trong bếp nhà hàng",
+        value: "42%",
+        label: "chủ nhà hàng tại Mỹ không có lãi trong năm 2025",
+        detail: "Chi phí trung bình của nhà hàng tăng 36% từ 2019 đến 2026.",
+        source: "nra-2026-07" as SourceId,
+      },
+      {
+        photo: "/images/open/workers.jpg",
+        alt: "Người nấu ăn trong gian bếp chợ nghi ngút khói",
+        value: "3,5%",
+        label: "nhân viên ngành ăn uống nghỉ việc mỗi tháng",
+        detail: "Gần gấp đôi mức 1,9% của toàn bộ các ngành tại Mỹ (tháng 8/2026).",
+        source: "bls-2026-10" as SourceId,
+      },
+      {
+        photo: "/images/open/foodcourt.jpg",
+        alt: "Quầy đồ ăn tại khu ẩm thực ở Đà Nẵng",
+        value: "726.500 tỷ ₫",
+        label: "quy mô thị trường FnB Việt Nam năm 2025, tăng 5,5%",
+        detail: "Trải trên khoảng 329.500 cửa hàng, từ quán vỉa hè đến chuỗi toàn quốc.",
+        source: "ipos-2025" as SourceId,
+      },
+    ],
+    adoption: {
+      title: "AI đang vào khâu back-office",
+      caption: "chủ nhà hàng tại Mỹ đang dùng hoặc thí điểm AI cho báo cáo back-office",
+      from: { value: 25, label: "Đầu 2026" },
+      to: { value: 69, label: "Giữa 2026" },
+      result: { value: "62%", label: "chủ nhà hàng đã dùng AI cho biết chi phí nhân sự giảm" },
+      source: "r365-2026" as SourceId,
+    },
+    barriers: {
+      title: "Điều khiến số còn lại chần chừ",
+      caption: "Lý do hàng đầu khiến chủ nhà hàng tại Mỹ chưa dùng AI",
+      answerLabel: "Câu trả lời",
       rows: [
-        { label: "Đã dùng AI trong năm 2025", value: 88, display: "88%" },
-        { label: "Dùng AI tạo sinh trong ít nhất một bộ phận", value: 70, display: "70%" },
-        { label: "Vận hành tác tử AI, ở gần như mọi bộ phận", value: 8, display: "Dưới 10%" },
+        { value: 37, label: "Quyền riêng tư và bảo mật dữ liệu", answer: "Private AI" },
+        { value: 34, label: "Độ chính xác của AI", answer: "Agentic AI có kiểm tra" },
+        { value: 29, label: "Chi phí triển khai", answer: "Tối ưu chi phí từ thiết kế" },
       ],
-      gap: "Khoảng trống",
-      note: "Thanh cuối thể hiện mức “dưới 10%”, không phải số đo chính xác.",
+      source: "r365-2026" as SourceId,
     },
-    cio: {
-      label:
-        "CIO cho biết doanh nghiệp đã thu được giá trị đáng kể hoặc mang tính chuyển đổi từ AI.",
-    },
-    governance: {
-      label: "doanh nghiệp có mô hình quản trị trưởng thành cho tác tử AI tự hành.",
-      detail: "3.235 lãnh đạo cấp cao · 24 quốc gia",
-    },
-    gates: {
-      title: "Ít ai biết khi nào nên dừng",
-      rows: [
-        { value: 31, label: "CIO có quy định dừng dự án thí điểm trước khi triển khai" },
-        { value: 17, label: "có quy định loại bỏ AI kém hiệu quả đang vận hành" },
+    evidence: {
+      title: "Không chỉ nhà hàng",
+      items: [
+        {
+          value: "27%",
+          label: "tổ chức từng cấm dùng GenAI vì rủi ro quyền riêng tư và dữ liệu",
+          source: "cisco-2024" as SourceId,
+        },
+        {
+          value: "40%+",
+          label: "dự án agentic AI sẽ bị huỷ trước 2027 vì chi phí, giá trị hoặc rủi ro",
+          source: "gartner-agentic-2025-06" as SourceId,
+        },
+        {
+          value: "280×",
+          label: "chi phí chạy AI cấp GPT-3.5 cuối 2024 rẻ hơn cuối 2022",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
       ],
     },
-    chart: {
-      title: "Chi tiêu AI toàn cầu",
-      unit: "nghìn tỷ USD",
-      published: "Dự báo công bố",
-      derived: "Tính từ tốc độ tăng trưởng",
-      note: "Năm 2026 là dự báo do Gartner công bố (2,7 nghìn tỷ USD, +49,5%). Năm 2025 và 2027 được tính từ tốc độ tăng trưởng trong cùng báo cáo. Chi tiêu toàn cầu là bối cảnh, không phải thị trường của Pyrium.",
+    segments: {
+      title: "Từ một quán cà phê đến chuỗi 100 chi nhánh",
+      body: "Nhu cầu thay đổi theo quy mô. Giải pháp phải vừa vặn.",
+      needLabel: "Nhu cầu",
+      fitLabel: "Phù hợp",
+      items: [
+        {
+          photo: "/images/open/baristas.jpg",
+          alt: "Nhân viên pha chế làm việc sau quầy cà phê",
+          name: "Quán cà phê, nhà hàng độc lập",
+          need: "Không có đội IT. Chủ quán tự lo sổ sách, ca làm và nhập hàng.",
+          fit: "Tự động hoá trọn gói, do chúng tôi vận hành và hỗ trợ.",
+        },
+        {
+          photo: "/images/open/host-pos.jpg",
+          alt: "Nhân viên lễ tân nhà hàng bên máy POS",
+          name: "Chuỗi nhiều chi nhánh",
+          need: "10–100 điểm bán, dữ liệu POS, tồn kho, nhà cung cấp nằm rải rác nhiều hệ thống.",
+          fit: "Quy trình riêng tư xuyên chi nhánh, một góc nhìn chung cho cả doanh nghiệp.",
+        },
+        {
+          photo: "/images/solution-racks.jpg",
+          alt: "Dãy máy chủ trong trung tâm dữ liệu",
+          name: "Tập đoàn & doanh nghiệp lớn",
+          need: "Quản trị dữ liệu, hạ tầng riêng và hoá đơn LLM ở quy mô lớn.",
+          fit: "Triển khai riêng tư và kiểm soát chi phí trên chính hạ tầng của bạn.",
+        },
+      ],
     },
-    closer:
-      "Khoảng trống không nằm ở việc dùng AI. Mà ở việc để AI làm việc thật, an toàn và với chi phí hợp lý — đó là nơi Pyrium hoạt động.",
+    sourcesNote:
+      "Số liệu được đối chiếu với trang của từng đơn vị công bố ngày 26/10/2026. Số liệu Mỹ mô tả thị trường Mỹ; số liệu Việt Nam mô tả Việt Nam.",
   },
   core: {
     eyebrow: "Cốt lõi",
-    title: "Tác tử. Riêng tư. Tối ưu chi phí.",
-    body: "Ba cam kết định hình mọi hệ thống chúng tôi xây dựng. Mỗi cam kết đáp lại một chuyển dịch đang diễn ra trong cách doanh nghiệp ứng dụng AI.",
+    title: "Tác tử. Riêng tư. Tối ưu chi phí. Am hiểu nghiệp vụ.",
+    body: "Bốn cam kết định hình mọi hệ thống chúng tôi xây dựng — mỗi cam kết giải đúng một lý do khiến doanh nghiệp còn ngần ngại với AI.",
     shiftLabel: "Chuyển dịch",
     pillars: [
       {
@@ -577,15 +818,15 @@ const vi: Copy = {
           "Con người phê duyệt khi liên quan đến tiền hoặc khách hàng",
         ],
         fact: {
-          value: "985 tỷ USD",
-          label: "dự báo chi tiêu phần mềm agentic AI vào năm 2030",
-          source: "gartner-agentic-2026-02" as SourceId,
+          value: "40%+",
+          label: "dự án agentic AI sẽ bị huỷ trước 2027 — khả năng kiểm soát tạo nên khác biệt",
+          source: "gartner-agentic-2025-06" as SourceId,
         },
       },
       {
         key: "private",
         name: "Private AI",
-        promise: "Dữ liệu của bạn. Mô hình của bạn. Hạ tầng của bạn. Quyền kiểm soát của bạn.",
+        promise: "Dữ liệu, mô hình, hạ tầng và quyền kiểm soát đều thuộc về bạn.",
         from: "Gửi dữ liệu ra ngoài cho mô hình",
         to: "Đưa mô hình vào nơi dữ liệu nằm",
         capabilities: [
@@ -611,23 +852,91 @@ const vi: Copy = {
           "Đo lường chi phí và chất lượng trước và sau",
         ],
         fact: {
-          value: "58%",
-          label: "CIO chịu áp lực lớn hơn về cắt giảm chi phí AI",
-          source: "gartner-cio-2026-10" as SourceId,
+          value: "280×",
+          label: "chi phí chạy AI cấp GPT-3.5 rẻ hơn so với hai năm trước",
+          source: "stanford-ai-index-2025" as SourceId,
+        },
+      },
+      {
+        key: "domain",
+        name: "Am hiểu nghiệp vụ",
+        promise: "Xây quanh cách doanh nghiệp của bạn thực sự vận hành.",
+        from: "Một trợ lý chung cho mọi công ty",
+        to: "Hệ thống định hình theo SOP, dữ liệu và quy tắc của bạn",
+        capabilities: [
+          "Khảo sát quy trình, SOP và các ngoại lệ của bạn",
+          "Thiết kế riêng, bộ đánh giá và tinh chỉnh theo nghiệp vụ",
+          "Gói hỗ trợ: giám sát, cập nhật và đội ngũ phụ trách riêng",
+        ],
+        fact: {
+          value: "69%",
+          label: "chủ nhà hàng tại Mỹ đang dùng hoặc thí điểm AI cho back-office",
+          source: "r365-2026" as SourceId,
         },
       },
     ],
     meet: {
-      title: "Nơi cả ba gặp nhau",
-      body: "AI làm việc thật, trong phạm vi của bạn, với chi phí mỗi tác vụ mà bạn có thể chứng minh.",
+      title: "Nơi cả bốn gặp nhau",
+      body: "AI làm việc thật, trong phạm vi của bạn, xây quanh cách bạn vận hành, với chi phí mỗi tác vụ mà bạn có thể chứng minh.",
+      labels: ["Tác tử", "Riêng tư", "Tối ưu", "Nghiệp vụ"],
+    },
+    compare: {
+      eyebrow: "So sánh",
+      title: "Điều bạn có ở Pyrium mà khó tìm ở nơi khác.",
+      body: "So sánh theo nhóm, không nêu tên nhà cung cấp. Đánh giá là nhận định của chúng tôi về những gì mỗi nhóm thường cung cấp hiện nay.",
+      columns: [
+        "Pyrium",
+        "Trợ lý AI dạng chat",
+        "Nền tảng tự động hoá",
+        "Đơn vị tích hợp lớn",
+        "Freelancer & tự làm",
+      ],
+      legend: { full: "Có", partial: "Một phần", none: "Không" },
+      rows: [
+        {
+          label: "Quy trình agentic hoàn thành trọn tác vụ",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Triển khai riêng tư trên hạ tầng của bạn",
+          values: ["full", "partial", "partial", "full", "partial"],
+        },
+        {
+          label: "Tối ưu chi phí mỗi tác vụ (định tuyến, mô hình nhỏ)",
+          values: ["full", "none", "partial", "partial", "none"],
+        },
+        {
+          label: "Am hiểu nghiệp vụ: FnB, vận hành, tài chính",
+          values: ["full", "none", "none", "partial", "partial"],
+        },
+        {
+          label: "Thiết kế và tinh chỉnh riêng cho quy trình của bạn",
+          values: ["full", "none", "partial", "full", "full"],
+        },
+        {
+          label: "Gói hỗ trợ và vận hành trọn gói",
+          values: ["full", "partial", "partial", "full", "none"],
+        },
+        {
+          label: "Giá cho doanh nghiệp vừa, thí điểm 6–8 tuần",
+          values: ["full", "full", "full", "none", "partial"],
+        },
+      ],
+      sourcesLabel: "Tham khảo theo nhóm",
+      sources: [
+        "openai-enterprise",
+        "n8n-hosting",
+        "copilot-studio",
+        "litellm-routing",
+      ] as SourceId[],
     },
   },
   productsSection: {
     eyebrow: "Sản phẩm",
-    title: "Làm trong áp lực thời gian. Được người thật sử dụng.",
-    body: "Bốn sản phẩm do các nhà sáng lập thiết kế, xây dựng và ra mắt — mỗi sản phẩm giải một bài toán thật cho một nhóm người dùng cụ thể.",
+    title: "Xây cho vận hành thực tế. Được người thật kiểm chứng.",
+    body: "Các sản phẩm của chúng tôi, chia theo ngành phục vụ. Mỗi sản phẩm cho thấy dành cho ai, giải quyết gì và thay đổi gì với người đã dùng thử.",
     stats: [
-      { value: "200+", label: "người đã sử dụng sản phẩm của chúng tôi" },
+      { value: "200+", label: "người đã dùng thử sản phẩm của chúng tôi" },
       {
         value: "~80%",
         label: "chi phí vận hành AI thấp hơn so với chỉ dùng đám mây",
@@ -637,7 +946,7 @@ const vi: Copy = {
     ],
     estimateMark: "ước tính",
     estimateNote:
-      "ước tính — từ các lần đo kiểm của đội: mô hình chạy cục bộ và có định tuyến so với pipeline gọi API đám mây tương đương trên cùng tác vụ.",
+      "ước tính — số liệu ước tính của đội. Chi phí vận hành: đo kiểm của đội, mô hình cục bộ và có định tuyến so với pipeline API đám mây tương đương trên cùng tác vụ. Mức tiết kiệm của sản phẩm: mô hình hoá từ kết quả thí điểm, cần xác nhận với số liệu gốc của từng khách hàng.",
     awards: [
       "Top 10 · Vietnam AI Open",
       "Hạng 6 & 18 · RMIT",
@@ -645,15 +954,38 @@ const vi: Copy = {
       "Silver · AI Riser",
       "Vòng 2 · VN Youth Start-up",
     ],
-    moreTitle: "Và nhiều dự án khác",
     allProducts: "Tất cả sản phẩm",
+    groups: {
+      fnb: {
+        name: "FnB & Dịch vụ lưu trú",
+        body: "Nhà hàng, quán cà phê, tour và địa điểm sự kiện — phục vụ nhanh hơn, ít sai sót hơn, ít mất booking hơn.",
+      },
+      operations: {
+        name: "Vận hành công nghiệp",
+        body: "Nhà máy, bếp trung tâm và xưởng sản xuất — bằng chứng mà quản lý có thể ký duyệt.",
+      },
+      trust: {
+        name: "Tin cậy & riêng tư",
+        body: "Dữ liệu nhạy cảm mà người nội bộ không bao giờ được xem.",
+      },
+      infrastructure: {
+        name: "Chi phí & hạ tầng",
+        body: "Chạy LLM rẻ hơn, trên chính phần cứng bạn đang có.",
+      },
+    },
   },
   showcase: {
     builtFor: "Dành cho",
+    solves: "Giải quyết",
     recognition: "Ghi nhận",
+    testers: "Người dùng thử",
+    saving: "Tiết kiệm dự kiến",
+    core: "Kết quả cốt lõi",
+    pilot: "Từ đợt thí điểm",
     readCase: "Xem chi tiết dự án",
-    tryLive: "Dùng thử",
+    tryLive: "Xem demo",
     draft: "Bản nháp",
+    est: "ước tính",
   },
   testimonials: {
     eyebrow: "Cảm nhận",
@@ -670,6 +1002,7 @@ const vi: Copy = {
     offers: [
       {
         name: "Pyrium Agents",
+        core: "agentic",
         role: "Triển khai cốt lõi",
         detail:
           "Quy trình agentic, điều phối, gọi công cụ và tự động hoá — có kiểm tra và bàn giao cho con người.",
@@ -677,13 +1010,15 @@ const vi: Copy = {
       },
       {
         name: "Pyrium Inference",
+        core: "efficient",
         role: "Hiệu quả",
         detail:
           "Định tuyến mô hình, bộ nhớ đệm, chọn mô hình, đánh giá và tinh chỉnh để giảm chi phí mỗi tác vụ thành công.",
-        proof: "weatherise" as const,
+        proof: "inference" as const,
       },
       {
         name: "Pyrium Private",
+        core: "private",
         role: "Tin cậy & sẵn sàng",
         detail:
           "Triển khai riêng tư, thiết kế quyền truy cập dữ liệu, khả năng kiểm toán và kiểm soát vận hành.",
@@ -691,6 +1026,7 @@ const vi: Copy = {
       },
       {
         name: "Pyrium Domain",
+        core: "domain",
         role: "Tài sản tái sử dụng",
         detail:
           "Module dùng lại cho FnB, tài chính và vận hành doanh nghiệp, đúc kết từ nhiều lần triển khai.",
@@ -886,7 +1222,28 @@ const vi: Copy = {
     links: { linkedin: "LinkedIn", email: "Email", portfolio: "Portfolio", soon: "Sắp cập nhật" },
     vision: {
       title: "Định hướng",
-      body: "Pyrium muốn làm chủ khoảng giữa năng lực AI và giá trị kinh doanh: hoàn thành đúng quy trình, trong đúng giới hạn, với chi phí khách hàng thấy xứng đáng. Chúng tôi xây sản phẩm từ sự lặp lại — cùng một quy trình, cơ chế kiểm soát và kết quả, được chứng minh qua nhiều khách hàng — trước khi xây nền tảng.",
+      statement: "Làm chủ khoảng giữa năng lực AI và giá trị kinh doanh.",
+      body: "Hoàn thành đúng quy trình, trong đúng giới hạn, với chi phí khách hàng thấy xứng đáng. Chúng tôi xây sản phẩm từ sự lặp lại — cùng một quy trình, cơ chế kiểm soát và kết quả, được chứng minh qua nhiều khách hàng — trước khi xây nền tảng.",
+      horizons: [
+        {
+          when: "Hiện tại",
+          title: "Chứng minh qua thí điểm",
+          detail:
+            "Khảo sát có phí và thí điểm 6–8 tuần cùng các đội FnB và vận hành, đo trên mốc so sánh đã thống nhất.",
+        },
+        {
+          when: "12 tháng",
+          title: "Triển khai lặp lại",
+          detail:
+            "Bộ kết nối, bộ đánh giá và cơ chế an toàn dùng lại được, để mỗi lần triển khai nhanh hơn mà không giảm chất lượng.",
+        },
+        {
+          when: "Xa hơn",
+          title: "Trợ lý vận hành riêng tư",
+          detail:
+            "Một sản phẩm đến từ sự lặp lại: cùng quy trình, kiểm soát và kết quả, được chứng minh qua nhiều khách hàng.",
+        },
+      ],
     },
   },
   about: {
@@ -979,7 +1336,7 @@ const vi: Copy = {
     company: "Công ty",
     country: "Việt Nam",
     photos:
-      "Hình ảnh: ảnh giấy phép mở từ Wikimedia Commons và StockSnap (CC0 / phạm vi công cộng).",
+      "Hình ảnh: ảnh giấy phép mở từ Wikimedia Commons và StockSnap (CC0, phạm vi công cộng; ảnh khu ẩm thực © Martin Lewison, CC BY 2.0). Âm thanh giao diện: Kenney, CC0.",
   },
   settings: {
     open: "Tuỳ chỉnh",
@@ -997,6 +1354,7 @@ const vi: Copy = {
     volume: "Âm lượng",
     sfx: "Âm thanh giao diện",
     saved: "Đã lưu trên thiết bị này.",
+    soundPrompt: "Chạm bất kỳ đâu để bật nhạc nền",
   },
   notFound: { title: "Trang này không tồn tại.", back: "Về trang chủ" },
 };

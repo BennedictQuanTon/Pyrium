@@ -29,8 +29,8 @@ Every route exists in English (`/…`) and Vietnamese (`/vi/…`). Pages live in
 
 | Route | What it holds |
 | --- | --- |
-| `/` | Hero and organizer marquee · the problem as a cited glass bento · the core (Agentic, Private, Cost-efficient) · product lockups and impact numbers · the pinned product showcase · more from the lab · testimonials · engagement path and packages · founders and vision · closing |
-| `/work` | The four core products as editorial rows, then the smaller lab projects |
+| `/` | Hero and organizer marquee · the problem for FnB operators (cited, dated) · the core (Agentic, Private, Cost-efficient, Deep Domain) and a comparison table · products grouped by industry · testimonials · working together · founders and where we're going · closing |
+| `/work` | Every product grouped by industry: trailer, who it's for, what it fixes, three outputs, two pilot quotes |
 | `/work/[slug]` | Case study per core product (Weatherise, The Lantern, IGNIS, Unfound) |
 | `/services` | Offer families, six-layer architecture, governance controls, audience, metrics, engagement path, claims policy |
 | `/about` | Brand line and reach, founders, principles, vision and the twelve-month roadmap |
@@ -41,9 +41,11 @@ Every route exists in English (`/…`) and Vietnamese (`/vi/…`). Pages live in
 - **Preferences panel** (the sliders icon beside "Book a discovery call"): language, motion
   (Full / Subtle / Off) and sound (ambient music, volume, interface sounds). Saved in
   `localStorage` on the device and applied before first paint (`html[data-motion]`).
-- **Sound** is synthesized live with the Web Audio API in `lib/audio.ts` — no audio files, so
-  nothing to license or download. Browsers only allow audio after a user gesture, so the music
-  fades in on the first click or key press (dismissing the intro counts).
+- **Sound.** The ambient music is synthesized live in `lib/audio.ts`; interface sounds are
+  Kenney's CC0 "Interface Sounds" (`public/sound/`). The sound layer lives in the root layout,
+  so music plays through every page change and language switch. The site asks to start music
+  on load; browsers allow that only for sites the visitor already engages with, so otherwise a
+  small "tap for sound" chip appears and the music fades in on the first tap, click or key.
 - **Motion:** the intro plays once per session with full motion only; "Subtle" shortens movement
   and turns page transitions into a crossfade; "Off" (or the OS reduced-motion setting) removes
   animation and shows video posters.
@@ -54,8 +56,12 @@ Every route exists in English (`/…`) and Vietnamese (`/vi/…`). Pages live in
 - **Draft quotes.** Every testimonial and product review is a draft for a real person in the
   named role to approve. Drafts carry a role, never a name, and show a "Draft" tag. Set
   `draft: false` and add `name` in `content/people.ts` or `content/products.ts` once approved.
-- **Estimates.** "~80% lower AI running cost" is a team estimate, marked "est." with the method
-  beside it. "200+ people" is the team's own aggregate figure.
+- **Estimates and pilot figures.** Every product shows testers, an expected saving and a core
+  result. Tester counts and savings are team-reported pilot placeholders to confirm; savings are
+  marked "est.". Core results come from each project's measured outcomes. "~80% lower AI running
+  cost" and "200+ people" are team figures.
+- **Problem figures** are cited with publisher, date and the date they were checked (footer).
+  US figures describe the US market; Vietnam figures describe Vietnam.
 - **Founder links.** LinkedIn and email for Yoshio and Tuong are not published yet, so those
   buttons show as "coming soon"; their portfolio buttons point to GitHub for now.
 - **Contact form.** It isn't connected to anything yet, so it won't send.

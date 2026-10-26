@@ -176,7 +176,10 @@ export function Settings({ onDark = false }: { onDark?: boolean }) {
         aria-label={t.open}
         onClick={() => {
           setOpen((value) => !value);
-          if (!open && prefs.sfx) audio().open();
+          if (prefs.sfx) {
+            if (open) audio().close();
+            else audio().open();
+          }
         }}
         className={`inline-flex h-11 items-center gap-2 rounded-full px-3.5 transition-colors ${
           onDark ? "text-snow hover:bg-white/15" : "text-ink hover:bg-ink/[0.06]"

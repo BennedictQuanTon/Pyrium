@@ -1,34 +1,54 @@
 "use client";
 
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getCopy } from "@/content/copy";
 import { audio } from "@/lib/audio";
+import { splitPath } from "@/lib/i18n";
 import { type Prefs, readPrefs } from "@/lib/prefs";
 
 const INTERACTIVE = "a, button, [role='tab'], summary, label:has(input)";
+const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
 
 /**
- * Wires sound into the page. Browsers only allow audio after a user gesture, so the engine
- * starts on the first press or key (dismissing the intro counts) and the ambient music fades in
- * then, if the visitor has it on. Afterwards every interactive element gets a soft press sound
- * and a near-silent hover tick. Preference changes from the settings panel apply live.
+ * Wires sound into the site. It lives in the root layout, so it never unmounts and the music
+ * plays straight through every page change and language switch.
+ *
+ * On load it asks the browser to start the ambient music right away. Browsers only allow that
+ * for sites the visitor already engages with; otherwise the music fades in on the first press,
+ * tap or key, and a small "sound" chip in the corner says so. Every interactive element gets a
+ * soft press sample and a near-silent hover tick; preference changes apply live.
  */
 export function SoundLayer() {
+  const { lang } = splitPath(usePathname());
+  const t = getCopy(lang).settings;
+  const [blocked, setBlocked] = useState(false);
+
   useEffect(() => {
     let prefs: Prefs = readPrefs();
     const engine = audio();
+    engine.setVolume(prefs.musicVolume);
 
-    const begin = () => {
-      engine.start();
-      engine.setVolume(prefs.musicVolume);
+    const begin = async () => {
+      const ok = await engine.unlock();
+      if (!ok) return false;
       if (prefs.music) engine.playMusic();
-      window.removeEventListener("pointerdown", begin);
-      window.removeEventListener("keydown", begin);
+      setBlocked(false);
+      for (const type of GESTURES) window.removeEventListener(type, onGesture);
+      return true;
     };
-    window.addEventListener("pointerdown", begin);
-    window.addEventListener("keydown", begin);
+    const onGesture = () => {
+      begin();
+    };
+
+    // Try to autoplay; if the browser holds the context suspended, wait for a gesture.
+    for (const type of GESTURES) window.addEventListener(type, onGesture);
+    begin().then((ok) => {
+      if (!ok && prefs.music) setBlocked(true);
+    });
 
     const onPress = (event: MouseEvent) => {
-      if (!prefs.sfx || !engine.ready) return;
+      if (!prefs.sfx) return;
       const target = (event.target as Element | null)?.closest(INTERACTIVE);
       if (target && !target.hasAttribute("data-silent")) engine.press();
     };
@@ -36,7 +56,7 @@ export function SoundLayer() {
     let lastHover: Element | null = null;
     let lastAt = 0;
     const onOver = (event: PointerEvent) => {
-      if (!prefs.sfx || !engine.ready || event.pointerType !== "mouse") return;
+      if (!prefs.sfx || event.pointerType !== "mouse") return;
       const target = (event.target as Element | null)?.closest(INTERACTIVE) ?? null;
       if (!target || target === lastHover) {
         if (!target) lastHover = null;
@@ -44,7 +64,7 @@ export function SoundLayer() {
       }
       lastHover = target;
       const now = performance.now();
-      if (now - lastAt < 90) return;
+      if (now - lastAt < 120) return;
       lastAt = now;
       engine.hover();
     };
@@ -53,17 +73,19 @@ export function SoundLayer() {
       const next = (event as CustomEvent<Prefs>).detail;
       const musicChanged = next.music !== prefs.music;
       prefs = next;
-      if (!engine.ready) return;
       engine.setVolume(next.musicVolume);
-      if (musicChanged) {
-        if (next.music) engine.playMusic();
-        else engine.stopMusic();
+      if (!musicChanged) return;
+      if (next.music) {
+        begin();
+      } else {
+        engine.stopMusic();
+        setBlocked(false);
       }
     };
 
-    // Pause the music while the tab is hidden; resume when it returns.
+    // Fade out while the tab is hidden; fade back in when it returns.
     const onVisibility = () => {
-      if (!engine.ready || !prefs.music) return;
+      if (!prefs.music || !engine.running) return;
       if (document.hidden) engine.stopMusic();
       else engine.playMusic();
     };
@@ -73,8 +95,7 @@ export function SoundLayer() {
     window.addEventListener("pyrium:prefs", onPrefs);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
-      window.removeEventListener("pointerdown", begin);
-      window.removeEventListener("keydown", begin);
+      for (const type of GESTURES) window.removeEventListener(type, onGesture);
       document.removeEventListener("click", onPress, true);
       document.removeEventListener("pointerover", onOver);
       window.removeEventListener("pyrium:prefs", onPrefs);
@@ -82,5 +103,24 @@ export function SoundLayer() {
     };
   }, []);
 
-  return null;
+  if (!blocked) return null;
+  return (
+    <button
+      type="button"
+      data-silent
+      onClick={() => setBlocked(false)}
+      className="sound-chip glass glass-strong fixed bottom-5 left-5 z-50 inline-flex items-center gap-2.5 rounded-badges px-4 py-2.5 text-[13px] font-medium text-ink"
+    >
+      <span aria-hidden="true" className="flex h-3 items-end gap-[2px]">
+        {[0, 1, 2].map((bar) => (
+          <span
+            key={bar}
+            className="eq-bar w-[2px] rounded-full bg-signal"
+            style={{ animationDelay: `${bar * 0.18}s` }}
+          />
+        ))}
+      </span>
+      {t.soundPrompt}
+    </button>
+  );
 }

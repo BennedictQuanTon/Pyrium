@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
-import { DraftTag, PillButton, SmartLink } from "@/components/ui/Primitives";
-import { ProductMetrics } from "@/components/work/Metrics";
+import { PillButton, SmartLink } from "@/components/ui/Primitives";
+import { ProductOutputs } from "@/components/work/Metrics";
 import { ProductFrame } from "@/components/work/ProductFrame";
 import { ProductLogo } from "@/components/work/ProductLogo";
+import { TestimonialDeck } from "@/components/work/TestimonialDeck";
 import { getCopy } from "@/content/copy";
 import { getProduct, nextProduct, productOrder } from "@/content/products";
 import { isLang } from "@/lib/i18n";
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /**
  * Case study: hero with the film (morphed in from the card), the numbers, the story (problem
  * → what we built), how the work is split between model, code and people, the build log,
- * screens, outcomes, a review and the next product.
+ * screens, the technical outcomes, two pilot quotes and the next product.
  */
 export default async function CaseStudyPage({ params }: Props) {
   const { lang, slug } = await params;
@@ -53,10 +54,6 @@ export default async function CaseStudyPage({ params }: Props) {
     <PageTransition>
       {/* Hero */}
       <section className="relative overflow-hidden bg-fog">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-48 left-1/2 size-[720px] -translate-x-1/2 rounded-full bg-signal/15 blur-[140px]"
-        />
         <div className="page-width relative flex flex-col gap-10 pt-32 pb-16 md:pt-40">
           <SmartLink
             href="/work"
@@ -123,7 +120,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <section className="bg-fog pb-20 md:pb-28">
         <div className="page-width">
           <Reveal className="glass p-7 md:p-10">
-            <ProductMetrics product={product} size="lg" />
+            <ProductOutputs product={product} labels={copy.showcase} size="lg" />
           </Reveal>
         </div>
       </section>
@@ -254,7 +251,7 @@ export default async function CaseStudyPage({ params }: Props) {
         </Reveal>
       </section>
 
-      {/* Outcomes and review */}
+      {/* Outcomes and pilot quotes */}
       <section className="section bg-blueprint">
         <div className="page-width grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <Reveal className="flex flex-col gap-6">
@@ -284,21 +281,11 @@ export default async function CaseStudyPage({ params }: Props) {
             <p className="text-[12px] text-stone">{t.outcomesNote}</p>
           </Reveal>
           <Reveal delay={1}>
-            <figure className="glass flex flex-col gap-6 p-8 md:p-10">
-              <span
-                aria-hidden="true"
-                className="font-display text-[56px] leading-none text-signal"
-              >
-                “
-              </span>
-              <blockquote className="-mt-6 font-display text-[22px] leading-[1.4] text-ink">
-                {product.review.quote}
-              </blockquote>
-              <figcaption className="flex items-center justify-between gap-3">
-                <span className="text-[13px] text-stone">{product.review.role}</span>
-                {product.review.draft ? <DraftTag label={copy.showcase.draft} /> : null}
-              </figcaption>
-            </figure>
+            <TestimonialDeck
+              quotes={product.testimonials}
+              draftLabel={copy.showcase.draft}
+              label={copy.showcase.pilot}
+            />
           </Reveal>
         </div>
       </section>

@@ -5,7 +5,6 @@ import { DraftTag, PillButton, SectionHeading, SmartLink } from "@/components/ui
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getTestimonials, organizers, team } from "@/content/people";
-import { getLabProjects } from "@/content/products";
 import type { Product } from "@/content/types";
 import type { Lang } from "@/lib/i18n";
 
@@ -67,7 +66,7 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
   return (
     <div className="page-width flex flex-col gap-16">
       <Reveal>
-        <ul className="grid grid-cols-2 overflow-hidden rounded-cards bg-ink/[0.07] gap-px md:grid-cols-4">
+        <ul className="grid grid-cols-2 overflow-hidden rounded-cards bg-ink/[0.07] gap-px md:grid-cols-5">
           {products.map((product) => (
             <li key={product.slug} className="bg-fog">
               <SmartLink
@@ -126,56 +125,6 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
   );
 }
 
-/** Smaller shipped work, as a quiet list under the core four. */
-export function LabList({ lang, linkAll = true }: { lang: Lang; linkAll?: boolean }) {
-  const t = getCopy(lang).productsSection;
-  const tryLive = getCopy(lang).showcase.tryLive;
-  return (
-    <div className="page-width flex flex-col gap-6">
-      <Reveal>
-        <div className="flex items-end justify-between gap-6">
-          <h3 className="text-heading-sm">{t.moreTitle}</h3>
-          {linkAll ? (
-            <SmartLink
-              href="/work"
-              className="text-[14px] font-medium text-ink underline underline-offset-4"
-            >
-              {t.allProducts}
-            </SmartLink>
-          ) : null}
-        </div>
-      </Reveal>
-      <Reveal delay={1}>
-        <ul className="grid gap-px overflow-hidden rounded-cards bg-ink/[0.07] md:grid-cols-2">
-          {getLabProjects(lang).map((project) => (
-            <li key={project.name} className="flex flex-col gap-2 bg-snow p-6 md:p-7">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[16px] font-medium text-ink">{project.name}</span>
-                <span className="tabular text-[12px] text-stone">{project.period}</span>
-              </div>
-              <p className="text-[13px] text-stone">{project.event}</p>
-              <p className="text-[14px] text-graphite-ink">{project.oneLine}</p>
-              {project.result || project.href ? (
-                <div className="mt-1 flex items-center gap-4 text-[13px]">
-                  {project.result ? <span className="text-ink">{project.result}</span> : null}
-                  {project.href ? (
-                    <SmartLink
-                      href={project.href}
-                      className="font-medium text-ink underline underline-offset-4"
-                    >
-                      {tryLive} ↗
-                    </SmartLink>
-                  ) : null}
-                </div>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      </Reveal>
-    </div>
-  );
-}
-
 /** Monogram from the role's first letter, so drafts never imply a real name. */
 function Monogram({ text }: { text: string }) {
   return (
@@ -198,11 +147,7 @@ export function Testimonials({ lang }: { lang: Lang }) {
   const quotes = getTestimonials(lang);
   const rows = [quotes.slice(0, 3), quotes.slice(3)];
   return (
-    <section className="section relative overflow-hidden bg-fog">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="absolute top-10 left-[8%] size-[420px] rounded-full bg-signal/15 blur-[110px]" />
-        <span className="absolute right-[6%] bottom-0 size-[480px] rounded-full bg-graphite-ink/20 blur-[120px]" />
-      </div>
+    <section className="section relative overflow-hidden bg-snow">
       <div className="relative flex flex-col gap-12">
         <div className="page-width flex flex-col gap-4">
           <Reveal>
@@ -259,93 +204,128 @@ export function Testimonials({ lang }: { lang: Lang }) {
   );
 }
 
-/** The engagement path with its gates, then the three packages; the middle one is featured. */
+/**
+ * Working together, as a journey: the heading stays pinned on the left while the four steps
+ * run down a rail on the right, the rail filling red as each step arrives, with a go / no-go
+ * gate drawn between steps. The three packages follow as cards; the pilot is featured.
+ */
 export function Engagement({ lang, compact = false }: { lang: Lang; compact?: boolean }) {
   const t = getCopy(lang).engagement;
   return (
-    <div className="flex flex-col gap-10">
-      <Reveal>
-        <ol className="grid gap-px overflow-hidden rounded-cards bg-ink/[0.07] md:grid-cols-4">
+    <div className="flex flex-col gap-16">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+        <Reveal className="flex flex-col gap-4 self-start lg:sticky lg:top-32">
+          <p className="eyebrow flex items-center gap-2">
+            <span aria-hidden="true" className="h-px w-6 bg-signal" />
+            {t.eyebrow}
+          </p>
+          <h2 className="max-w-[16ch] text-heading md:text-heading-lg">{t.title}</h2>
+          <p className="max-w-[44ch] text-body text-stone md:text-subheading">{t.body}</p>
+        </Reveal>
+        <ol className="journey relative flex flex-col">
           {t.steps.map((step, index) => (
-            <li key={step.name} className="relative flex flex-col gap-3 bg-snow p-6 md:p-7">
-              <div className="flex items-center justify-between gap-2">
-                <span className="tabular text-[12px] text-stone">
-                  {t.stepLabel} {index + 1}
-                </span>
-                <span className="rounded-badges bg-fog px-2.5 py-1 text-[11px] font-medium whitespace-nowrap text-graphite-ink">
-                  {step.time}
-                </span>
-              </div>
-              <h3 className="font-sans text-[17px] font-medium">{step.name}</h3>
-              <p className="text-[14px] text-stone">{step.detail}</p>
-              {index < t.steps.length - 1 ? (
-                <span className="mt-auto flex items-center gap-2 pt-2 text-[12px] font-medium text-signal">
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-signal" />
-                  {t.gate}
-                </span>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      </Reveal>
-      {compact ? null : (
-        <Reveal delay={1}>
-          <ul className="grid gap-4 md:grid-cols-3">
-            {t.packages.map((pkg) => (
-              <li
-                key={pkg.name}
-                className={`flex flex-col gap-5 p-7 md:p-8 ${"featured" in pkg && pkg.featured ? "glass-dark glass-solid" : "glass"}`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3
-                    className={`font-sans text-[18px] font-medium ${"featured" in pkg && pkg.featured ? "text-snow" : ""}`}
-                  >
-                    {pkg.name}
-                  </h3>
-                  {"featured" in pkg && pkg.featured ? (
-                    <span className="rounded-badges bg-signal px-3 py-1 text-[11px] font-medium text-snow">
-                      {t.featured}
+            <li key={step.name}>
+              <Reveal className="journey-step relative grid grid-cols-[2.75rem_1fr] gap-5 pb-10 last:pb-0 md:gap-7">
+                <div className="relative flex flex-col items-center">
+                  <span className="journey-node relative z-10 flex size-11 items-center justify-center rounded-full border border-ink/15 bg-snow font-display text-[17px] text-ink">
+                    {index + 1}
+                  </span>
+                  {index < t.steps.length - 1 ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-11 bottom-[-2.5rem] w-px bg-ink/10"
+                    >
+                      <span className="journey-fill block h-full w-full origin-top bg-signal" />
                     </span>
                   ) : null}
                 </div>
-                <p
-                  className={`text-[14px] ${"featured" in pkg && pkg.featured ? "text-silver" : "text-stone"}`}
+                <div className="flex flex-col gap-3 pt-1.5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h3 className="font-sans text-[20px] font-medium text-ink">{step.name}</h3>
+                    <span className="rounded-badges bg-ink/[0.05] px-2.5 py-1 text-[11px] font-medium whitespace-nowrap text-graphite-ink">
+                      {step.time}
+                    </span>
+                  </div>
+                  <p className="max-w-[52ch] text-[15px] leading-[1.6] text-stone">{step.detail}</p>
+                  {index < t.steps.length - 1 ? (
+                    <span className="mt-1 inline-flex items-center gap-2 self-start rounded-badges border border-signal/25 px-3 py-1 text-[12px] font-medium text-signal">
+                      <span aria-hidden="true" className="size-1.5 rotate-45 bg-signal" />
+                      {t.gate}
+                    </span>
+                  ) : null}
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+      {compact ? null : (
+        <ul className="grid gap-4 md:grid-cols-3">
+          {t.packages.map((pkg, index) => {
+            const featured = "featured" in pkg && pkg.featured;
+            return (
+              <li key={pkg.name}>
+                <Reveal
+                  pop
+                  delay={index}
+                  className={`flex h-full flex-col gap-6 rounded-[28px] p-8 md:p-9 ${featured ? "bg-ink text-snow" : "bg-snow shadow-subtle"}`}
                 >
-                  {pkg.detail}
-                </p>
-                <ul className="flex flex-col gap-2">
-                  {pkg.includes.map((item) => (
-                    <li
-                      key={item}
-                      className={`flex items-center gap-2.5 text-[14px] ${"featured" in pkg && pkg.featured ? "text-mist" : "text-graphite-ink"}`}
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span
+                      className={`tabular text-[13px] ${featured ? "text-silver" : "text-stone"}`}
                     >
-                      <svg
-                        viewBox="0 0 16 16"
-                        className="size-4 shrink-0 text-signal"
-                        aria-hidden="true"
+                      0{index + 1}
+                    </span>
+                    {featured ? (
+                      <span className="rounded-badges bg-signal px-3 py-1 text-[11px] font-medium text-snow">
+                        {t.featured}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h3 className={`text-heading-sm ${featured ? "text-snow" : ""}`}>{pkg.name}</h3>
+                    <p
+                      className={`text-[15px] leading-[1.55] ${featured ? "text-silver" : "text-stone"}`}
+                    >
+                      {pkg.detail}
+                    </p>
+                  </div>
+                  <ul
+                    className={`flex flex-col gap-2.5 border-t pt-5 ${featured ? "border-white/10" : "border-ink/[0.07]"}`}
+                  >
+                    {pkg.includes.map((item) => (
+                      <li
+                        key={item}
+                        className={`flex items-center gap-2.5 text-[14px] ${featured ? "text-mist" : "text-graphite-ink"}`}
                       >
-                        <path
-                          d="M3.5 8.5l3 3 6-7"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                        />
-                      </svg>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <PillButton
-                  href="/contact"
-                  variant={"featured" in pkg && pkg.featured ? "primary" : "ghost"}
-                  className="mt-auto self-start"
-                >
-                  {t.discuss}
-                </PillButton>
+                        <svg
+                          viewBox="0 0 16 16"
+                          className="size-4 shrink-0 text-signal"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M3.5 8.5l3 3 6-7"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <PillButton
+                    href="/contact"
+                    variant={featured ? "primary" : "ghost"}
+                    className="mt-auto self-start"
+                  >
+                    {t.discuss}
+                  </PillButton>
+                </Reveal>
               </li>
-            ))}
-          </ul>
-        </Reveal>
+            );
+          })}
+        </ul>
       )}
     </div>
   );
@@ -449,12 +429,58 @@ export function Founders({ lang }: { lang: Lang }) {
   );
 }
 
+/**
+ * Where we're going: a full-bleed dark panel over a photograph of the work we build for, with
+ * the statement in large type and three horizons — now, twelve months, beyond — on one line
+ * that draws itself, the present marked in signal red.
+ */
 export function Vision({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team.vision;
   return (
-    <Reveal className="glass-dark glass-solid flex flex-col gap-6 p-8 md:flex-row md:items-start md:gap-16 md:p-12">
-      <h3 className="shrink-0 text-heading-sm text-snow md:w-[14ch]">{t.title}</h3>
-      <p className="max-w-[62ch] text-[17px] leading-[1.6] text-silver">{t.body}</p>
+    <Reveal className="vision relative isolate overflow-hidden rounded-[32px] bg-ink text-snow">
+      {/* biome-ignore lint/performance/noImgElement: open-licence editorial photo behind the statement */}
+      <img
+        src="/images/open/workers.jpg"
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 -z-10 size-full object-cover opacity-35"
+      />
+      <span aria-hidden="true" className="vision-wash absolute inset-0 -z-10" />
+      <div className="flex flex-col gap-14 p-8 md:p-14 lg:p-16">
+        <div className="flex flex-col gap-5">
+          <p className="eyebrow flex items-center gap-2 text-silver">
+            <span aria-hidden="true" className="h-px w-6 bg-signal" />
+            {t.title}
+          </p>
+          <p className="max-w-[18ch] font-display text-[36px] leading-[1.08] tracking-[-1px] md:text-[60px] md:tracking-[-1.6px]">
+            {t.statement}
+          </p>
+          <p className="max-w-[60ch] text-[16px] leading-[1.65] text-silver md:text-[17px]">
+            {t.body}
+          </p>
+        </div>
+        <ol className="relative grid gap-8 md:grid-cols-3 md:gap-6">
+          <span
+            aria-hidden="true"
+            className="absolute top-[7px] right-0 left-0 hidden h-px bg-white/15 md:block"
+          >
+            <span className="grow-x block h-full bg-signal" />
+          </span>
+          {t.horizons.map((horizon, index) => (
+            <li key={horizon.when} className="relative flex flex-col gap-3 md:pt-8">
+              <span
+                aria-hidden="true"
+                className={`hidden size-[15px] rounded-full border-2 md:absolute md:top-0 md:left-0 md:block ${index === 0 ? "border-signal bg-signal" : "border-white/40 bg-ink"}`}
+              />
+              <span className={`eyebrow ${index === 0 ? "text-signal" : "text-silver"}`}>
+                {horizon.when}
+              </span>
+              <h3 className="text-[22px] leading-[1.25] text-snow">{horizon.title}</h3>
+              <p className="text-[14px] leading-[1.6] text-silver">{horizon.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
     </Reveal>
   );
 }

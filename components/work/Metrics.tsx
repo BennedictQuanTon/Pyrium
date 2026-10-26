@@ -1,24 +1,51 @@
 import { CountUp } from "@/components/motion/CountUp";
+import type { Copy } from "@/content/copy";
 import type { Product } from "@/content/types";
 
-/** A product's three impact numbers in plain language: what changes for the people using it. */
-export function ProductMetrics({ product, size = "md" }: { product: Product; size?: "md" | "lg" }) {
+type Labels = Copy["showcase"];
+
+/**
+ * The three outputs every product reports — who tested it, the money it is expected to save,
+ * its core result — as three tiles. The saving tile is tinted and estimates carry an "est."
+ * mark.
+ */
+export function ProductOutputs({
+  product,
+  labels,
+  size = "md",
+}: {
+  product: Product;
+  labels: Labels;
+  size?: "md" | "lg";
+}) {
+  const tiles = [
+    { key: "testers", label: labels.testers, metric: product.outputs.testers },
+    { key: "saving", label: labels.saving, metric: product.outputs.saving },
+    { key: "core", label: labels.core, metric: product.outputs.core },
+  ] as const;
   return (
-    <dl className="grid grid-cols-3 gap-4 md:gap-6">
-      {product.metrics.map((metric, index) => (
+    <dl className="grid grid-cols-3 gap-2.5 md:gap-3">
+      {tiles.map((tile) => (
         <div
-          key={metric.label}
-          className="metric flex flex-col gap-2 border-t border-ink/10 pt-4"
-          style={{ ["--d" as string]: `${index * 0.12}s` }}
+          key={tile.key}
+          className={`output-tile flex flex-col gap-2 rounded-[20px] p-4 md:p-5 ${tile.key === "saving" ? "bg-signal/[0.07]" : "bg-ink/[0.04]"}`}
         >
-          <dt className="sr-only">{metric.label}</dt>
+          <dt className="eyebrow text-[10px] tracking-[0.12em] md:text-[11px]">{tile.label}</dt>
           <dd
-            className={`font-display leading-none tracking-[-0.035em] whitespace-nowrap text-ink ${size === "lg" ? "text-[30px] sm:text-[44px] md:text-[60px]" : "text-[26px] sm:text-[32px] md:text-[40px]"}`}
+            className={`flex flex-col items-start gap-1 font-display leading-none tracking-[-0.04em] ${tile.key === "saving" ? "text-signal" : "text-ink"} ${size === "lg" ? "text-[24px] sm:text-[40px] md:text-[52px]" : "text-[20px] sm:text-[28px] md:text-[32px]"}`}
           >
-            <CountUp text={metric.value} className="tabular" />
+            <CountUp text={tile.metric.value} className="tabular break-words" />
+            {tile.metric.estimate ? (
+              <a
+                href="#estimate-note"
+                className="rounded-badges bg-signal/10 px-1.5 py-0.5 font-sans text-[10px] font-medium tracking-normal text-signal"
+              >
+                {labels.est}
+              </a>
+            ) : null}
           </dd>
-          <dd className="text-[13px] leading-[1.45] text-graphite-ink md:text-[14px]">
-            {metric.label}
+          <dd className="text-[12px] leading-[1.45] text-graphite-ink md:text-[13px]">
+            {tile.metric.label}
           </dd>
         </div>
       ))}

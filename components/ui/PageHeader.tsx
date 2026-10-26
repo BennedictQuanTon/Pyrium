@@ -9,16 +9,11 @@ type Props = {
 
 /**
  * Opening block for every sub-page: eyebrow, display title and lede over a quiet field — a
- * soft red bloom top-right and the brand's diagonal construction lines — entering with the
- * same focus pull as the home hero.
+ * plain fog ground — entering with the same focus pull as the home hero.
  */
 export function PageHeader({ eyebrow, title, body, children }: Props) {
   return (
     <section className="relative overflow-hidden bg-blueprint">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 -right-32 size-[560px] rounded-full bg-signal/20 blur-[130px]"
-      />
       <div className="page-width relative flex flex-col gap-6 pt-40 pb-16 md:pt-48 md:pb-20">
         <p
           className="hero-in eyebrow flex items-center gap-2"
