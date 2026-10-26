@@ -82,20 +82,38 @@ export type TeamMember = {
   github: string;
   /** Role in each language, e.g. { en: "AI Engineer", vi: "Kỹ sư AI" }. */
   role: { en: string; vi: string };
-  /** What the founder leads, in one line. */
-  focus: { en: string; vi: string };
   /** Photo in /team: colour portrait on the shared studio backdrop. */
   photo: string;
   /** Contact links; a missing one renders as "coming soon". */
   links: { linkedin?: string; email?: string; portfolio?: string };
+  /** Work experience, newest first; founders without any show "to be updated". */
+  experience?: Experience[];
   /** Longer profile for the team page; founders without one show "to be updated". */
   profile?: Record<"en" | "vi", FounderProfile>;
+};
+
+export type Experience = {
+  company: string;
+  /** Company logo in /team/companies. */
+  logo: string;
+  role: { en: string; vi: string };
+  period: { en: string; vi: string };
+};
+
+/** A placing or honour, led by its result (e.g. "Top 10", "#77 / 300+"). */
+export type Award = {
+  result: string;
+  event: string;
+  /** Organizer, product or issuing body. */
+  detail: string;
 };
 
 export type FounderProfile = {
   about: string;
   strengths: string[];
-  contributions: string[];
+  awards: Award[];
+  /** Key figures for courses and certifications, shown under the awards. */
+  credentials: { value: string; label: string }[];
 };
 
 /**

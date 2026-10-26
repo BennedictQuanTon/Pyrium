@@ -432,8 +432,8 @@ export function FounderLinks({
 
 /**
  * The three co-founders: colour portraits on one studio backdrop (the card continues the
- * photo's own ground), then number and "Co-founder", the name, the role in signal red and what
- * each one owns, with the same line structure on every card. Links sit in a row of round icon
+ * photo's own ground), then number and "Co-founder", the name and the role in signal red, with
+ * the same line structure on every card. Links sit in a row of round icon
  * buttons; links that aren't published yet show as dashed placeholders.
  */
 export function Founders({ lang }: { lang: Lang }) {
@@ -469,7 +469,6 @@ export function Founders({ lang }: { lang: Lang }) {
                   {member.role[lang]}
                 </p>
               </div>
-              <p className="text-[14px] leading-[1.55] text-graphite-ink">{member.focus[lang]}</p>
               <div className="mt-auto border-t border-ink/10 pt-4">
                 <FounderLinks member={member} lang={lang} />
               </div>

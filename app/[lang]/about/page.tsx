@@ -6,8 +6,9 @@ import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
 import { SubNav } from "@/components/ui/SubNav";
+import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
-import { organizers } from "@/content/people";
+import { collaborations, organizers } from "@/content/people";
 import { getProduct } from "@/content/products";
 import { isLang } from "@/lib/i18n";
 import { getMenus } from "@/lib/menus";
@@ -22,9 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * About: who we are, the numbers we can point to, our five-part core in depth (each commitment
- * tied to the product that proves it), and the organizers and institutions behind the work.
- * The team and the vision each have their own page.
+ * About: who we are, the four numbers we can point to, then recognition — the awards, where each
+ * product was built and with whom, and the wider circle of organizers — and our five-part core
+ * in depth, each commitment tied to the product that proves it. The team and the vision each
+ * have their own page.
  */
 export default async function AboutPage({ params }: Props) {
   const { lang } = await params;
@@ -66,6 +68,164 @@ export default async function AboutPage({ params }: Props) {
             </dl>
           </Reveal>
           <p className="text-[12px] text-stone">{t.numbersNote}</p>
+        </div>
+      </section>
+
+      {/* Recognition: awards on stage, then where each product was built and with whom */}
+      <section className="section bg-snow">
+        <div className="page-width flex flex-col gap-12 md:gap-16">
+          <Reveal>
+            <SectionHeading
+              eyebrow={t.recognitionEyebrow}
+              title={t.recognitionTitle}
+              body={t.recognitionBody}
+              size="md"
+            />
+          </Reveal>
+
+          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {t.awards.map((award, index) => {
+              const featured = index === 0;
+              const proof = "product" in award ? award.product : undefined;
+              return (
+                <li key={award.event}>
+                  <Reveal
+                    pop
+                    delay={index % 3}
+                    className={`flex h-full flex-col gap-5 rounded-[24px] p-7 md:p-8 ${featured ? "bg-midnight text-snow" : "bg-fog"}`}
+                  >
+                    <p
+                      className={`flex items-center justify-between gap-3 text-[12px] ${featured ? "text-silver" : "text-stone"}`}
+                    >
+                      <span className="eyebrow text-inherit">{award.by}</span>
+                      <span className="tabular shrink-0">{award.when}</span>
+                    </p>
+                    <div className="flex flex-col gap-3">
+                      <p
+                        className={`font-display text-[40px] leading-none tracking-[-0.04em] md:text-[48px] ${featured ? "text-snow" : "text-ink"}`}
+                      >
+                        {award.result}
+                      </p>
+                      <span aria-hidden="true" className="stat-rule h-[2px] w-12 bg-signal" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <h3
+                        className={`font-sans text-[16px] leading-[1.4] font-medium ${featured ? "text-snow" : "text-ink"}`}
+                      >
+                        {award.event}
+                      </h3>
+                      <p
+                        className={`text-[14px] leading-[1.55] ${featured ? "text-silver" : "text-stone"}`}
+                      >
+                        {award.work}
+                      </p>
+                    </div>
+                    {proof ? (
+                      <SmartLink
+                        href={`/work/${proof}`}
+                        className="group mt-auto flex items-center justify-between gap-4 border-t border-ink/[0.07] pt-4"
+                      >
+                        <ProductLogo slug={proof} size="sm" />
+                        <span
+                          aria-hidden="true"
+                          className="text-signal transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
+                      </SmartLink>
+                    ) : null}
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
+
+          <div className="flex flex-col gap-6">
+            <p className="eyebrow flex items-center gap-2">
+              <span aria-hidden="true" className="h-px w-6 bg-signal" />
+              {t.collabEyebrow}
+            </p>
+            <h3 className="max-w-[24ch] text-heading-sm md:text-heading">{t.collabTitle}</h3>
+            <Reveal pop>
+              <ul className="flex flex-col overflow-hidden rounded-[28px] bg-fog">
+                {collaborations.map((row, index) => {
+                  const product = getProduct(lang, row.product);
+                  if (!product) return null;
+                  return (
+                    <li key={row.product} className={index > 0 ? "border-t border-ink/[0.07]" : ""}>
+                      <SmartLink
+                        href={`/work/${row.product}`}
+                        className="logo-cell group grid items-center gap-4 px-6 py-5 md:grid-cols-[minmax(0,5fr)_auto_minmax(0,7fr)] md:gap-8 md:px-8"
+                      >
+                        <span className="flex flex-col items-start gap-1.5">
+                          <ProductLogo slug={row.product} size="sm" />
+                          <span className="text-[12px] text-stone">
+                            {product.event} · <span className="tabular">{product.period}</span>
+                          </span>
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="hidden font-display text-[22px] text-signal md:block"
+                        >
+                          ×
+                        </span>
+                        <span className="flex flex-wrap items-center gap-x-8 gap-y-3 md:justify-end">
+                          {row.with.map((name) => {
+                            const organizer = organizers.find((entry) => entry.name === name);
+                            return organizer?.logo ? (
+                              // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
+                              <img
+                                key={name}
+                                src={organizer.logo}
+                                alt={name}
+                                loading="lazy"
+                                className="max-h-7 max-w-[96px] object-contain"
+                              />
+                            ) : (
+                              <span
+                                key={name}
+                                className="text-[16px] font-medium tracking-[-0.01em] whitespace-nowrap text-graphite-ink"
+                              >
+                                {name}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      </SmartLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Reveal>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <p className="text-[13px] font-medium text-graphite-ink">{t.widerLabel}</p>
+            <Reveal pop>
+              <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-ink/[0.07] sm:grid-cols-3 lg:grid-cols-5">
+                {organizers.map((organizer) => (
+                  <li
+                    key={organizer.id}
+                    className="logo-cell flex h-24 items-center justify-center bg-fog px-6 text-graphite-ink odd:last:col-span-2 sm:odd:last:col-span-1 md:h-28"
+                  >
+                    {organizer.logo ? (
+                      // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
+                      <img
+                        src={organizer.logo}
+                        alt={organizer.name}
+                        loading="lazy"
+                        className="max-h-9 max-w-[112px] object-contain"
+                      />
+                    ) : (
+                      <span className="text-[17px] font-medium tracking-[-0.01em] whitespace-nowrap">
+                        {organizer.name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -140,39 +300,6 @@ export default async function AboutPage({ params }: Props) {
               );
             })}
           </ol>
-        </div>
-      </section>
-
-      {/* Partners */}
-      <section className="section bg-snow">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading eyebrow={t.partnersEyebrow} title={t.partnersTitle} size="md" />
-          </Reveal>
-          <Reveal pop>
-            <ul className="flex flex-wrap justify-center gap-3">
-              {organizers.map((organizer) => (
-                <li
-                  key={organizer.id}
-                  className="logo-cell flex h-28 w-[calc(50%_-_6px)] items-center justify-center rounded-[20px] bg-fog px-6 text-graphite-ink sm:w-[calc(33.333%_-_8px)] md:h-32 lg:w-[calc(20%_-_9.6px)]"
-                >
-                  {organizer.logo ? (
-                    // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
-                    <img
-                      src={organizer.logo}
-                      alt={organizer.name}
-                      loading="lazy"
-                      className="max-h-10 max-w-[120px] object-contain"
-                    />
-                  ) : (
-                    <span className="text-[18px] font-medium tracking-[-0.01em] whitespace-nowrap">
-                      {organizer.name}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
         </div>
       </section>
     </PageTransition>

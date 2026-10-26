@@ -11,7 +11,8 @@ type CountUpProps = {
 
 /**
  * Rolls every integer in the text up from zero when it scrolls into view — the "numbers
- * landing" moment. Non-numeric strings render as-is; reduced motion skips the roll.
+ * landing" moment. Non-numeric strings render as-is; reduced motion skips the roll. The final
+ * text sits invisibly underneath and sizes the box, so the rolling digits never reflow it.
  */
 export function CountUp({ text, className = "" }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -55,8 +56,11 @@ export function CountUp({ text, className = "" }: CountUpProps) {
   }, [text]);
 
   return (
-    <span ref={ref} className={className}>
-      {rendered}
+    <span ref={ref} className={`inline-grid max-w-full ${className}`}>
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+        {text}
+      </span>
+      <span className="col-start-1 row-start-1">{rendered}</span>
     </span>
   );
 }

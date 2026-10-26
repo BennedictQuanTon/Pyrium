@@ -51,9 +51,13 @@ export function SmartLink({
       </a>
     );
   }
+  // Every page reads its language from `params`, which the shared App Shell can't carry; a
+  // per-link prefetch resolves it ahead of the click, so the page transition never waits on
+  // the server. Pages are static, so these prefetches are served from the static cache.
   return (
     <Link
       href={localePath(lang, href)}
+      prefetch
       transitionTypes={[direction === "back" ? "nav-back" : "nav-forward"]}
       className={className}
       {...rest}

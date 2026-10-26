@@ -78,6 +78,7 @@ export function Nav() {
       >
         <Link
           href={localePath(lang, "/")}
+          prefetch
           transitionTypes={["nav-back"]}
           aria-label="Pyrium"
           className="shrink-0"
@@ -96,6 +97,7 @@ export function Nav() {
                 <Link
                   href={localePath(lang, item.href)}
                   data-section={item.href}
+                  prefetch
                   transitionTypes={["nav-forward"]}
                   onClick={() => setClosed(item.href)}
                   aria-current={isActive(item.href) ? "page" : undefined}
@@ -119,6 +121,7 @@ export function Nav() {
                         <li key={entry.href}>
                           <Link
                             href={localePath(lang, entry.href)}
+                            prefetch
                             transitionTypes={["nav-forward"]}
                             onClick={() => setClosed(item.href)}
                             aria-current={path === entry.href ? "page" : undefined}
@@ -184,6 +187,7 @@ export function Nav() {
               <li key={item.href}>
                 <Link
                   href={localePath(lang, item.href)}
+                  prefetch
                   transitionTypes={["nav-forward"]}
                   className="flex items-center justify-between rounded-[18px] px-4 py-3.5 text-[17px] text-ink hover:bg-white/60"
                 >
@@ -198,6 +202,7 @@ export function Nav() {
                       <li key={entry.href} className="shrink-0">
                         <Link
                           href={localePath(lang, entry.href)}
+                          prefetch
                           transitionTypes={["nav-forward"]}
                           className="block rounded-badges bg-white/60 px-3 py-1.5 text-[13px] text-graphite-ink"
                         >

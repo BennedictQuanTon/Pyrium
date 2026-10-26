@@ -24,17 +24,19 @@ export function ProductOutputs({
     { key: "core", label: labels.core, metric: product.outputs.core },
   ] as const;
   return (
-    <dl className="grid grid-cols-3 gap-2.5 md:gap-3">
+    <dl className="grid gap-2.5 sm:grid-cols-3 md:gap-3">
       {tiles.map((tile) => (
         <div
           key={tile.key}
-          className={`output-tile flex flex-col gap-2 rounded-[20px] p-4 md:p-5 ${tile.key === "saving" ? "bg-signal/[0.07]" : "bg-ink/[0.04]"}`}
+          className={`output-tile grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 gap-y-2 rounded-[20px] p-4 sm:flex sm:flex-col sm:items-stretch md:p-5 ${tile.key === "saving" ? "bg-signal/[0.07]" : "bg-ink/[0.04]"}`}
         >
-          <dt className="eyebrow text-[10px] tracking-[0.12em] md:text-[11px]">{tile.label}</dt>
+          <dt className="eyebrow col-start-1 text-[10px] tracking-[0.12em] md:text-[11px]">
+            {tile.label}
+          </dt>
           <dd
-            className={`font-display leading-none tracking-[-0.04em] ${tile.key === "saving" ? "text-signal" : "text-ink"} ${size === "lg" ? "text-[24px] sm:text-[40px] md:text-[52px]" : "text-[20px] sm:text-[28px] md:text-[32px]"}`}
+            className={`col-start-1 min-w-0 font-display whitespace-nowrap sm:whitespace-normal leading-[1.05] tracking-[-0.04em] ${tile.key === "saving" ? "text-signal" : "text-ink"} ${size === "lg" ? "text-[32px] sm:text-[34px] md:text-[52px]" : "text-[30px] sm:text-[24px] md:text-[30px] lg:text-[24px] xl:text-[28px]"}`}
           >
-            <CountUp text={tile.metric.value} className="tabular break-words" />
+            <CountUp text={tile.metric.value} className="tabular" />
             {tile.metric.estimate ? (
               <sup className="ml-0.5 align-super">
                 <a
@@ -47,7 +49,7 @@ export function ProductOutputs({
               </sup>
             ) : null}
           </dd>
-          <dd className="text-[12px] leading-[1.45] text-graphite-ink md:text-[13px]">
+          <dd className="col-start-2 row-span-2 row-start-1 text-[12px] leading-[1.45] text-graphite-ink md:text-[13px]">
             {tile.metric.label}
           </dd>
         </div>
