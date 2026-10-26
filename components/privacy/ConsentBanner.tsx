@@ -4,8 +4,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { Switch } from "@/components/sound/Settings";
 import { getCopy } from "@/content/copy";
-import { CONSENT_OPEN_EVENT, readConsent, writeConsent } from "@/lib/consent";
+import { CONSENT_OPEN_EVENT, type ConsentChoice, readConsent, writeConsent } from "@/lib/consent";
 import { splitPath } from "@/lib/i18n";
+import { applyMemoryChoice } from "@/lib/memory";
 
 const INTRO_DELAY_MS = 2600;
 const DELAY_MS = 900;
@@ -17,8 +18,8 @@ const pill =
 /**
  * The privacy prompt: a glass card in the corner, in the same language as Preferences. It asks
  * once, after the intro has played, and never blocks the page. "Accept all" and "Necessary only"
- * carry equal weight; "Customize" unfolds per-category switches. Preferences can reopen it to
- * change the answer at any time.
+ * carry equal weight; "Customize" unfolds per-category switches: analytics, and remembering the
+ * visit (preferences and where the visitor left off). Preferences can reopen it at any time.
  */
 export function ConsentBanner() {
   const pathname = usePathname();
@@ -27,6 +28,7 @@ export function ConsentBanner() {
   const [state, setState] = useState<"closed" | "open" | "leaving">("closed");
   const [custom, setCustom] = useState(false);
   const [analytics, setAnalytics] = useState(false);
+  const [personalization, setPersonalization] = useState(false);
   const titleId = useId();
   const bodyId = useId();
   const detailsId = useId();
@@ -39,7 +41,9 @@ export function ConsentBanner() {
     }
     const onOpen = () => {
       window.clearTimeout(timer);
-      setAnalytics(readConsent()?.analytics ?? false);
+      const current = readConsent();
+      setAnalytics(current?.analytics ?? false);
+      setPersonalization(current?.personalization ?? false);
       setCustom(true);
       setState("open");
     };
@@ -59,8 +63,9 @@ export function ConsentBanner() {
     return () => window.clearTimeout(timer);
   }, [state]);
 
-  const decide = (value: boolean) => {
-    writeConsent(value);
+  const decide = (choice: ConsentChoice) => {
+    applyMemoryChoice(choice.personalization);
+    writeConsent(choice);
     setState("leaving");
   };
 
@@ -120,6 +125,14 @@ export function ConsentBanner() {
                 {t.necessaryHint} · {t.always}
               </p>
             </div>
+            <div className="border-b border-ink/[0.07] py-2">
+              <Switch
+                label={t.personalization}
+                checked={personalization}
+                onChange={setPersonalization}
+              />
+              <p className="pb-1 text-[12px] leading-[1.45] text-stone">{t.personalizationHint}</p>
+            </div>
             <div className="py-2">
               <Switch label={t.analytics} checked={analytics} onChange={setAnalytics} />
               <p className="pb-1 text-[12px] leading-[1.45] text-stone">{t.analyticsHint}</p>
@@ -131,14 +144,18 @@ export function ConsentBanner() {
       <div className="mt-5 grid grid-cols-2 gap-2">
         <button
           type="button"
-          onClick={() => decide(false)}
+          onClick={() => decide({ analytics: false, personalization: false })}
           className={`${pill} bg-ink/[0.06] text-ink hover:bg-ink/[0.1]`}
         >
           {t.reject}
         </button>
         <button
           type="button"
-          onClick={() => decide(custom ? analytics : true)}
+          onClick={() =>
+            decide(
+              custom ? { analytics, personalization } : { analytics: true, personalization: true },
+            )
+          }
           className={`${pill} bg-ink text-snow hover:bg-graphite-ink`}
         >
           {custom ? t.save : t.accept}
