@@ -15,6 +15,7 @@
       "!**/*.lock",
       "!public/motion",
       "!public/people",
+      "!public/**/*.svg",
       "!PYRIUM_Brand_Identity_Kit"
     ]
   },
