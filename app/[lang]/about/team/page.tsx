@@ -133,11 +133,11 @@ export default async function TeamPage({ params }: Props) {
                         <div className="grid gap-3 md:grid-cols-2">
                           <div className="flex flex-col gap-4 rounded-[22px] bg-fog p-6">
                             <p className="eyebrow">{t.strengths}</p>
-                            <ol className="flex flex-col gap-3">
+                            <ol className="flex flex-1 flex-col">
                               {profile.strengths.map((item, position) => (
                                 <li
                                   key={item}
-                                  className="grid grid-cols-[1.75rem_1fr] text-[14px] leading-[1.55] text-graphite-ink"
+                                  className="grid flex-1 grid-cols-[1.75rem_1fr] items-center border-t border-ink/[0.07] py-3 text-[15px] leading-[1.5] text-ink first:border-t-0 first:pt-0 last:pb-0"
                                 >
                                   <span className="tabular pt-[1px] text-[12px] text-signal">
                                     0{position + 1}
@@ -153,7 +153,7 @@ export default async function TeamPage({ params }: Props) {
                               {profile.recognition.figures.map((item) => (
                                 <div
                                   key={item.label}
-                                  className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3 border-t border-ink/[0.07] py-3.5 first:border-t-0 first:pt-0"
+                                  className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3 border-t border-ink/[0.07] py-3.5 first:border-t-0 first:pt-0 last:pb-0"
                                 >
                                   <dt className="col-start-2 row-start-1 text-[13px] leading-[1.45] text-graphite-ink">
                                     {item.label}
@@ -164,7 +164,7 @@ export default async function TeamPage({ params }: Props) {
                                 </div>
                               ))}
                             </dl>
-                            <div className="mt-auto flex flex-col gap-3.5 border-t border-ink/[0.07] pt-4">
+                            <div className="flex flex-col gap-3.5 border-t border-ink/[0.07] pt-5">
                               <p className="text-[12px] text-stone">{t.recognisedBy}</p>
                               <ul className="grid grid-cols-2 gap-x-6 gap-y-4 text-graphite-ink">
                                 {profile.recognition.by.map((name) => {
