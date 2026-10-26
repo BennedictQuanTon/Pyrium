@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { getCopy } from "@/content/copy";
 import { audio } from "@/lib/audio";
+import { openConsent } from "@/lib/consent";
 import { type Lang, localePath, splitPath } from "@/lib/i18n";
 import { defaultPrefs, type MotionLevel, type Prefs, readPrefs, writePrefs } from "@/lib/prefs";
 
@@ -54,23 +55,26 @@ function Segmented<T extends string>({
   );
 }
 
-function Switch({
+export function Switch({
   label,
   checked,
   onChange,
+  disabled = false,
 }: {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
+      disabled={disabled}
       onClick={() => onChange(!checked)}
       data-silent
-      className="flex w-full items-center justify-between gap-4 py-1.5 text-left text-[14px] text-ink"
+      className="flex w-full items-center justify-between gap-4 py-1.5 text-left text-[14px] text-ink disabled:cursor-default disabled:opacity-50"
     >
       {label}
       <span
@@ -257,7 +261,19 @@ export function Settings({ onDark = false }: { onDark?: boolean }) {
             </label>
             <Switch label={t.sfx} checked={prefs.sfx} onChange={(value) => toggle("sfx", value)} />
           </section>
-          <p className="border-t border-ink/[0.07] pt-3 text-[11px] text-stone">{t.saved}</p>
+          <div className="flex items-center justify-between gap-3 border-t border-ink/[0.07] pt-3 text-[11px] text-stone">
+            <p>{t.saved}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openConsent();
+              }}
+              className="font-medium text-ink underline decoration-ink/20 underline-offset-[3px] transition-colors hover:decoration-signal"
+            >
+              {t.privacy}
+            </button>
+          </div>
         </div>
       </div>
     </div>
