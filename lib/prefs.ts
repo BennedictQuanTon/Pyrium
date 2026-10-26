@@ -1,6 +1,11 @@
+import { memoryStore, PREFS_KEY } from "@/lib/memory";
+
+export { PREFS_KEY };
+
 /**
- * Visitor preferences, kept in localStorage on this device only. The pre-paint bootstrap in
- * app/[lang]/layout.tsx reads the same key and sets html[data-motion] before first paint.
+ * Visitor preferences, kept on this device only: across visits with personalization consent,
+ * for this visit otherwise (lib/memory). The pre-paint bootstrap in app/layout.tsx reads the
+ * same key from either storage and sets html[data-motion] before first paint.
  */
 export type MotionLevel = "full" | "subtle" | "off";
 
@@ -11,13 +16,13 @@ export type Prefs = {
   sfx: boolean;
 };
 
-export const PREFS_KEY = "pyrium-prefs";
-
 export const defaultPrefs: Prefs = { motion: "full", music: true, musicVolume: 0.5, sfx: true };
 
 export function readPrefs(): Prefs {
   try {
-    const stored = JSON.parse(localStorage.getItem(PREFS_KEY) ?? "{}") as Partial<Prefs>;
+    // sessionStorage holds prefs only while the visit isn't remembered, so it wins when present.
+    const raw = sessionStorage.getItem(PREFS_KEY) ?? localStorage.getItem(PREFS_KEY);
+    const stored = JSON.parse(raw ?? "{}") as Partial<Prefs>;
     const prefs = { ...defaultPrefs, ...stored };
     // A visitor who asks the OS for reduced motion starts with motion off.
     if (!stored.motion && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -31,7 +36,7 @@ export function readPrefs(): Prefs {
 
 export function writePrefs(prefs: Prefs) {
   try {
-    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    memoryStore().setItem(PREFS_KEY, JSON.stringify(prefs));
   } catch {
     // Storage can be unavailable (private mode); preferences then last for the page only.
   }

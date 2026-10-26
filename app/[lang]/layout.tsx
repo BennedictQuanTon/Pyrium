@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Intro } from "@/components/motion/Intro";
+import { ConsentBanner } from "@/components/privacy/ConsentBanner";
+import { VisitMemory } from "@/components/privacy/VisitMemory";
 import { Footer } from "@/components/ui/Footer";
 import { Nav } from "@/components/ui/Nav";
 import { getCopy } from "@/content/copy";
@@ -41,6 +43,8 @@ export default async function LangLayout({ children, params }: Props) {
       <Nav />
       {children}
       <Footer lang={lang} />
+      <ConsentBanner />
+      <VisitMemory />
     </>
   );
 }
