@@ -35,17 +35,6 @@ export const organizers: Organizer[] = [
  */
 export const team: TeamMember[] = [
   {
-    name: "Yoshio Nomura",
-    github: "UniverseScripts",
-    role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
-    focus: {
-      en: "Private deployment, model serving and monitoring.",
-      vi: "Triển khai riêng tư, phục vụ mô hình và giám sát.",
-    },
-    photo: "/team/yoshio.jpg",
-    links: { portfolio: "https://github.com/UniverseScripts" },
-  },
-  {
     name: "Long Quan Ton",
     github: "BennedictQuanTon",
     role: { en: "AI Engineer · Product Design", vi: "Kỹ sư AI · Thiết kế sản phẩm" },
@@ -94,6 +83,17 @@ export const team: TeamMember[] = [
         ],
       },
     },
+  },
+  {
+    name: "Yoshio Nomura",
+    github: "UniverseScripts",
+    role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
+    focus: {
+      en: "Private deployment, model serving and monitoring.",
+      vi: "Triển khai riêng tư, phục vụ mô hình và giám sát.",
+    },
+    photo: "/team/yoshio.jpg",
+    links: { portfolio: "https://github.com/UniverseScripts" },
   },
   {
     name: "Huynh Khanh Tuong",

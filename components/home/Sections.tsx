@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
 import { Person } from "@/components/ui/Person";
-import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { PillButton, SectionHeading, SmartLink } from "@/components/ui/Primitives";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getTestimonials, organizers, team } from "@/content/people";
@@ -192,8 +192,9 @@ export function Testimonials({ lang }: { lang: Lang }) {
 }
 
 /**
- * How an engagement runs, laid out horizontally: four steps on one rail that draws itself in
- * red, then the three packages side by side in a single quiet panel split by hairlines.
+ * How an engagement runs: four steps in one dark band, each with an outlined numeral and a red
+ * track that fills step by step in a loop; then the three packages, the one most teams start
+ * with lifted forward on a red hairline.
  */
 export function Engagement({
   lang,
@@ -221,69 +222,109 @@ export function Engagement({
         </Reveal>
       ) : null}
 
-      <Reveal>
-        <ol className="relative grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
-          <span
-            aria-hidden="true"
-            className="absolute top-[5px] right-0 left-0 hidden h-px bg-ink/10 md:block"
-          >
-            <span className="grow-x block h-full bg-signal" />
-          </span>
+      <Reveal pop>
+        <ol className="engage-steps grid overflow-hidden rounded-[32px] bg-ink text-snow sm:grid-cols-2 lg:grid-cols-4">
           {t.steps.map((step, index) => (
-            <li key={step.name} className="relative flex flex-col gap-3 md:pt-9">
+            <li
+              key={step.name}
+              className={`engage-step group relative flex flex-col gap-5 p-8 md:p-9 ${index > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : ""} ${index === 2 ? "sm:border-t sm:border-l-0 lg:border-t-0 lg:border-l" : ""} ${index === 3 ? "sm:border-t lg:border-t-0" : ""}`}
+            >
               <span
                 aria-hidden="true"
-                className={`hidden size-[11px] rounded-full md:absolute md:top-0 md:left-0 md:block ${index === 0 ? "bg-signal" : "border border-ink/25 bg-fog"}`}
-              />
-              <span className="tabular text-[13px] text-signal">0{index + 1}</span>
-              <h3 className="font-sans text-[19px] font-medium text-ink">{step.name}</h3>
-              <p className="max-w-[30ch] text-[14px] leading-[1.6] text-stone">{step.detail}</p>
+                className="h-[2px] w-full overflow-hidden rounded-full bg-white/10"
+              >
+                <span
+                  className="engage-fill block h-full w-full origin-left bg-signal"
+                  style={{ animationDelay: `${index * 2}s` }}
+                />
+              </span>
+              <span
+                aria-hidden="true"
+                className="engage-num font-display text-[72px] leading-none tracking-[-0.04em] md:text-[84px]"
+              >
+                0{index + 1}
+              </span>
+              <div className="mt-4 flex flex-col gap-2.5">
+                <h3 className="font-sans text-[20px] font-medium text-snow">{step.name}</h3>
+                <p className="text-[14px] leading-[1.6] text-silver">{step.detail}</p>
+              </div>
             </li>
           ))}
         </ol>
       </Reveal>
 
       {compact ? null : (
-        <Reveal pop>
-          <ul className="grid overflow-hidden rounded-[28px] bg-snow shadow-subtle md:grid-cols-3">
-            {t.packages.map((pkg, index) => {
-              const featured = "featured" in pkg && pkg.featured;
-              return (
-                <li
-                  key={pkg.name}
-                  className={`flex flex-col gap-4 p-7 md:p-9 ${index > 0 ? "border-t border-ink/[0.07] md:border-t-0 md:border-l" : ""}`}
+        <ul className="grid items-stretch gap-4 lg:grid-cols-3 lg:items-center">
+          {t.packages.map((pkg, index) => {
+            const featured = "featured" in pkg && pkg.featured;
+            return (
+              <li key={pkg.name}>
+                <Reveal
+                  pop
+                  delay={index}
+                  className={`flex h-full flex-col gap-6 rounded-[28px] p-8 md:p-9 ${
+                    featured
+                      ? "bg-snow shadow-[0_40px_80px_-40px_rgba(17,17,17,0.35)] ring-1 ring-signal/25 lg:py-12"
+                      : "border border-ink/[0.07] bg-snow/60"
+                  }`}
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span className="tabular text-[13px] text-stone">0{index + 1}</span>
                     {featured ? (
-                      <span className="flex items-center gap-1.5 text-[12px] font-medium text-signal">
-                        <span aria-hidden="true" className="size-1.5 rounded-full bg-signal" />
+                      <span className="rounded-badges bg-signal px-3 py-1 text-[11px] font-medium text-snow">
                         {t.featured}
                       </span>
                     ) : null}
                   </div>
-                  <h3 className="text-heading-sm">{pkg.name}</h3>
-                  <p className="text-[15px] leading-[1.55] text-stone">{pkg.detail}</p>
-                  <p className="text-[13px] leading-[1.6] text-graphite-ink">
-                    {pkg.includes.join(" · ")}
-                  </p>
-                  <SmartLink
-                    href="/contact"
-                    className="group mt-auto inline-flex items-center gap-2 pt-2 text-[14px] font-medium text-ink"
-                  >
-                    {t.discuss}
-                    <span
-                      aria-hidden="true"
-                      className="text-signal transition-transform duration-300 group-hover:translate-x-1"
+                  <div className="flex flex-col gap-2.5">
+                    <h3 className="text-heading-sm">{pkg.name}</h3>
+                    <p className="text-[15px] leading-[1.55] text-stone">{pkg.detail}</p>
+                  </div>
+                  <ul className="flex flex-col border-t border-ink/[0.07]">
+                    {pkg.includes.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-3 border-b border-ink/[0.07] py-3 text-[14px] text-graphite-ink"
+                      >
+                        <svg
+                          viewBox="0 0 16 16"
+                          className="size-4 shrink-0 text-signal"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M3.5 8.5l3 3 6-7"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                          />
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  {featured ? (
+                    <PillButton href="/contact" className="mt-auto self-start">
+                      {t.discuss}
+                    </PillButton>
+                  ) : (
+                    <SmartLink
+                      href="/contact"
+                      className="group mt-auto inline-flex items-center gap-2 text-[14px] font-medium text-ink"
                     >
-                      →
-                    </span>
-                  </SmartLink>
-                </li>
-              );
-            })}
-          </ul>
-        </Reveal>
+                      {t.discuss}
+                      <span
+                        aria-hidden="true"
+                        className="text-signal transition-transform duration-300 group-hover:translate-x-1"
+                      >
+                        →
+                      </span>
+                    </SmartLink>
+                  )}
+                </Reveal>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );
