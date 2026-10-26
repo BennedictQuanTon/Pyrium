@@ -91,7 +91,7 @@ const base: Record<ProductSlug, ProductBase> = {
     event: "RMIT GenAI & Cybersecurity Hackathon 2026",
     organizers: "RMIT University · Tide",
     period: "10/2026",
-    demo: "https://unfound-rmit-hackathon.vercel.app",
+    demo: "https://unfound-be-reached-not-found.vercel.app",
     github: "https://github.com/BennedictQuanTon/Unfound-Challenge-2-RMIT-Hackathon-2026",
     video: {
       webm: "/work/unfound/unfound_film.webm",
