@@ -98,29 +98,24 @@ export function Nav() {
                 </Link>
                 {sub ? (
                   <div className="menu-panel invisible absolute top-full left-1/2 pt-1 opacity-0 group-focus-within/menu:visible group-focus-within/menu:opacity-100 group-hover/menu:visible group-hover/menu:opacity-100">
-                    <ul className="flex w-[380px] flex-col rounded-[24px] bg-snow p-2 shadow-[0_24px_60px_-20px_rgba(17,17,17,0.25)] ring-1 ring-ink/[0.06]">
+                    <ul className="flex min-w-[240px] flex-col rounded-[22px] bg-snow p-1.5 shadow-[0_24px_60px_-20px_rgba(17,17,17,0.25)] ring-1 ring-ink/[0.06]">
                       {sub.map((entry, index) => (
                         <li key={entry.href}>
                           <Link
                             href={localePath(lang, entry.href)}
                             transitionTypes={["nav-forward"]}
                             aria-current={path === entry.href ? "page" : undefined}
-                            className="group/item grid grid-cols-[1.75rem_1fr_auto] items-start gap-2 rounded-[18px] px-3.5 py-3 transition-colors duration-300 hover:bg-ink/[0.04]"
+                            className="group/item flex items-center gap-3 rounded-[16px] px-3.5 py-2.5 transition-colors duration-300 hover:bg-ink/[0.04]"
                           >
-                            <span className="tabular pt-[2px] text-[12px] text-signal">
+                            <span className="tabular w-5 text-[12px] text-signal">
                               0{index + 1}
                             </span>
-                            <span className="flex flex-col gap-0.5">
-                              <span className="text-[14px] font-medium text-ink">
-                                {entry.label}
-                              </span>
-                              <span className="text-[12px] leading-[1.45] text-stone">
-                                {entry.desc}
-                              </span>
+                            <span className="flex-1 text-[14px] font-medium whitespace-nowrap text-ink">
+                              {entry.label}
                             </span>
                             <span
                               aria-hidden="true"
-                              className="pt-[2px] text-[13px] text-stone opacity-0 transition-all duration-300 group-hover/item:translate-x-0.5 group-hover/item:text-signal group-hover/item:opacity-100"
+                              className="text-[13px] text-stone opacity-0 transition-all duration-300 group-hover/item:translate-x-0.5 group-hover/item:text-signal group-hover/item:opacity-100"
                             >
                               →
                             </span>

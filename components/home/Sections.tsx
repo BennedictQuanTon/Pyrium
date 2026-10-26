@@ -316,109 +316,126 @@ const ICONS: Record<LinkKind, ReactNode> = {
   portfolio: <path d="M8 16L16 8M9.5 8H16v6.5" />,
 };
 
+export function FounderLinks({
+  member,
+  lang,
+  tone = "snow",
+}: {
+  member: (typeof team)[number];
+  lang: Lang;
+  /** Fill of the live buttons: snow on the grey card, fog on white. */
+  tone?: "snow" | "fog";
+}) {
+  const t = getCopy(lang).team;
+  const links: { kind: LinkKind; label: string; href?: string }[] = [
+    { kind: "linkedin", label: t.links.linkedin, href: member.links.linkedin },
+    { kind: "github", label: "GitHub", href: `https://github.com/${member.github}` },
+    {
+      kind: "email",
+      label: t.links.email,
+      href: member.links.email ? `mailto:${member.links.email}` : undefined,
+    },
+    {
+      kind: "portfolio",
+      label: t.links.portfolio,
+      href:
+        member.links.portfolio && !member.links.portfolio.includes("github.com")
+          ? member.links.portfolio
+          : undefined,
+    },
+  ];
+  return (
+    <ul className="flex items-center gap-2">
+      {links.map(({ kind, label, href }) => {
+        const icon = (
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="size-[18px]"
+          >
+            {ICONS[kind]}
+          </svg>
+        );
+        return (
+          <li key={kind}>
+            {href ? (
+              <SmartLink
+                href={href}
+                aria-label={`${member.name} — ${label}`}
+                className={`flex size-10 items-center justify-center rounded-full text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow ${tone === "snow" ? "bg-snow shadow-button" : "bg-fog"}`}
+              >
+                {icon}
+              </SmartLink>
+            ) : (
+              <span
+                title={`${label} · ${t.links.soon}`}
+                className="flex size-10 items-center justify-center rounded-full border border-dashed border-ink/20 text-stone/70"
+              >
+                {icon}
+                <span className="sr-only">
+                  {label} · {t.links.soon}
+                </span>
+              </span>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 /**
  * The three co-founders: colour portraits on one studio backdrop (the card continues the
- * photo's own ground), then name, role in signal red and what each one owns. Links sit in a
- * row of round icon buttons — LinkedIn, GitHub, email, portfolio; links that aren't published
- * yet show as dashed placeholders marked "coming soon".
+ * photo's own ground), then number and "Co-founder", the name, the role in signal red and what
+ * each one owns, with the same line structure on every card. Links sit in a row of round icon
+ * buttons; links that aren't published yet show as dashed placeholders.
  */
 export function Founders({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team;
   return (
     <ul className="grid gap-6 md:grid-cols-3">
-      {team.map((member, index) => {
-        const links: { kind: LinkKind; label: string; href?: string }[] = [
-          { kind: "linkedin", label: t.links.linkedin, href: member.links.linkedin },
-          { kind: "github", label: "GitHub", href: `https://github.com/${member.github}` },
-          {
-            kind: "email",
-            label: t.links.email,
-            href: member.links.email ? `mailto:${member.links.email}` : undefined,
-          },
-          {
-            kind: "portfolio",
-            label: t.links.portfolio,
-            href:
-              member.links.portfolio && !member.links.portfolio.includes("github.com")
-                ? member.links.portfolio
-                : undefined,
-          },
-        ];
-        return (
-          <li key={member.github}>
-            <Reveal
-              pop
-              delay={index}
-              className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
-            >
-              <div className="relative overflow-hidden">
-                {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
-                <img
-                  src={member.photo}
-                  alt={member.name}
-                  className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
-                />
-              </div>
-              <div className="relative z-10 -mt-12 flex flex-1 flex-col gap-4 px-6 pb-6 md:px-7 md:pb-7">
-                <p className="eyebrow flex items-center gap-2 text-signal">
-                  <span className="tabular">0{index + 1}</span>
-                  <span aria-hidden="true" className="h-px w-5 bg-signal" />
+      {team.map((member, index) => (
+        <li key={member.github}>
+          <Reveal
+            pop
+            delay={index}
+            className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
+          >
+            <div className="relative overflow-hidden">
+              {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
+              <img
+                src={member.photo}
+                alt={member.name}
+                className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
+              />
+            </div>
+            <div className="relative z-10 -mt-12 flex flex-1 flex-col gap-4 px-6 pb-6 md:px-7 md:pb-7">
+              <p className="eyebrow flex items-center gap-2">
+                <span className="tabular text-signal">0{index + 1}</span>
+                <span aria-hidden="true" className="h-px w-5 bg-signal" />
+                {t.cofounder}
+              </p>
+              <div className="flex flex-col gap-1.5">
+                <h3 className="font-display text-[26px] leading-[1.1] tracking-[-0.02em] text-ink">
+                  {member.name}
+                </h3>
+                <p className="text-[14px] font-medium whitespace-nowrap text-signal">
                   {member.role[lang]}
                 </p>
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-display text-[26px] leading-[1.1] tracking-[-0.02em] text-ink">
-                    {member.name}
-                  </h3>
-                  <p className="text-[14px] leading-[1.55] text-graphite-ink">
-                    <span className="text-ink">{t.cofounder}.</span> {member.focus[lang]}
-                  </p>
-                </div>
-                <ul className="mt-auto flex items-center gap-2 border-t border-ink/10 pt-4">
-                  {links.map(({ kind, label, href }) => {
-                    const icon = (
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                        className="size-[18px]"
-                      >
-                        {ICONS[kind]}
-                      </svg>
-                    );
-                    return (
-                      <li key={kind}>
-                        {href ? (
-                          <SmartLink
-                            href={href}
-                            aria-label={`${member.name} — ${label}`}
-                            className="flex size-10 items-center justify-center rounded-full bg-snow text-ink shadow-button transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow"
-                          >
-                            {icon}
-                          </SmartLink>
-                        ) : (
-                          <span
-                            title={`${label} · ${t.links.soon}`}
-                            className="flex size-10 items-center justify-center rounded-full border border-dashed border-ink/20 text-stone/70"
-                          >
-                            {icon}
-                            <span className="sr-only">
-                              {label} · {t.links.soon}
-                            </span>
-                          </span>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
               </div>
-            </Reveal>
-          </li>
-        );
-      })}
+              <p className="text-[14px] leading-[1.55] text-graphite-ink">{member.focus[lang]}</p>
+              <div className="mt-auto border-t border-ink/10 pt-4">
+                <FounderLinks member={member} lang={lang} />
+              </div>
+            </div>
+          </Reveal>
+        </li>
+      ))}
     </ul>
   );
 }
