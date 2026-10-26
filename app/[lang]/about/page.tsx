@@ -31,12 +31,7 @@ export default async function AboutPage({ params }: Props) {
   const copy = getCopy(lang);
   const t = copy.about;
   const pillars = copy.core.pillars;
-  const builtRows = collaborations.flatMap((row) => {
-    const product = getProduct(lang, row.product);
-    return product
-      ? [{ slug: row.product, event: product.event, period: product.period, partners: row.with }]
-      : [];
-  });
+  const builtRows = collaborations.map((row) => ({ slug: row.product, partners: row.with }));
 
   return (
     <PageTransition>

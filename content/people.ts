@@ -22,7 +22,7 @@ export const organizers: Organizer[] = [
   { id: "lablab", name: "lablab.ai" },
   { id: "openai", name: "OpenAI", logo: "/brand/logos/openai.svg", viewBox: "0 0 1180 320" },
   { id: "devpost", name: "Devpost", logo: "/brand/logos/devpost.svg", viewBox: "0 0 24 24" },
-  { id: "amd", name: "AMD", logo: "/brand/logos/amd.svg", viewBox: "0 0 24 24" },
+  { id: "amd", name: "AMD", logo: "/brand/logos/amd.svg", viewBox: "0 7.4 24 9.2" },
   { id: "sea", name: "Sea / Shopee", logo: "/brand/logos/shopee.svg", viewBox: "0 0 24 24" },
   {
     id: "gigabyte",
@@ -32,7 +32,7 @@ export const organizers: Organizer[] = [
   },
   { id: "rmit", name: "RMIT University", logo: "/brand/logos/rmit.svg", viewBox: "0 0 893 314" },
   // Academic institutions the team studies and collaborates with.
-  { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "0 0 406.32 406.32" },
+  { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "73 74 269 257" },
   { id: "bku", name: "HCMUT (Bách Khoa)", logo: "/brand/logos/bku.png", viewBox: "0 0 240 240" },
 ];
 
@@ -92,10 +92,11 @@ export const team: TeamMember[] = [
         about:
           "Quan leads Pyrium's AI and product work. He takes a messy operational problem, draws the boundary of what an agent may and may not do, and then designs the product people actually touch around it — so the model proposes, code decides and a person approves.",
         strengths: [
-          "Agent architecture with deterministic checks and human approval",
-          "Product design, from workflow map to the screen staff use",
-          "Evaluation sets and cost per successful task",
-          "Voice and multilingual interfaces",
+          "Agentic systems: multi-agent routing, tool gateways and human approval, including a four-layer router that cut tokens by 85%",
+          "Hands-on GenAI: 60+ models fine-tuned, RAG served on 8×H200, evaluated on cost per successful task",
+          "Product design, from the workflow map to the screen staff actually use",
+          "Reads the business first, turning how a team operates into requirements an agent can meet",
+          "Takes an idea to the team's lead prototype, as project lead on Weatherise and on stage pitching at ACE",
         ],
         recognition: {
           figures: [
@@ -110,10 +111,11 @@ export const team: TeamMember[] = [
         about:
           "Quân phụ trách AI và sản phẩm của Pyrium. Anh bắt đầu từ một vấn đề vận hành còn rối, vạch rõ ranh giới tác tử được và không được làm gì, rồi thiết kế sản phẩm mà người dùng thực sự chạm vào — để mô hình đề xuất, mã nguồn quyết định và con người phê duyệt.",
         strengths: [
-          "Kiến trúc tác tử với kiểm tra tất định và phê duyệt của con người",
-          "Thiết kế sản phẩm, từ bản đồ quy trình đến màn hình nhân viên dùng",
-          "Bộ đánh giá và chi phí trên mỗi tác vụ thành công",
-          "Giao diện giọng nói và đa ngôn ngữ",
+          "Hệ thống tác tử: điều phối đa tác tử, cổng công cụ và phê duyệt của con người, gồm bộ định tuyến bốn lớp giảm 85% token",
+          "GenAI thực chiến: tinh chỉnh hơn 60 mô hình, RAG chạy trên 8×H200, đo bằng chi phí trên mỗi tác vụ thành công",
+          "Thiết kế sản phẩm, từ bản đồ quy trình đến màn hình nhân viên thật sự dùng",
+          "Hiểu nghiệp vụ trước, biến cách một đội vận hành thành yêu cầu mà tác tử đáp ứng được",
+          "Đưa ý tưởng thành prototype chính của nhóm, dẫn dắt Weatherise và trực tiếp pitch trên sân khấu ACE",
         ],
         recognition: {
           figures: [

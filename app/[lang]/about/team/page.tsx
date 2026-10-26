@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { FounderLinks } from "@/components/home/Sections";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
+import { OrganizerMark } from "@/components/ui/OrganizerMark";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getCopy } from "@/content/copy";
 import { organizers, team } from "@/content/people";
@@ -165,19 +166,13 @@ export default async function TeamPage({ params }: Props) {
                             </dl>
                             <div className="mt-auto flex flex-col gap-3.5 border-t border-ink/[0.07] pt-4">
                               <p className="text-[12px] text-stone">{t.recognisedBy}</p>
-                              <ul className="grid grid-cols-3 gap-x-4 gap-y-3 text-graphite-ink">
+                              <ul className="grid grid-cols-2 gap-x-6 gap-y-4 text-graphite-ink">
                                 {profile.recognition.by.map((name) => {
                                   const organizer = organizers.find((entry) => entry.name === name);
                                   return (
-                                    <li key={name} className="flex h-7 items-center">
-                                      {organizer?.logo ? (
-                                        // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
-                                        <img
-                                          src={organizer.logo}
-                                          alt={name}
-                                          loading="lazy"
-                                          className="h-[18px] w-auto max-w-full object-contain object-left"
-                                        />
+                                    <li key={name} className="flex h-9 min-w-0 items-center">
+                                      {organizer ? (
+                                        <OrganizerMark organizer={organizer} size="sm" />
                                       ) : (
                                         <span className="text-[13px] font-medium">{name}</span>
                                       )}

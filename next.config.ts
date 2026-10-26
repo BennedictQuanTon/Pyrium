@@ -13,10 +13,13 @@ const nextConfig: NextConfig = {
   },
   // Every page lives under app/[lang]. English keeps clean URLs: after static files are
   // checked, any path that doesn't start with a language prefix is served from /en.
+  // /_vercel/* (Web Analytics, Speed Insights) belongs to the platform and must pass through.
   async rewrites() {
     return {
       beforeFiles: [],
-      afterFiles: [{ source: "/:path((?!en(?:/|$)|vi(?:/|$)).*)", destination: "/en/:path" }],
+      afterFiles: [
+        { source: "/:path((?!en(?:/|$)|vi(?:/|$)|_vercel/).*)", destination: "/en/:path" },
+      ],
       fallback: [],
     };
   },
