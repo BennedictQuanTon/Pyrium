@@ -16,8 +16,8 @@ const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
  *
  * On load it asks the browser to start the ambient music right away. Browsers only allow that
  * for sites the visitor already engages with; otherwise the music fades in on the first press,
- * tap or key, and a small "sound" chip in the corner says so. Every interactive element gets a
- * soft press sample and a near-silent hover tick; preference changes apply live.
+ * tap or key, and a small "sound" chip in the corner says so. Interactive elements make a soft
+ * sound only when pressed (never on hover); preference changes apply live.
  */
 export function SoundLayer() {
   const { lang } = splitPath(usePathname());
@@ -53,22 +53,6 @@ export function SoundLayer() {
       if (target && !target.hasAttribute("data-silent")) engine.press();
     };
 
-    let lastHover: Element | null = null;
-    let lastAt = 0;
-    const onOver = (event: PointerEvent) => {
-      if (!prefs.sfx || event.pointerType !== "mouse") return;
-      const target = (event.target as Element | null)?.closest(INTERACTIVE) ?? null;
-      if (!target || target === lastHover) {
-        if (!target) lastHover = null;
-        return;
-      }
-      lastHover = target;
-      const now = performance.now();
-      if (now - lastAt < 120) return;
-      lastAt = now;
-      engine.hover();
-    };
-
     const onPrefs = (event: Event) => {
       const next = (event as CustomEvent<Prefs>).detail;
       const musicChanged = next.music !== prefs.music;
@@ -91,13 +75,11 @@ export function SoundLayer() {
     };
 
     document.addEventListener("click", onPress, true);
-    document.addEventListener("pointerover", onOver, { passive: true });
     window.addEventListener("pyrium:prefs", onPrefs);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       for (const type of GESTURES) window.removeEventListener(type, onGesture);
       document.removeEventListener("click", onPress, true);
-      document.removeEventListener("pointerover", onOver);
       window.removeEventListener("pyrium:prefs", onPrefs);
       document.removeEventListener("visibilitychange", onVisibility);
     };

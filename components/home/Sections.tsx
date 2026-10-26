@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
-import { DraftTag, PillButton, SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { DraftTag, SectionHeading, SmartLink } from "@/components/ui/Primitives";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getTestimonials, organizers, team } from "@/content/people";
@@ -57,9 +57,9 @@ export function LogoMarquee({ label }: { label: string }) {
 }
 
 /**
- * The four product lockups, each in its own brand, then three headline numbers — people
- * reached, money saved (an estimate, marked and explained), recognitions won — that count up
- * and pop in, with a red rule drawing under each.
+ * The product lockups, each in its own brand, then three headline numbers — people reached,
+ * running cost saved, recognitions won — that count up and pop in with a red rule under each.
+ * Estimates carry a numbered marker; the notes and the last-updated date sit underneath.
  */
 export function ProductStrip({ products, lang }: { products: Product[]; lang: Lang }) {
   const t = getCopy(lang).productsSection;
@@ -84,43 +84,45 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
           ))}
         </ul>
       </Reveal>
-      <dl className="grid gap-12 md:grid-cols-3 md:gap-8">
-        {t.stats.map((stat, index) => (
-          <Reveal key={stat.label} pop delay={index} className="stat flex flex-col gap-3">
-            <dt className="sr-only">{stat.label}</dt>
-            <dd className="flex items-start gap-1 font-display text-[72px] leading-[0.95] tracking-[-0.05em] text-ink md:text-[88px] lg:text-[104px]">
-              <CountUp text={stat.value} className="tabular" />
-              {"estimate" in stat && stat.estimate ? (
-                <a
-                  href="#estimate-note"
-                  className="mt-3 text-[14px] font-medium tracking-normal text-signal underline-offset-2 hover:underline"
-                >
-                  {t.estimateMark}
-                </a>
-              ) : null}
-            </dd>
-            <span aria-hidden="true" className="stat-rule h-[2px] w-16 rounded-full bg-signal" />
-            <dd className="max-w-[26ch] text-[16px] leading-[1.5] text-graphite-ink">
-              {stat.label}
-            </dd>
-            {index === t.stats.length - 1 ? (
-              <dd className="flex flex-wrap gap-1.5 pt-1">
-                {t.awards.map((award) => (
-                  <span
-                    key={award}
-                    className="rounded-badges border border-ink/10 bg-snow px-2.5 py-1 text-[11px] whitespace-nowrap text-graphite-ink"
+      <div className="flex flex-col gap-8">
+        <dl className="grid gap-12 md:grid-cols-3 md:gap-8">
+          {t.stats.map((stat, index) => (
+            <Reveal key={stat.label} pop delay={index} className="stat flex flex-col gap-3">
+              <dt className="sr-only">{stat.label}</dt>
+              <dd className="flex items-start gap-1 font-display text-[72px] leading-[0.95] tracking-[-0.05em] text-ink md:text-[88px] lg:text-[104px]">
+                <CountUp text={stat.value} className="tabular" />
+                {"note" in stat && stat.note ? (
+                  <a
+                    href={`#note-${stat.note}`}
+                    aria-label={`Note ${stat.note}`}
+                    className="mt-2 font-sans text-[15px] font-medium tracking-normal text-signal underline-offset-2 hover:underline"
                   >
-                    {award}
-                  </span>
-                ))}
+                    {stat.note}
+                  </a>
+                ) : null}
               </dd>
-            ) : null}
-          </Reveal>
-        ))}
-      </dl>
-      <p id="estimate-note" className="-mt-6 max-w-[90ch] text-[12px] text-stone">
-        {t.estimateNote}
-      </p>
+              <span aria-hidden="true" className="stat-rule h-[2px] w-16 rounded-full bg-signal" />
+              <dd className="max-w-[26ch] text-[16px] leading-[1.5] text-graphite-ink">
+                {stat.label}
+              </dd>
+            </Reveal>
+          ))}
+        </dl>
+        <div
+          id="products-notes"
+          className="flex flex-col gap-3 border-t border-ink/10 pt-5 text-[12px] leading-[1.55] text-stone md:flex-row md:items-start md:justify-between md:gap-10"
+        >
+          <ol className="flex max-w-[92ch] flex-col gap-1.5">
+            {t.notes.map((note, index) => (
+              <li key={note} id={`note-${index + 1}`} className="flex gap-2 scroll-mt-32">
+                <span className="tabular font-medium text-signal">{index + 1}</span>
+                {note}
+              </li>
+            ))}
+          </ol>
+          <p className="shrink-0 tabular">{t.updated}</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -205,226 +207,222 @@ export function Testimonials({ lang }: { lang: Lang }) {
 }
 
 /**
- * Working together, as a journey: the heading stays pinned on the left while the four steps
- * run down a rail on the right, the rail filling red as each step arrives, with a go / no-go
- * gate drawn between steps. The three packages follow as cards; the pilot is featured.
+ * How an engagement runs, laid out horizontally: four steps on one rail that draws itself in
+ * red, then the three packages side by side in a single quiet panel split by hairlines.
  */
 export function Engagement({ lang, compact = false }: { lang: Lang; compact?: boolean }) {
   const t = getCopy(lang).engagement;
   return (
-    <div className="flex flex-col gap-16">
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <Reveal className="flex flex-col gap-4 self-start lg:sticky lg:top-32">
+    <div className="flex flex-col gap-14 md:gap-16">
+      <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
+        <div className="flex flex-col gap-4">
           <p className="eyebrow flex items-center gap-2">
             <span aria-hidden="true" className="h-px w-6 bg-signal" />
             {t.eyebrow}
           </p>
           <h2 className="max-w-[16ch] text-heading md:text-heading-lg">{t.title}</h2>
-          <p className="max-w-[44ch] text-body text-stone md:text-subheading">{t.body}</p>
-        </Reveal>
-        <ol className="journey relative flex flex-col">
+        </div>
+        <p className="max-w-[40ch] text-body text-stone md:text-right">{t.body}</p>
+      </Reveal>
+
+      <Reveal>
+        <ol className="relative grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+          <span
+            aria-hidden="true"
+            className="absolute top-[5px] right-0 left-0 hidden h-px bg-ink/10 md:block"
+          >
+            <span className="grow-x block h-full bg-signal" />
+          </span>
           {t.steps.map((step, index) => (
-            <li key={step.name}>
-              <Reveal className="journey-step relative grid grid-cols-[2.75rem_1fr] gap-5 pb-10 last:pb-0 md:gap-7">
-                <div className="relative flex flex-col items-center">
-                  <span className="journey-node relative z-10 flex size-11 items-center justify-center rounded-full border border-ink/15 bg-snow font-display text-[17px] text-ink">
-                    {index + 1}
-                  </span>
-                  {index < t.steps.length - 1 ? (
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-11 bottom-[-2.5rem] w-px bg-ink/10"
-                    >
-                      <span className="journey-fill block h-full w-full origin-top bg-signal" />
-                    </span>
-                  ) : null}
-                </div>
-                <div className="flex flex-col gap-3 pt-1.5">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="font-sans text-[20px] font-medium text-ink">{step.name}</h3>
-                    <span className="rounded-badges bg-ink/[0.05] px-2.5 py-1 text-[11px] font-medium whitespace-nowrap text-graphite-ink">
-                      {step.time}
-                    </span>
-                  </div>
-                  <p className="max-w-[52ch] text-[15px] leading-[1.6] text-stone">{step.detail}</p>
-                  {index < t.steps.length - 1 ? (
-                    <span className="mt-1 inline-flex items-center gap-2 self-start rounded-badges border border-signal/25 px-3 py-1 text-[12px] font-medium text-signal">
-                      <span aria-hidden="true" className="size-1.5 rotate-45 bg-signal" />
-                      {t.gate}
-                    </span>
-                  ) : null}
-                </div>
-              </Reveal>
+            <li key={step.name} className="relative flex flex-col gap-3 md:pt-9">
+              <span
+                aria-hidden="true"
+                className={`hidden size-[11px] rounded-full md:absolute md:top-0 md:left-0 md:block ${index === 0 ? "bg-signal" : "border border-ink/25 bg-fog"}`}
+              />
+              <span className="tabular text-[13px] text-signal">0{index + 1}</span>
+              <h3 className="font-sans text-[19px] font-medium text-ink">{step.name}</h3>
+              <p className="max-w-[30ch] text-[14px] leading-[1.6] text-stone">{step.detail}</p>
             </li>
           ))}
         </ol>
-      </div>
+      </Reveal>
+
       {compact ? null : (
-        <ul className="grid gap-4 md:grid-cols-3">
-          {t.packages.map((pkg, index) => {
-            const featured = "featured" in pkg && pkg.featured;
-            return (
-              <li key={pkg.name}>
-                <Reveal
-                  pop
-                  delay={index}
-                  className={`flex h-full flex-col gap-6 rounded-[28px] p-8 md:p-9 ${featured ? "bg-ink text-snow" : "bg-snow shadow-subtle"}`}
+        <Reveal pop>
+          <ul className="grid overflow-hidden rounded-[28px] bg-snow shadow-subtle md:grid-cols-3">
+            {t.packages.map((pkg, index) => {
+              const featured = "featured" in pkg && pkg.featured;
+              return (
+                <li
+                  key={pkg.name}
+                  className={`flex flex-col gap-4 p-7 md:p-9 ${index > 0 ? "border-t border-ink/[0.07] md:border-t-0 md:border-l" : ""}`}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span
-                      className={`tabular text-[13px] ${featured ? "text-silver" : "text-stone"}`}
-                    >
-                      0{index + 1}
-                    </span>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="tabular text-[13px] text-stone">0{index + 1}</span>
                     {featured ? (
-                      <span className="rounded-badges bg-signal px-3 py-1 text-[11px] font-medium text-snow">
+                      <span className="flex items-center gap-1.5 text-[12px] font-medium text-signal">
+                        <span aria-hidden="true" className="size-1.5 rounded-full bg-signal" />
                         {t.featured}
                       </span>
                     ) : null}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <h3 className={`text-heading-sm ${featured ? "text-snow" : ""}`}>{pkg.name}</h3>
-                    <p
-                      className={`text-[15px] leading-[1.55] ${featured ? "text-silver" : "text-stone"}`}
-                    >
-                      {pkg.detail}
-                    </p>
-                  </div>
-                  <ul
-                    className={`flex flex-col gap-2.5 border-t pt-5 ${featured ? "border-white/10" : "border-ink/[0.07]"}`}
-                  >
-                    {pkg.includes.map((item) => (
-                      <li
-                        key={item}
-                        className={`flex items-center gap-2.5 text-[14px] ${featured ? "text-mist" : "text-graphite-ink"}`}
-                      >
-                        <svg
-                          viewBox="0 0 16 16"
-                          className="size-4 shrink-0 text-signal"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M3.5 8.5l3 3 6-7"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          />
-                        </svg>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <PillButton
+                  <h3 className="text-heading-sm">{pkg.name}</h3>
+                  <p className="text-[15px] leading-[1.55] text-stone">{pkg.detail}</p>
+                  <p className="text-[13px] leading-[1.6] text-graphite-ink">
+                    {pkg.includes.join(" · ")}
+                  </p>
+                  <SmartLink
                     href="/contact"
-                    variant={featured ? "primary" : "ghost"}
-                    className="mt-auto self-start"
+                    className="group mt-auto inline-flex items-center gap-2 pt-2 text-[14px] font-medium text-ink"
                   >
                     {t.discuss}
-                  </PillButton>
-                </Reveal>
-              </li>
-            );
-          })}
-        </ul>
+                    <span
+                      aria-hidden="true"
+                      className="text-signal transition-transform duration-300 group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </SmartLink>
+                </li>
+              );
+            })}
+          </ul>
+        </Reveal>
       )}
     </div>
   );
 }
 
-const ICONS: Record<"linkedin" | "email" | "portfolio", ReactNode> = {
-  linkedin: <path d="M6.5 9.5v8M6.5 6.5v.01M10.5 17.5v-4.5a3 3 0 0 1 6 0v4.5M10.5 9.5v8" />,
+type LinkKind = "linkedin" | "github" | "email" | "portfolio";
+
+/** Brand marks are filled; the two utility icons are drawn in the same 1.6px line. */
+const ICONS: Record<LinkKind, ReactNode> = {
+  linkedin: (
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"
+    />
+  ),
+  github: (
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57l-.02-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22l-.01 3.29c0 .32.21.69.82.57A12 12 0 0 0 12 .3"
+    />
+  ),
   email: (
     <>
       <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
       <path d="M4 7l8 6 8-6" />
     </>
   ),
-  portfolio: (
-    <>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.2 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.2-3.6-8.5S9.6 5.8 12 3.5z" />
-    </>
-  ),
+  portfolio: <path d="M8 16L16 8M9.5 8H16v6.5" />,
 };
 
 /**
  * The three co-founders: colour portraits on one studio backdrop (the card continues the
- * photo's own ground), name and role beneath, then LinkedIn, email and portfolio. Links that
- * aren't published yet render disabled with a "coming soon" label.
+ * photo's own ground), then name, role in signal red and what each one owns. Links sit in a
+ * row of round icon buttons — LinkedIn, GitHub, email, portfolio; links that aren't published
+ * yet show as dashed placeholders marked "coming soon".
  */
 export function Founders({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team;
   return (
     <ul className="grid gap-6 md:grid-cols-3">
-      {team.map((member, index) => (
-        <li key={member.github}>
-          <Reveal
-            pop
-            delay={index}
-            className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
-          >
-            <div className="relative overflow-hidden">
-              {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
-              <img
-                src={member.photo}
-                alt={member.name}
-                className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
-              />
-            </div>
-            <div className="relative z-10 -mt-10 flex flex-1 flex-col gap-5 px-6 pb-6">
-              <div className="flex flex-col gap-1">
-                <h3 className="font-sans text-[19px] font-medium text-ink">{member.name}</h3>
-                <p className="text-[14px] text-graphite-ink">
-                  {t.cofounder} · {member.role[lang]}
+      {team.map((member, index) => {
+        const links: { kind: LinkKind; label: string; href?: string }[] = [
+          { kind: "linkedin", label: t.links.linkedin, href: member.links.linkedin },
+          { kind: "github", label: "GitHub", href: `https://github.com/${member.github}` },
+          {
+            kind: "email",
+            label: t.links.email,
+            href: member.links.email ? `mailto:${member.links.email}` : undefined,
+          },
+          {
+            kind: "portfolio",
+            label: t.links.portfolio,
+            href:
+              member.links.portfolio && !member.links.portfolio.includes("github.com")
+                ? member.links.portfolio
+                : undefined,
+          },
+        ];
+        return (
+          <li key={member.github}>
+            <Reveal
+              pop
+              delay={index}
+              className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
+            >
+              <div className="relative overflow-hidden">
+                {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
+                />
+              </div>
+              <div className="relative z-10 -mt-12 flex flex-1 flex-col gap-4 px-6 pb-6 md:px-7 md:pb-7">
+                <p className="eyebrow flex items-center gap-2 text-signal">
+                  <span className="tabular">0{index + 1}</span>
+                  <span aria-hidden="true" className="h-px w-5 bg-signal" />
+                  {member.role[lang]}
                 </p>
-              </div>
-              <div className="mt-auto flex flex-wrap gap-2">
-                {(["linkedin", "email", "portfolio"] as const).map((kind) => {
-                  const value = member.links[kind];
-                  const label = t.links[kind];
-                  const icon = (
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                      className="size-4"
-                    >
-                      {ICONS[kind]}
-                    </svg>
-                  );
-                  if (!value) {
-                    return (
-                      <span
-                        key={kind}
-                        title={t.links.soon}
-                        className="inline-flex items-center gap-1.5 rounded-badges bg-white/40 px-3.5 py-2 text-[13px] text-stone"
+                <div className="flex flex-col gap-2">
+                  <h3 className="font-display text-[26px] leading-[1.1] tracking-[-0.02em] text-ink">
+                    {member.name}
+                  </h3>
+                  <p className="text-[14px] leading-[1.55] text-graphite-ink">
+                    <span className="text-ink">{t.cofounder}.</span> {member.focus[lang]}
+                  </p>
+                </div>
+                <ul className="mt-auto flex items-center gap-2 border-t border-ink/10 pt-4">
+                  {links.map(({ kind, label, href }) => {
+                    const icon = (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                        className="size-[18px]"
                       >
-                        {icon}
-                        {label}
-                      </span>
+                        {ICONS[kind]}
+                      </svg>
                     );
-                  }
-                  return (
-                    <SmartLink
-                      key={kind}
-                      href={kind === "email" ? `mailto:${value}` : value}
-                      aria-label={`${member.name} — ${label}`}
-                      className="inline-flex items-center gap-1.5 rounded-badges bg-snow px-3.5 py-2 text-[13px] font-medium text-ink shadow-button transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow"
-                    >
-                      {icon}
-                      {label}
-                    </SmartLink>
-                  );
-                })}
+                    return (
+                      <li key={kind}>
+                        {href ? (
+                          <SmartLink
+                            href={href}
+                            aria-label={`${member.name} — ${label}`}
+                            className="flex size-10 items-center justify-center rounded-full bg-snow text-ink shadow-button transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow"
+                          >
+                            {icon}
+                          </SmartLink>
+                        ) : (
+                          <span
+                            title={`${label} · ${t.links.soon}`}
+                            className="flex size-10 items-center justify-center rounded-full border border-dashed border-ink/20 text-stone/70"
+                          >
+                            {icon}
+                            <span className="sr-only">
+                              {label} · {t.links.soon}
+                            </span>
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            </div>
-          </Reveal>
-        </li>
-      ))}
+            </Reveal>
+          </li>
+        );
+      })}
     </ul>
   );
 }

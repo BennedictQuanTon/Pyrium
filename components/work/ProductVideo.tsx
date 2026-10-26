@@ -12,7 +12,7 @@ type Props = {
 };
 
 /**
- * A product's own film, silent and looping, letterboxed on the product's background colour.
+ * A product's own film, silent and looping, shown as delivered and filling a 16:9 frame.
  * Plays only while it is on screen (and, in the showcase, only while it is the active layer);
  * reduced-motion visitors get the poster.
  */
@@ -47,21 +47,18 @@ export function ProductVideo({ product, active = true, className = "" }: Props) 
 
   const { video: media, name } = product;
   return (
-    <div
-      className={`relative aspect-video w-full overflow-hidden ${className}`}
-      style={{ background: media.background }}
-    >
+    <div className={`relative aspect-video w-full overflow-hidden bg-ink ${className}`}>
       {still ? (
         // biome-ignore lint/performance/noImgElement: static poster of the product film; next/image adds nothing here
         <img
           src={media.poster}
           alt={`${name}: product film poster`}
-          className="absolute inset-0 size-full object-contain"
+          className="absolute inset-0 size-full object-cover"
         />
       ) : (
         <video
           ref={video}
-          className="absolute inset-0 size-full object-contain"
+          className="absolute inset-0 size-full object-cover"
           poster={media.poster}
           muted
           loop

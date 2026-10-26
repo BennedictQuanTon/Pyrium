@@ -6,7 +6,9 @@
 
 export type SourceId =
   | "nra-2026-07"
-  | "bls-2026-10"
+  | "ahla-2026-03"
+  | "siemens-2024"
+  | "ibm-2026"
   | "ipos-2025"
   | "r365-2026"
   | "cisco-2024"
@@ -80,6 +82,8 @@ export type TeamMember = {
   github: string;
   /** Role in each language, e.g. { en: "AI Engineer", vi: "Kỹ sư AI" }. */
   role: { en: string; vi: string };
+  /** What the founder leads, in one line. */
+  focus: { en: string; vi: string };
   /** Photo in /team: colour portrait on the shared studio backdrop. */
   photo: string;
   /** Contact links; a missing one renders as "coming soon". */

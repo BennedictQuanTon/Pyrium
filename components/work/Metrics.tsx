@@ -6,8 +6,8 @@ type Labels = Copy["showcase"];
 
 /**
  * The three outputs every product reports — who tested it, the money it is expected to save,
- * its core result — as three tiles. The saving tile is tinted and estimates carry an "est."
- * mark.
+ * its core result — as three tiles. The saving tile is tinted and estimates carry a numbered
+ * marker pointing to the note under the product stats.
  */
 export function ProductOutputs({
   product,
@@ -32,16 +32,19 @@ export function ProductOutputs({
         >
           <dt className="eyebrow text-[10px] tracking-[0.12em] md:text-[11px]">{tile.label}</dt>
           <dd
-            className={`flex flex-col items-start gap-1 font-display leading-none tracking-[-0.04em] ${tile.key === "saving" ? "text-signal" : "text-ink"} ${size === "lg" ? "text-[24px] sm:text-[40px] md:text-[52px]" : "text-[20px] sm:text-[28px] md:text-[32px]"}`}
+            className={`font-display leading-none tracking-[-0.04em] ${tile.key === "saving" ? "text-signal" : "text-ink"} ${size === "lg" ? "text-[24px] sm:text-[40px] md:text-[52px]" : "text-[20px] sm:text-[28px] md:text-[32px]"}`}
           >
             <CountUp text={tile.metric.value} className="tabular break-words" />
             {tile.metric.estimate ? (
-              <a
-                href="#estimate-note"
-                className="rounded-badges bg-signal/10 px-1.5 py-0.5 font-sans text-[10px] font-medium tracking-normal text-signal"
-              >
-                {labels.est}
-              </a>
+              <sup className="ml-0.5 align-super">
+                <a
+                  href="#note-2"
+                  aria-label={labels.est}
+                  className="font-sans text-[11px] font-medium tracking-normal text-signal hover:underline"
+                >
+                  2
+                </a>
+              </sup>
             ) : null}
           </dd>
           <dd className="text-[12px] leading-[1.45] text-graphite-ink md:text-[13px]">

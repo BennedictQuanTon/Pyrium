@@ -14,12 +14,29 @@ export const sources = {
     url: "https://www.restaurant.org/research-and-media/research/restaurant-economic-insights/analysis-commentary/elevated-costs-continue-to-pressure-restaurant-profitability/",
     accessed: "26 Oct 2026",
   },
-  "bls-2026-10": {
-    id: "bls-2026-10",
-    publisher: "U.S. Bureau of Labor Statistics",
-    date: "13 Oct 2026",
-    title: "Quits rate 3.5 percent in accommodation and food services, August 2026",
-    url: "https://www.bls.gov/opub/ted/2026/quits-rate-3-5-percent-in-accommodation-and-food-services-august-2026.htm",
+  "ahla-2026-03": {
+    id: "ahla-2026-03",
+    publisher: "American Hotel & Lodging Association",
+    date: "17 Mar 2026",
+    title:
+      "Rising cost, staffing challenges persist for hotels as travel demand expected to hold steady (246 hoteliers)",
+    url: "https://www.ahla.com/news/rising-cost-staffing-challenges-persist-hotels-travel-demand-expected-hold-steady",
+    accessed: "26 Oct 2026",
+  },
+  "siemens-2024": {
+    id: "siemens-2024",
+    publisher: "Siemens",
+    date: "2024",
+    title: "The True Cost of Downtime 2024",
+    url: "https://assets.new.siemens.com/siemens/assets/api/uuid:1b43afb5-2d07-47f7-9eb7-893fe7d0bc59/TCOD-2024_original.pdf",
+    accessed: "26 Oct 2026",
+  },
+  "ibm-2026": {
+    id: "ibm-2026",
+    publisher: "IBM & Ponemon Institute",
+    date: "2026",
+    title: "Cost of a Data Breach Report 2026",
+    url: "https://www.ibm.com/reports/data-breach",
     accessed: "26 Oct 2026",
   },
   "ipos-2025": {
@@ -126,7 +143,9 @@ export const sources = {
 /** Display order for the numbered citation list; a source's number is its position here + 1. */
 export const sourceOrder: SourceId[] = [
   "nra-2026-07",
-  "bls-2026-10",
+  "ahla-2026-03",
+  "siemens-2024",
+  "ibm-2026",
   "ipos-2025",
   "r365-2026",
   "cisco-2024",

@@ -7,7 +7,7 @@
  *   with a sparse bell melody from the D major pentatonic. Everything runs through a generated
  *   hall reverb. Synthesized, so there is no file to license or download.
  * - Interface sounds: short samples from Kenney's "Interface Sounds" (CC0, public/sound/),
- *   decoded once and played through the same hall at a low send.
+ *   decoded once and played through the same hall at a low send — on press only, never on hover.
  *
  * Browsers decide when audio may start. The engine tries to start immediately (allowed when the
  * browser trusts the site), and otherwise on the visitor's first press or key.
@@ -30,7 +30,6 @@ const CHORD_SECONDS = 10;
 
 const SAMPLES = {
   press: "/sound/press.m4a",
-  hover: "/sound/hover.m4a",
   toggleOn: "/sound/toggle-on.m4a",
   toggleOff: "/sound/toggle-off.m4a",
   open: "/sound/open.m4a",
@@ -41,8 +40,7 @@ type SampleName = keyof typeof SAMPLES;
 
 /** Per-sample level, balanced by ear against the music bed. */
 const LEVEL: Record<SampleName, number> = {
-  press: 0.5,
-  hover: 0.16,
+  press: 0.42,
   toggleOn: 0.45,
   toggleOff: 0.45,
   open: 0.38,
@@ -287,10 +285,6 @@ class Engine {
 
   press() {
     this.play("press");
-  }
-
-  hover() {
-    this.play("hover");
   }
 
   toggle(on: boolean) {

@@ -38,6 +38,10 @@ export const team: TeamMember[] = [
     name: "Yoshio Nomura",
     github: "UniverseScripts",
     role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
+    focus: {
+      en: "Private deployment, model serving and monitoring.",
+      vi: "Triển khai riêng tư, phục vụ mô hình và giám sát.",
+    },
     photo: "/team/yoshio.jpg",
     links: { portfolio: "https://github.com/UniverseScripts" },
   },
@@ -45,6 +49,10 @@ export const team: TeamMember[] = [
     name: "Long Quan (Bennedict) Ton",
     github: "BennedictQuanTon",
     role: { en: "AI Engineer", vi: "Kỹ sư AI" },
+    focus: {
+      en: "Agent architecture, evaluation and inference cost.",
+      vi: "Kiến trúc tác tử, đánh giá và chi phí suy luận.",
+    },
     photo: "/team/quan.jpg",
     links: {
       linkedin: "https://linkedin.com/in/bennedictquanton",
@@ -56,6 +64,10 @@ export const team: TeamMember[] = [
     name: "Huynh Khanh Tuong",
     github: "khanhtuongnakitomo",
     role: { en: "Software Engineer", vi: "Kỹ sư phần mềm" },
+    focus: {
+      en: "Product engineering, integrations and interfaces.",
+      vi: "Kỹ thuật sản phẩm, tích hợp và giao diện.",
+    },
     photo: "/team/tuong.jpg",
     links: { portfolio: "https://github.com/khanhtuongnakitomo" },
   },

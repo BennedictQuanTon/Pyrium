@@ -112,47 +112,93 @@ function DomainGlyph() {
   );
 }
 
+/** Fast integration: two blocks snapping together along a connector. */
+function IntegrationGlyph() {
+  return (
+    <svg viewBox="0 0 96 64" fill="none" aria-hidden="true" className="glyph h-12 w-auto">
+      <rect
+        x="10"
+        y="18"
+        width="28"
+        height="28"
+        rx="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+      />
+      <rect
+        x="58"
+        y="18"
+        width="28"
+        height="28"
+        rx="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="perimeter"
+        style={{ animationDelay: "0.5s" }}
+      />
+      <path className="flow" d="M38 32 H58" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="48" cy="32" r="5" className="node node-end" />
+    </svg>
+  );
+}
+
 const GLYPHS = {
   agentic: AgenticGlyph,
   private: PrivateGlyph,
   efficient: EfficientGlyph,
   domain: DomainGlyph,
+  integration: IntegrationGlyph,
 };
 
 /**
- * Four circles, one per pillar, that slide together into a flower; where all four overlap, the
- * Pyrium mark appears. Labels sit outside each circle.
+ * One circle per pillar, arranged around a centre and sliding in from apart until they overlap
+ * like petals; where all of them meet, the Pyrium mark appears. Labels sit outside each circle.
  */
 function Meet({ labels }: { labels: string[] }) {
-  const circles = [
-    { cx: 108, cy: 108, lx: 50, ly: 46, cls: "meet-a" },
-    { cx: 172, cy: 108, lx: 230, ly: 46, cls: "meet-b" },
-    { cx: 108, cy: 172, lx: 50, ly: 246, cls: "meet-c" },
-    { cx: 172, cy: 172, lx: 230, ly: 246, cls: "meet-d" },
-  ];
+  const count = labels.length;
+  const petals = labels.map((label, index) => {
+    const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
+    return {
+      label,
+      cx: 140 + Math.cos(angle) * 38,
+      cy: 140 + Math.sin(angle) * 38,
+      lx: 140 + Math.cos(angle) * 124,
+      ly: 144 + Math.sin(angle) * 118,
+      tx: Math.cos(angle) * 26,
+      ty: Math.sin(angle) * 26,
+    };
+  });
   return (
-    <svg viewBox="0 0 280 280" aria-hidden="true" className="meet h-auto w-full max-w-[340px]">
-      {circles.map((circle) => (
-        <circle key={circle.cls} cx={circle.cx} cy={circle.cy} r="60" className={circle.cls} />
+    <svg viewBox="-36 0 352 290" aria-hidden="true" className="meet h-auto w-full max-w-[380px]">
+      {petals.map((petal) => (
+        <circle
+          key={petal.label}
+          cx={petal.cx}
+          cy={petal.cy}
+          r="56"
+          className="meet-petal"
+          style={{ ["--tx" as string]: `${petal.tx}px`, ["--ty" as string]: `${petal.ty}px` }}
+        />
       ))}
       <circle cx="140" cy="140" r="26" className="meet-core" />
       <image
         href="/brand/pyrium-mark-reverse.png"
-        x="128"
-        y="128"
-        width="24"
-        height="24"
+        x="124"
+        y="124"
+        width="32"
+        height="32"
         className="meet-mark"
       />
-      {circles.map((circle, index) => (
+      {petals.map((petal) => (
         <text
-          key={labels[index]}
-          x={circle.lx}
-          y={circle.ly}
+          key={`${petal.label}-label`}
+          x={petal.lx}
+          y={petal.ly}
           textAnchor="middle"
           className="meet-label"
         >
-          {labels[index]}
+          {petal.label}
         </text>
       ))}
     </svg>
@@ -222,15 +268,15 @@ export function Core({ copy }: { copy: CoreCopy }) {
         </Reveal>
 
         <ol
-          className="grid gap-4 md:grid-cols-2"
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-6"
           onPointerEnter={() => setHeld(true)}
           onPointerLeave={() => setHeld(false)}
         >
           {copy.pillars.map((pillar, index) => {
             const Glyph = GLYPHS[pillar.key as keyof typeof GLYPHS];
             return (
-              <li key={pillar.key}>
-                <Reveal pop delay={index % 2} className="h-full">
+              <li key={pillar.key} className={index < 3 ? "lg:col-span-2" : "lg:col-span-3"}>
+                <Reveal pop delay={index % 3} className="h-full">
                   <article
                     // biome-ignore lint/a11y/noNoninteractiveTabindex: focus mirrors hover so keyboard visitors can move the highlight
                     tabIndex={0}
@@ -241,7 +287,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
                     }}
                     onBlur={() => setHeld(false)}
                     data-active={active === index}
-                    className="pillar glass-dark grid h-full gap-7 p-7 outline-none md:p-9 xl:grid-cols-[1fr_1.15fr]"
+                    className="pillar glass-dark flex h-full flex-col gap-6 p-7 outline-none md:p-8"
                   >
                     <span
                       aria-hidden="true"
@@ -265,11 +311,11 @@ export function Core({ copy }: { copy: CoreCopy }) {
                         </span>
                         <span className="text-[13px] leading-[1.45] text-silver">
                           {pillar.fact.label}
-                          <Citation id={pillar.fact.source} onDark />
+                          {pillar.fact.source ? <Citation id={pillar.fact.source} onDark /> : null}
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-5 xl:border-l xl:border-white/10 xl:pl-7">
+                    <div className="flex flex-col gap-5">
                       <div className="flex flex-col gap-2">
                         <p className="eyebrow text-silver">{copy.shiftLabel}</p>
                         <p className="shift-from w-fit text-[14px] text-silver">{pillar.from}</p>
@@ -302,7 +348,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
           })}
         </ol>
 
-        <Reveal className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-white/[0.03] p-8 md:grid-cols-[minmax(0,340px)_1fr] md:gap-16 md:p-12">
+        <Reveal className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-white/[0.03] p-8 md:grid-cols-[minmax(0,380px)_1fr] md:gap-16 md:p-12">
           <Meet labels={copy.meet.labels} />
           <div className="flex flex-col gap-4">
             <p className="eyebrow flex items-center gap-2 text-silver">
