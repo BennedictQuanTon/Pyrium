@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { BuiltWith } from "@/components/about/BuiltWith";
 import { CountUp } from "@/components/motion/CountUp";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
-import { SubNav } from "@/components/ui/SubNav";
 import { getCopy } from "@/content/copy";
-import { organizers } from "@/content/people";
+import { collaborations, organizers } from "@/content/people";
 import { getProduct } from "@/content/products";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -22,9 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * About: who we are, the numbers we can point to, our five-part core in depth (each commitment
- * tied to the product that proves it), and the organizers and institutions behind the work.
- * The team and the vision each have their own page.
+ * About: who we are, the four numbers we can point to, the products beside the organizers they
+ * were built with, and our five-part core in depth, each commitment tied to the product that
+ * proves it. The team and the vision each have their own page.
  */
 export default async function AboutPage({ params }: Props) {
   const { lang } = await params;
@@ -32,40 +31,65 @@ export default async function AboutPage({ params }: Props) {
   const copy = getCopy(lang);
   const t = copy.about;
   const pillars = copy.core.pillars;
+  const builtRows = collaborations.map((row) => ({ slug: row.product, partners: row.with }));
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body}>
-        <SubNav items={getMenus(lang)["/about"]} current="/about" />
-      </PageHeader>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
-      {/* Numbers */}
-      <section className="bg-fog py-20 md:py-28">
-        <div className="page-width flex flex-col gap-10">
-          <Reveal>
+      {/* Numbers: four figures set large on hairlines, each rule drawing in under its figure */}
+      <section className="bg-fog pb-20 md:pb-28">
+        <div className="page-width flex flex-col gap-12 md:gap-14">
+          <Reveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
             <SectionHeading eyebrow={t.numbersEyebrow} title={t.numbersTitle} size="md" />
+            <p className="max-w-[44ch] text-[13px] leading-[1.55] text-stone lg:text-right">
+              {t.numbersNote}
+            </p>
           </Reveal>
-          <Reveal pop>
-            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[28px] bg-ink/[0.07] md:grid-cols-4">
-              {t.numbers.map((item, index) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col gap-3 bg-snow p-6 md:min-h-[188px] md:p-8"
-                >
-                  <dt className="sr-only">{item.label}</dt>
-                  <dd
-                    className={`font-display text-[40px] leading-none tracking-[-0.045em] whitespace-nowrap md:text-[52px] ${index === 0 ? "text-signal" : "text-ink"}`}
+          <dl className="grid grid-cols-2 gap-y-14 lg:grid-cols-4">
+            {t.numbers.map((item, index) => (
+              <Reveal
+                key={item.label}
+                delay={index}
+                className="flex flex-col border-l border-ink/10 pr-4 pl-5 md:pl-8"
+              >
+                <dt className="order-last mt-5 max-w-[22ch] text-[13px] leading-[1.5] text-graphite-ink md:text-[15px]">
+                  {item.label}
+                </dt>
+                <dd className="flex flex-col">
+                  <span aria-hidden="true" className="tabular text-[12px] text-stone">
+                    0{index + 1}
+                  </span>
+                  <span
+                    className={`mt-8 font-display text-[56px] leading-[0.9] tracking-[-0.055em] whitespace-nowrap sm:text-[72px] lg:mt-12 lg:text-[84px] xl:text-[104px] ${index === 0 ? "text-signal" : "text-ink"}`}
                   >
                     <CountUp text={item.value} className="tabular" />
-                  </dd>
-                  <dd className="mt-auto max-w-[24ch] text-[13px] leading-[1.5] text-graphite-ink md:text-[14px]">
-                    {item.label}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="stat-rule mt-6 block h-[2px] w-10 bg-signal"
+                  />
+                </dd>
+              </Reveal>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Built with: the products and the organizers behind them, as one interactive piece */}
+      <section className="section bg-snow">
+        <div className="page-width flex flex-col gap-12 md:gap-16">
+          <Reveal>
+            <SectionHeading
+              eyebrow={t.builtEyebrow}
+              title={t.builtTitle}
+              body={t.builtBody}
+              size="md"
+            />
           </Reveal>
-          <p className="text-[12px] text-stone">{t.numbersNote}</p>
+          <Reveal pop>
+            <BuiltWith rows={builtRows} organizers={organizers} withLabel={t.builtWith} />
+          </Reveal>
         </div>
       </section>
 
@@ -140,39 +164,6 @@ export default async function AboutPage({ params }: Props) {
               );
             })}
           </ol>
-        </div>
-      </section>
-
-      {/* Partners */}
-      <section className="section bg-snow">
-        <div className="page-width flex flex-col gap-12">
-          <Reveal>
-            <SectionHeading eyebrow={t.partnersEyebrow} title={t.partnersTitle} size="md" />
-          </Reveal>
-          <Reveal pop>
-            <ul className="flex flex-wrap justify-center gap-3">
-              {organizers.map((organizer) => (
-                <li
-                  key={organizer.id}
-                  className="logo-cell flex h-28 w-[calc(50%_-_6px)] items-center justify-center rounded-[20px] bg-fog px-6 text-graphite-ink sm:w-[calc(33.333%_-_8px)] md:h-32 lg:w-[calc(20%_-_9.6px)]"
-                >
-                  {organizer.logo ? (
-                    // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
-                    <img
-                      src={organizer.logo}
-                      alt={organizer.name}
-                      loading="lazy"
-                      className="max-h-10 max-w-[120px] object-contain"
-                    />
-                  ) : (
-                    <span className="text-[18px] font-medium tracking-[-0.01em] whitespace-nowrap">
-                      {organizer.name}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
         </div>
       </section>
     </PageTransition>

@@ -14,7 +14,7 @@ type Props = {
 export function PageHeader({ eyebrow, title, body, children }: Props) {
   return (
     <section className="relative overflow-hidden bg-blueprint">
-      <div className="page-width relative flex flex-col gap-6 pt-40 pb-16 md:pt-48 md:pb-20">
+      <div className="page-width relative flex flex-col gap-6 pt-40 pb-12 md:pt-48 md:pb-14">
         <p
           className="hero-in eyebrow flex items-center gap-2"
           style={{ ["--hero-i" as string]: 0 }}

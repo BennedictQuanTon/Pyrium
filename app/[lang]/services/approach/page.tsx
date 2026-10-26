@@ -5,10 +5,8 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading } from "@/components/ui/Primitives";
-import { SubNav } from "@/components/ui/SubNav";
 import { getCopy } from "@/content/copy";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -29,12 +27,10 @@ export default async function ApproachPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={page.eyebrow} title={page.title} body={page.body}>
-        <SubNav items={getMenus(lang)["/services"]} current="/services/approach" />
-      </PageHeader>
+      <PageHeader eyebrow={page.eyebrow} title={page.title} body={page.body} />
 
       {/* Engagement */}
-      <section className="section bg-fog">
+      <section className="section bg-fog pt-0">
         <div className="page-width">
           <Engagement lang={lang} heading={false} />
         </div>

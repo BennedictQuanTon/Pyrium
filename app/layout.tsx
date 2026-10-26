@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { DM_Sans, Geist, Inter, Libre_Baskerville } from "next/font/google";
 import type { ReactNode } from "react";
 import { PointerLight } from "@/components/motion/PointerLight";
@@ -50,7 +52,8 @@ const bootstrap = `(function(){var r=document.documentElement;try{r.classList.ad
 /**
  * The one root layout for both languages. It owns <html>, the fonts and the sound layer, so the
  * ambient music keeps playing through every navigation — including a switch of language, which
- * only swaps the nested [lang] layout beneath it.
+ * only swaps the nested [lang] layout beneath it. Vercel Web Analytics and Speed Insights mount
+ * here once; both stay inert outside a Vercel deployment.
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -68,6 +71,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <PointerLight />
         <SoundLayer />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -4,10 +4,8 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading } from "@/components/ui/Primitives";
-import { SubNav } from "@/components/ui/SubNav";
 import { getCopy } from "@/content/copy";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -28,9 +26,7 @@ export default async function SecurityPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={page.eyebrow} title={page.title} body={page.body}>
-        <SubNav items={getMenus(lang)["/services"]} current="/services/security" />
-      </PageHeader>
+      <PageHeader eyebrow={page.eyebrow} title={page.title} body={page.body} />
 
       {/* System layers */}
       <section className="section bg-snow">

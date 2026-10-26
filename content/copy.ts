@@ -587,8 +587,11 @@ const en = {
         body: "Who builds Pyrium, what each of us owns, and what we've shipped together.",
         about: "About",
         strengths: "Strengths",
-        contributions: "Contributions",
+        awards: "Awards",
+        experience: "Experience",
         pending: "Profile to be updated.",
+        experiencePending: "To be updated.",
+        recognisedBy: "Recognised by",
       },
       vision: {
         eyebrow: "Vision",
@@ -607,13 +610,14 @@ const en = {
       { value: "10+", label: "hackathon awards and recognitions" },
       { value: "5", label: "products shipped with working demos" },
       { value: "11", label: "events built at with NVIDIA, Viettel, Google, OpenAI and AMD" },
-      { value: "−85%", label: "API tokens per task with hybrid routing" },
-      { value: "10/10", label: "multi-turn orders taken correctly on local models" },
-      { value: "0", label: "sensitive records stored in plain text" },
-      { value: "6–8 wks", label: "from discovery to a measured pilot" },
     ],
     numbersNote:
       "Product figures come from each project's measured results; tester counts are team-reported.",
+    builtEyebrow: "Built with",
+    builtTitle: "Five products, each built in the room with the people who set the bar.",
+    builtBody:
+      "Every product began at an event run by the organizers here. Choose one to see who it was built with.",
+    builtWith: "With",
     depthEyebrow: "Our core, in depth",
     depthTitle: "Five commitments, and what each one means in practice.",
     depth: [
@@ -644,8 +648,6 @@ const en = {
       },
     ],
     proofLabel: "Proof",
-    partnersEyebrow: "Built and studied with",
-    partnersTitle: "Organizers, platforms and institutions behind our work.",
     principlesEyebrow: "Principles",
     principlesTitle: "Four things we hold every system to.",
     principles: [
@@ -1365,8 +1367,11 @@ const vi: Copy = {
         body: "Ai đang xây Pyrium, mỗi người phụ trách gì, và chúng tôi đã cùng nhau làm ra những gì.",
         about: "Giới thiệu",
         strengths: "Thế mạnh",
-        contributions: "Đóng góp",
+        awards: "Giải thưởng",
+        experience: "Kinh nghiệm",
         pending: "Hồ sơ sẽ được cập nhật.",
+        experiencePending: "Sẽ được cập nhật.",
+        recognisedBy: "Được ghi nhận bởi",
       },
       vision: {
         eyebrow: "Tầm nhìn",
@@ -1385,13 +1390,14 @@ const vi: Copy = {
       { value: "10+", label: "giải thưởng và ghi nhận tại hackathon" },
       { value: "5", label: "sản phẩm đã ra mắt kèm demo chạy được" },
       { value: "11", label: "sự kiện cùng NVIDIA, Viettel, Google, OpenAI và AMD" },
-      { value: "−85%", label: "token API mỗi tác vụ nhờ định tuyến lai" },
-      { value: "10/10", label: "order nhiều lượt chính xác trên mô hình cục bộ" },
-      { value: "0", label: "bản ghi nhạy cảm lưu dạng văn bản thường" },
-      { value: "6–8 tuần", label: "từ khảo sát đến thí điểm có đo lường" },
     ],
     numbersNote:
       "Số liệu sản phẩm lấy từ kết quả đo của từng dự án; số người dùng thử do đội báo cáo.",
+    builtEyebrow: "Xây cùng",
+    builtTitle: "Năm sản phẩm, mỗi sản phẩm được xây ngay cạnh những đơn vị đặt ra chuẩn mực.",
+    builtBody:
+      "Mỗi sản phẩm bắt đầu tại một sự kiện do các đơn vị dưới đây tổ chức. Chọn một sản phẩm để xem nó được xây cùng ai.",
+    builtWith: "Cùng",
     depthEyebrow: "Đi sâu vào cốt lõi",
     depthTitle: "Năm cam kết, và ý nghĩa thực tế của từng cam kết.",
     depth: [
@@ -1422,8 +1428,6 @@ const vi: Copy = {
       },
     ],
     proofLabel: "Bằng chứng",
-    partnersEyebrow: "Đã đồng hành cùng",
-    partnersTitle: "Ban tổ chức, nền tảng và trường đại học phía sau công việc của chúng tôi.",
     principlesEyebrow: "Nguyên tắc",
     principlesTitle: "Bốn chuẩn mực cho mọi hệ thống.",
     principles: [

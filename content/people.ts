@@ -1,5 +1,5 @@
 import type { Lang } from "@/lib/i18n";
-import type { Organizer, Quote, TeamMember } from "./types";
+import type { Organizer, ProductSlug, Quote, TeamMember } from "./types";
 
 /**
  * Organizers, sponsors and platforms of events the team built at together. Logos are real
@@ -22,11 +22,30 @@ export const organizers: Organizer[] = [
   { id: "lablab", name: "lablab.ai" },
   { id: "openai", name: "OpenAI", logo: "/brand/logos/openai.svg", viewBox: "0 0 1180 320" },
   { id: "devpost", name: "Devpost", logo: "/brand/logos/devpost.svg", viewBox: "0 0 24 24" },
-  { id: "amd", name: "AMD", logo: "/brand/logos/amd.svg", viewBox: "0 0 24 24" },
+  { id: "amd", name: "AMD", logo: "/brand/logos/amd.svg", viewBox: "0 7.4 24 9.2" },
   { id: "sea", name: "Sea / Shopee", logo: "/brand/logos/shopee.svg", viewBox: "0 0 24 24" },
+  {
+    id: "gigabyte",
+    name: "GIGABYTE",
+    logo: "/brand/logos/gigabyte.svg",
+    viewBox: "0 0 626.172 135.109",
+  },
+  { id: "rmit", name: "RMIT University", logo: "/brand/logos/rmit.svg", viewBox: "0 0 893 314" },
   // Academic institutions the team studies and collaborates with.
-  { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "0 0 406.32 406.32" },
+  { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "73 74 269 257" },
   { id: "bku", name: "HCMUT (Bách Khoa)", logo: "/brand/logos/bku.png", viewBox: "0 0 240 240" },
+];
+
+/**
+ * Which organizers each product was built with, by organizer name; names without an entry in
+ * `organizers` render as a plain wordmark.
+ */
+export const collaborations: { product: ProductSlug; with: string[] }[] = [
+  { product: "weatherise", with: ["NVIDIA", "Viettel", "SOVICO"] },
+  { product: "inference", with: ["Viettel", "AMD", "lablab.ai"] },
+  { product: "lantern", with: ["AssemblyAI", "lablab.ai"] },
+  { product: "ignis", with: ["AMD", "lablab.ai"] },
+  { product: "unfound", with: ["RMIT University", "Tide"] },
 ];
 
 /**
@@ -38,49 +57,74 @@ export const team: TeamMember[] = [
     name: "Long Quan Ton",
     github: "BennedictQuanTon",
     role: { en: "AI Engineer · Product Design", vi: "Kỹ sư AI · Thiết kế sản phẩm" },
-    focus: {
-      en: "Agent architecture, product design and inference cost.",
-      vi: "Kiến trúc tác tử, thiết kế sản phẩm và chi phí suy luận.",
-    },
     photo: "/team/quan.jpg",
     links: {
       linkedin: "https://linkedin.com/in/bennedictquanton",
       email: "tonlongquanvn@gmail.com",
       portfolio: "https://bennedictquanton.vercel.app",
     },
+    experience: [
+      {
+        company: "AITechLab · HCMUT",
+        logo: "/team/companies/hcmut.webp",
+        role: { en: "AI Research Assistant", vi: "Trợ lý nghiên cứu AI" },
+        period: { en: "Aug 2026 – Present", vi: "08/2026 – nay" },
+      },
+      {
+        company: "FlyRank AI",
+        logo: "/team/companies/flyrank.svg",
+        role: { en: "AI Engineering Intern", vi: "Thực tập sinh kỹ sư AI" },
+        period: { en: "Jul – Oct 2026", vi: "07 – 10/2026" },
+      },
+      {
+        company: "GlobalTech SJC Vietnam",
+        logo: "/team/companies/globaltech.webp",
+        role: {
+          en: "Data Annotator & Quality Control",
+          vi: "Gán nhãn dữ liệu & Kiểm soát chất lượng",
+        },
+        period: { en: "May 2026 – Present", vi: "05/2026 – nay" },
+      },
+    ],
     // Draft profile, written for Quan to review.
     profile: {
       en: {
         about:
           "Quan leads Pyrium's AI and product work. He takes a messy operational problem, draws the boundary of what an agent may and may not do, and then designs the product people actually touch around it — so the model proposes, code decides and a person approves.",
         strengths: [
-          "Agent architecture with deterministic checks and human approval",
-          "Product design, from workflow map to the screen staff use",
-          "Evaluation sets and cost per successful task",
-          "Voice and multilingual interfaces",
+          "Agentic AI that finishes real work, safely",
+          "Deep, hands-on GenAI experience",
+          "Product design people actually use",
+          "Understands the business before the tech",
+          "Turns ideas into the team's lead prototype",
         ],
-        contributions: [
-          "Designed the agent and ordering flow behind The Lantern",
-          "Built the routing and serving work behind Lean Inference",
-          "Shaped IGNIS so records, manuals and model output stay separate",
-          "Sets Pyrium's product direction and evaluation practice",
-        ],
+        recognition: {
+          figures: [
+            { value: "11", label: "hackathons and product competitions" },
+            { value: "6", label: "awards and honours, incl. the UTS Dean's List" },
+            { value: "15", label: "professional certificates" },
+          ],
+          by: ["GIGABYTE", "NVIDIA", "Viettel", "Google", "RMIT University", "UTS"],
+        },
       },
       vi: {
         about:
           "Quân phụ trách AI và sản phẩm của Pyrium. Anh bắt đầu từ một vấn đề vận hành còn rối, vạch rõ ranh giới tác tử được và không được làm gì, rồi thiết kế sản phẩm mà người dùng thực sự chạm vào — để mô hình đề xuất, mã nguồn quyết định và con người phê duyệt.",
         strengths: [
-          "Kiến trúc tác tử với kiểm tra tất định và phê duyệt của con người",
-          "Thiết kế sản phẩm, từ bản đồ quy trình đến màn hình nhân viên dùng",
-          "Bộ đánh giá và chi phí trên mỗi tác vụ thành công",
-          "Giao diện giọng nói và đa ngôn ngữ",
+          "AI tác tử hoàn thành việc thật, an toàn",
+          "Kinh nghiệm GenAI thực chiến, chuyên sâu",
+          "Thiết kế sản phẩm người dùng thật sự dùng",
+          "Hiểu nghiệp vụ trước khi chọn công nghệ",
+          "Biến ý tưởng thành prototype chính của nhóm",
         ],
-        contributions: [
-          "Thiết kế tác tử và luồng gọi món của The Lantern",
-          "Xây phần định tuyến và phục vụ mô hình của Lean Inference",
-          "Định hình IGNIS để hồ sơ, tài liệu và đầu ra mô hình luôn tách bạch",
-          "Định hướng sản phẩm và quy trình đánh giá của Pyrium",
-        ],
+        recognition: {
+          figures: [
+            { value: "11", label: "hackathon và cuộc thi sản phẩm" },
+            { value: "6", label: "giải thưởng và danh hiệu, gồm Dean's List UTS" },
+            { value: "15", label: "chứng chỉ chuyên môn" },
+          ],
+          by: ["GIGABYTE", "NVIDIA", "Viettel", "Google", "RMIT University", "UTS"],
+        },
       },
     },
   },
@@ -88,10 +132,6 @@ export const team: TeamMember[] = [
     name: "Yoshio Nomura",
     github: "UniverseScripts",
     role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
-    focus: {
-      en: "Private deployment, model serving and monitoring.",
-      vi: "Triển khai riêng tư, phục vụ mô hình và giám sát.",
-    },
     photo: "/team/yoshio.jpg",
     links: { portfolio: "https://github.com/UniverseScripts" },
   },
@@ -99,10 +139,6 @@ export const team: TeamMember[] = [
     name: "Huynh Khanh Tuong",
     github: "khanhtuongnakitomo",
     role: { en: "Software Engineer · Logic & QA", vi: "Kỹ sư phần mềm · Logic & Kiểm thử" },
-    focus: {
-      en: "System logic, testing and quality assurance.",
-      vi: "Logic hệ thống, kiểm thử và đảm bảo chất lượng.",
-    },
     photo: "/team/tuong.jpg",
     links: { portfolio: "https://github.com/khanhtuongnakitomo" },
   },
