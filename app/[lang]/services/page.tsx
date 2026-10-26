@@ -5,12 +5,10 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
-import { SubNav } from "@/components/ui/SubNav";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getProduct } from "@/content/products";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -34,12 +32,10 @@ export default async function ServicesPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body}>
-        <SubNav items={getMenus(lang)["/services"]} current="/services" />
-      </PageHeader>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
       {/* Offer families */}
-      <section className="section bg-fog">
+      <section className="section bg-fog pt-0">
         <div className="page-width flex flex-col gap-12">
           <Reveal>
             <SectionHeading eyebrow={t.offersEyebrow} title={t.offersTitle} />

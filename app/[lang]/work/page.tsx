@@ -5,12 +5,10 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading, SmartLink } from "@/components/ui/Primitives";
-import { SubNav } from "@/components/ui/SubNav";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getProductGroups, getProducts } from "@/content/products";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -33,9 +31,7 @@ export default async function WorkPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body}>
-        <SubNav items={getMenus(lang)["/work"]} current="/work" />
-      </PageHeader>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
       <section className="bg-fog pb-20 md:pb-28">
         <ProductStrip products={getProducts(lang)} lang={lang} />

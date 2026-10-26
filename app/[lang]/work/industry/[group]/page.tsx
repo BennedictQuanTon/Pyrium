@@ -2,13 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { SubNav } from "@/components/ui/SubNav";
 import { ProductPanel } from "@/components/work/ProductGroups";
 import { getCopy } from "@/content/copy";
 import { getProductGroups, groupOrder } from "@/content/products";
 import type { ProductGroup } from "@/content/types";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string; group: string }> };
 
@@ -37,9 +35,7 @@ export default async function IndustryPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.groups[group].name} body={t.groups[group].body}>
-        <SubNav items={getMenus(lang)["/work"]} current={`/work/industry/${group}`} />
-      </PageHeader>
+      <PageHeader eyebrow={t.eyebrow} title={t.groups[group].name} body={t.groups[group].body} />
       <section className="bg-fog pt-8 pb-24 md:pb-32">
         <div className="page-width flex flex-col gap-24 md:gap-32">
           {products.map((product, index) => (

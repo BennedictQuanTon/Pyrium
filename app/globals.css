@@ -668,7 +668,7 @@ html.js .reveal.is-visible .rail-node {
   transition-delay: calc(0.3s + var(--d, 0s));
 }
 
-/* ---- Marquees: one seamless drift, pause on hover --------------------------------------- */
+/* ---- Marquees: one seamless drift; only the slow, readable one pauses on hover ---------- */
 
 .marquee {
   animation: marquee 22s linear infinite;
@@ -677,7 +677,7 @@ html.js .reveal.is-visible .rail-node {
 .marquee-slow {
   animation-duration: 70s;
 }
-.marquee:hover {
+.marquee-slow:hover {
   animation-play-state: paused;
 }
 @keyframes marquee {
@@ -912,6 +912,46 @@ html.js .reveal.is-visible .stat-rule {
 }
 .logo-cell:hover {
   background: var(--color-snow);
+}
+
+/* ---- About: products × organizers ------------------------------------------------------ */
+
+/* The active row's rule fills over one step while the list cycles; held, it stays full. */
+.built-progress {
+  transform: scaleX(1);
+}
+.built-progress[data-run="true"] {
+  animation: built-step var(--step) linear forwards;
+}
+@keyframes built-step {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Partners of the active product come forward, column by column; the rest recede. */
+.built-mark {
+  opacity: 0.26;
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 45ms);
+}
+.built-cell[data-on="true"] .built-mark {
+  opacity: 1;
+  transform: scale(1.06);
+}
+.built-dot {
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(0.15s + var(--i, 0) * 45ms);
+}
+.built-cell[data-on="true"] .built-dot {
+  opacity: 1;
+  transform: none;
 }
 
 /* ---- Core: Agentic · Private · Cost-efficient --------------------------------------- */

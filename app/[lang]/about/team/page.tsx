@@ -4,11 +4,9 @@ import { FounderLinks } from "@/components/home/Sections";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { SubNav } from "@/components/ui/SubNav";
 import { getCopy } from "@/content/copy";
-import { team } from "@/content/people";
+import { organizers, team } from "@/content/people";
 import { isLang } from "@/lib/i18n";
-import { getMenus } from "@/lib/menus";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -21,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /**
  * Team: one large card per co-founder, portrait on the studio backdrop with work experience
- * beneath it, beside the name, role and links, then about, strengths, awards and credentials.
+ * beneath it, beside the name, role and links, then about, strengths and awards as headline counts.
  * Sides alternate; founders without a written profile show a quiet "to be updated" panel.
  */
 export default async function TeamPage({ params }: Props) {
@@ -33,9 +31,7 @@ export default async function TeamPage({ params }: Props) {
 
   return (
     <PageTransition>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body}>
-        <SubNav items={getMenus(lang)["/about"]} current="/about/team" />
-      </PageHeader>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} body={t.body} />
 
       <section className="bg-fog pt-8 pb-24 md:pb-32">
         <ol className="page-width flex flex-col gap-8 md:gap-10">
@@ -150,41 +146,47 @@ export default async function TeamPage({ params }: Props) {
                               ))}
                             </ol>
                           </div>
-                          <div className="flex flex-col gap-4 rounded-[22px] bg-fog p-6">
+                          <div className="flex flex-col gap-5 rounded-[22px] bg-fog p-6">
                             <p className="eyebrow">{t.awards}</p>
-                            <ol className="flex flex-col gap-3.5">
-                              {profile.awards.map((award, position) => (
-                                <li
-                                  key={award.event}
-                                  className="grid grid-cols-[1.75rem_1fr] text-[14px] leading-[1.45]"
+                            <dl className="flex flex-col">
+                              {profile.recognition.figures.map((item) => (
+                                <div
+                                  key={item.label}
+                                  className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3 border-t border-ink/[0.07] py-3.5 first:border-t-0 first:pt-0"
                                 >
-                                  <span className="tabular pt-[3px] text-[12px] text-signal">
-                                    0{position + 1}
-                                  </span>
-                                  <span className="flex flex-col gap-0.5">
-                                    <span className="font-display text-[17px] leading-[1.2] text-ink">
-                                      {award.result}
-                                    </span>
-                                    <span className="text-graphite-ink">{award.event}</span>
-                                    <span className="text-[12px] text-stone">{award.detail}</span>
-                                  </span>
-                                </li>
+                                  <dt className="col-start-2 row-start-1 text-[13px] leading-[1.45] text-graphite-ink">
+                                    {item.label}
+                                  </dt>
+                                  <dd className="tabular col-start-1 row-start-1 font-display text-[36px] leading-none tracking-[-0.045em] text-ink">
+                                    {item.value}
+                                  </dd>
+                                </div>
                               ))}
-                            </ol>
+                            </dl>
+                            <div className="mt-auto flex flex-col gap-3.5 border-t border-ink/[0.07] pt-4">
+                              <p className="text-[12px] text-stone">{t.recognisedBy}</p>
+                              <ul className="grid grid-cols-3 gap-x-4 gap-y-3 text-graphite-ink">
+                                {profile.recognition.by.map((name) => {
+                                  const organizer = organizers.find((entry) => entry.name === name);
+                                  return (
+                                    <li key={name} className="flex h-7 items-center">
+                                      {organizer?.logo ? (
+                                        // biome-ignore lint/performance/noImgElement: normalized brand marks; next/image adds nothing to inline SVGs
+                                        <img
+                                          src={organizer.logo}
+                                          alt={name}
+                                          loading="lazy"
+                                          className="h-[18px] w-auto max-w-full object-contain object-left"
+                                        />
+                                      ) : (
+                                        <span className="text-[13px] font-medium">{name}</span>
+                                      )}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
                           </div>
-                          <dl className="grid gap-px overflow-hidden rounded-[22px] bg-ink/[0.07] sm:grid-cols-2 md:col-span-2">
-                            {profile.credentials.map((item) => (
-                              <div key={item.label} className="flex flex-col gap-2 bg-fog p-6">
-                                <dt className="sr-only">{item.label}</dt>
-                                <dd className="font-display text-[32px] leading-none tracking-[-0.04em] text-ink">
-                                  {item.value}
-                                </dd>
-                                <dd className="text-[13px] leading-[1.5] text-graphite-ink">
-                                  {item.label}
-                                </dd>
-                              </div>
-                            ))}
-                          </dl>
                         </div>
                       </>
                     ) : (

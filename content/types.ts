@@ -100,20 +100,15 @@ export type Experience = {
   period: { en: string; vi: string };
 };
 
-/** A placing or honour, led by its result (e.g. "Top 10", "#77 / 300+"). */
-export type Award = {
-  result: string;
-  event: string;
-  /** Organizer, product or issuing body. */
-  detail: string;
-};
-
 export type FounderProfile = {
   about: string;
   strengths: string[];
-  awards: Award[];
-  /** Key figures for courses and certifications, shown under the awards. */
-  credentials: { value: string; label: string }[];
+  /** Recognition as headline counts, then the organizations whose stages and programmes gave it. */
+  recognition: {
+    figures: { value: string; label: string }[];
+    /** Organizer names; those with a logo in `organizers` render as their mark. */
+    by: string[];
+  };
 };
 
 /**

@@ -97,45 +97,14 @@ export const team: TeamMember[] = [
           "Evaluation sets and cost per successful task",
           "Voice and multilingual interfaces",
         ],
-        awards: [
-          {
-            result: "Third Prize",
-            event: "ACE 2026 Vietnam · Agent Design Challenge",
-            detail: "GIGABYTE × NVIDIA",
-          },
-          {
-            result: "6th · 18th region-wide",
-            event: "RMIT GenAI & Cybersecurity Hackathon 2026",
-            detail: "Unfound · 0.982 macro F1",
-          },
-          {
-            result: "#77 / 300+",
-            event: "Viettel AI Race 2026",
-            detail: "LLM inference optimization",
-          },
-          {
-            result: "Silver Tier",
-            event: "AI Riser Vietnam 2026",
-            detail: "Google for Developers",
-          },
-          {
-            result: "Top 10",
-            event: "Vietnam AI Open Hackathon 2026",
-            detail: "Weatherise · NVIDIA, Viettel, Sovico",
-          },
-          {
-            result: "Dean's List",
-            event: "UTS Faculty of Engineering & IT, 2026",
-            detail: "Outstanding academic achievement",
-          },
-        ],
-        credentials: [
-          {
-            value: "15",
-            label: "certificates · Stanford, DeepLearning.AI, AWS, NVIDIA DLI, IBM, Anthropic",
-          },
-          { value: "6.75 / 7", label: "GPA · Bachelor of AI, UTS × HCMUT" },
-        ],
+        recognition: {
+          figures: [
+            { value: "11", label: "hackathons and product competitions" },
+            { value: "6", label: "awards and honours, incl. the UTS Dean's List" },
+            { value: "15", label: "professional certificates" },
+          ],
+          by: ["GIGABYTE", "NVIDIA", "Viettel", "Google", "RMIT University", "UTS"],
+        },
       },
       vi: {
         about:
@@ -146,45 +115,14 @@ export const team: TeamMember[] = [
           "Bộ đánh giá và chi phí trên mỗi tác vụ thành công",
           "Giao diện giọng nói và đa ngôn ngữ",
         ],
-        awards: [
-          {
-            result: "Giải Ba",
-            event: "ACE 2026 Vietnam · Agent Design Challenge",
-            detail: "GIGABYTE × NVIDIA",
-          },
-          {
-            result: "Hạng 6 · Hạng 18 khu vực",
-            event: "RMIT GenAI & Cybersecurity Hackathon 2026",
-            detail: "Unfound · macro F1 0,982",
-          },
-          {
-            result: "#77 / 300+",
-            event: "Viettel AI Race 2026",
-            detail: "Tối ưu suy luận LLM",
-          },
-          {
-            result: "Hạng Bạc",
-            event: "AI Riser Vietnam 2026",
-            detail: "Google for Developers",
-          },
-          {
-            result: "Top 10",
-            event: "Vietnam AI Open Hackathon 2026",
-            detail: "Weatherise · NVIDIA, Viettel, Sovico",
-          },
-          {
-            result: "Dean's List",
-            event: "Khoa Kỹ thuật & CNTT, UTS, 2026",
-            detail: "Thành tích học tập xuất sắc",
-          },
-        ],
-        credentials: [
-          {
-            value: "15",
-            label: "chứng chỉ · Stanford, DeepLearning.AI, AWS, NVIDIA DLI, IBM, Anthropic",
-          },
-          { value: "6,75 / 7", label: "GPA · Cử nhân AI, UTS × HCMUT" },
-        ],
+        recognition: {
+          figures: [
+            { value: "11", label: "hackathon và cuộc thi sản phẩm" },
+            { value: "6", label: "giải thưởng và danh hiệu, gồm Dean's List UTS" },
+            { value: "15", label: "chứng chỉ chuyên môn" },
+          ],
+          by: ["GIGABYTE", "NVIDIA", "Viettel", "Google", "RMIT University", "UTS"],
+        },
       },
     },
   },
