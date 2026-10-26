@@ -6,8 +6,8 @@ node_modules/
 
 # Next.js and build output
 .next/
-out/
-build/
+/out/
+/build/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
@@ -47,3 +47,23 @@ Thumbs.db
 .screenshots/
 *.zip
 *.ui-backup.md
+
+# Private: internal notes, briefs, strategy docs and agent instructions
+CLAUDE.md
+AGENTS.md
+*DESIGN.md
+docs/
+.claude/
+
+# Private: brand source kits and raw images outside public/ (the site only ships public/)
+PYRIUM_Brand_Identity_Kit/
+motion/assets/
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
+/*.gif
+/*.pdf
+*.psd
+*.fig
+*.sketch
