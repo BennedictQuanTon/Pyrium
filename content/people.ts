@@ -129,14 +129,14 @@ export const team: TeamMember[] = [
     },
   },
   {
-    name: "Yoshio Nomura",
+    name: "Nomura Yoshio",
     github: "UniverseScripts",
     role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
     photo: "/team/yoshio.jpg",
     links: { portfolio: "https://github.com/UniverseScripts" },
   },
   {
-    name: "Huynh Khanh Tuong",
+    name: "Khanh Tuong Huynh",
     github: "khanhtuongnakitomo",
     role: { en: "Software Engineer · Logic & QA", vi: "Kỹ sư phần mềm · Logic & Kiểm thử" },
     photo: "/team/tuong.jpg",
