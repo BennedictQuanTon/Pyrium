@@ -72,7 +72,7 @@ export function Nav() {
     >
       <nav
         aria-label="Primary"
-        className={`pointer-events-auto mx-auto mt-3 flex h-16 max-w-page items-center justify-between rounded-badges pl-6 pr-2 transition-[background,box-shadow] duration-500 ${
+        className={`pointer-events-auto mx-auto mt-3 flex h-16 max-w-page items-center justify-between rounded-badges pl-6 pr-2 transition-[background,box-shadow] duration-500 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:pl-2 ${
           overArc ? "bg-transparent" : "glass glass-strong"
         }`}
       >
@@ -81,7 +81,7 @@ export function Nav() {
           prefetch
           transitionTypes={["nav-back"]}
           aria-label="Pyrium"
-          className="shrink-0"
+          className="shrink-0 justify-self-start lg:ml-4"
         >
           <Wordmark variant={overArc ? "reverse" : "primary"} className="w-[118px] md:w-[150px]" />
         </Link>
@@ -149,7 +149,7 @@ export function Nav() {
             );
           })}
         </ul>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 justify-self-end">
           <Settings onDark={overArc} />
           <span className="hidden sm:block">
             <PillButton href="/contact" className="whitespace-nowrap">
