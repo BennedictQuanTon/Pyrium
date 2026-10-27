@@ -21,7 +21,7 @@ const en = {
     primaryCta: "Talk to our team",
     secondaryCta: "Explore solutions",
     navCta: "Book a discovery call",
-    trustLabel: "Organizers, platforms & institutions we've built and studied with",
+    trustLabel: "Organizers, platforms & institutions we've built and collaborate with",
   },
   nav: [
     { href: "/work", label: "Products" },
