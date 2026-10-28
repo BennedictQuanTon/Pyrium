@@ -57,7 +57,7 @@ export const team: TeamMember[] = [
     name: "Long Quan Ton",
     github: "BennedictQuanTon",
     role: { en: "AI Engineer · Product Design", vi: "Kỹ sư AI · Thiết kế sản phẩm" },
-    photo: "/team/quan.jpg",
+    photo: "/team/quan-studio.jpg",
     links: {
       linkedin: "https://linkedin.com/in/bennedictquanton",
       email: "tonlongquanvn@gmail.com",
