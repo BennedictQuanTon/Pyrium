@@ -39,7 +39,7 @@ export function LogoMarquee({ label }: { label: string }) {
                       <img
                         src={organizer.logo}
                         alt={organizer.name}
-                        className="max-h-10 max-w-full object-contain"
+                        className={`${organizer.id === "tide" ? "max-h-[34px]" : "max-h-10"} max-w-full object-contain`}
                       />
                     ) : (
                       <span className="text-[19px] font-medium tracking-[-0.01em] whitespace-nowrap">

@@ -62,7 +62,7 @@ export default async function TeamPage({ params }: Props) {
                       />
                     </div>
 
-                    <div className="relative -mt-12 flex flex-1 flex-col gap-5 px-7 pb-8 md:-mt-16 md:px-10 md:pb-10">
+                    <div className="relative -mt-4 flex flex-1 flex-col gap-5 px-7 pb-8 md:-mt-6 md:px-10 md:pb-10">
                       <p className="eyebrow flex items-center gap-2 text-graphite-ink">
                         <span aria-hidden="true" className="h-px w-5 bg-signal" />
                         {t.experience}

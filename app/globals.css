@@ -677,9 +677,6 @@ html.js .reveal.is-visible .rail-node {
 .marquee-slow {
   animation-duration: 70s;
 }
-.marquee-slow:hover {
-  animation-play-state: paused;
-}
 @keyframes marquee {
   to {
     transform: translateX(-50%);
