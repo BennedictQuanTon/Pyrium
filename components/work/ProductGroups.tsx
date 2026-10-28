@@ -1,6 +1,8 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { OrganizerMark } from "@/components/ui/OrganizerMark";
 import { PillButton } from "@/components/ui/Primitives";
 import { getCopy } from "@/content/copy";
+import { collaborations, organizers, supporters } from "@/content/people";
 import { getProductGroups } from "@/content/products";
 import type { Product } from "@/content/types";
 import type { Lang } from "@/lib/i18n";
@@ -29,9 +31,12 @@ export function ProductPanel({
   flip: boolean;
   intro?: string;
 }) {
+  const supported = supporters[product.slug];
+  const partners =
+    supported ?? collaborations.find((row) => row.product === product.slug)?.with ?? [];
   return (
     <article id={product.slug} aria-labelledby={`product-${product.slug}`} className="scroll-mt-40">
-      <Reveal className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+      <Reveal className="grid items-start gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-14">
         <div className={`flex flex-col gap-5 ${flip ? "lg:order-2" : ""}`}>
           <ProductFrame product={product} morph />
           <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-stone">
@@ -46,6 +51,25 @@ export function ProductPanel({
             ) : null}
           </p>
           <ProductOutputs product={product} labels={labels} />
+          {partners.length ? (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-ink/[0.07] pt-5 lg:mt-auto lg:min-h-[4.25rem]">
+              <p className="eyebrow">{supported ? labels.supportedBy : labels.organisedBy}</p>
+              <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-graphite-ink">
+                {partners.map((name) => {
+                  const organizer = organizers.find((entry) => entry.name === name);
+                  return (
+                    <li key={name} className="flex h-9 items-center">
+                      {organizer ? (
+                        <OrganizerMark organizer={organizer} size="sm" />
+                      ) : (
+                        <span className="text-[14px] font-medium">{name}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center justify-between gap-3">

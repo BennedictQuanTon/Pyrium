@@ -89,7 +89,7 @@ const base: Record<ProductSlug, ProductBase> = {
     name: "Unfound",
     group: "trust",
     event: "RMIT GenAI & Cybersecurity Hackathon 2026",
-    organizers: "RMIT University · Tide",
+    organizers: "RMIT University · Tide Foundation",
     period: "10/2026",
     demo: "https://unfound-be-reached-not-found.vercel.app",
     github: "https://github.com/BennedictQuanTon/Unfound-Challenge-2-RMIT-Hackathon-2026",

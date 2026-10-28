@@ -31,6 +31,12 @@ export const organizers: Organizer[] = [
     viewBox: "0 0 626.172 135.109",
   },
   { id: "rmit", name: "RMIT University", logo: "/brand/logos/rmit.svg", viewBox: "0 0 893 314" },
+  {
+    id: "tide",
+    name: "Tide Foundation",
+    logo: "/brand/logos/tide.svg",
+    viewBox: "9 34 596 250",
+  },
   // Academic institutions the team studies and collaborates with.
   { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "73 74 269 257" },
   { id: "bku", name: "HCMUT (Bách Khoa)", logo: "/brand/logos/bku.png", viewBox: "0 0 240 240" },
@@ -45,8 +51,13 @@ export const collaborations: { product: ProductSlug; with: string[] }[] = [
   { product: "inference", with: ["Viettel", "AMD", "lablab.ai"] },
   { product: "lantern", with: ["AssemblyAI", "lablab.ai"] },
   { product: "ignis", with: ["AMD", "lablab.ai"] },
-  { product: "unfound", with: ["RMIT University", "Tide"] },
+  { product: "unfound", with: ["RMIT University", "Tide Foundation"] },
 ];
+
+/** Products built in partnership rather than at an organizer's event credit the partner instead. */
+export const supporters: Partial<Record<ProductSlug, string[]>> = {
+  unfound: ["Tide Foundation"],
+};
 
 /**
  * The three co-founders. Links are the ones each founder publishes; LinkedIn and email for
