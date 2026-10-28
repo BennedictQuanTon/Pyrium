@@ -28,6 +28,34 @@ const PENTATONIC: Note[] = [74, 76, 78, 81, 83, 86]; // D5 E5 F♯5 A5 B5 D6
 
 const CHORD_SECONDS = 10;
 
+/**
+ * Where the music was, kept for the tab session. A full page load (a new deployment, a dev
+ * reload) then picks the progression up at the same chord with a short fade instead of
+ * starting over with the long swell.
+ */
+const RESUME_KEY = "pyrium-music";
+const RESUME_WINDOW_MS = 60_000;
+
+function readResume(): number | null {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(RESUME_KEY) ?? "null") as {
+      chord: number;
+      at: number;
+    } | null;
+    return saved && Date.now() - saved.at < RESUME_WINDOW_MS ? saved.chord : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeResume(chord: number) {
+  try {
+    sessionStorage.setItem(RESUME_KEY, JSON.stringify({ chord, at: Date.now() }));
+  } catch {
+    // Storage blocked: the music simply starts from the top next time.
+  }
+}
+
 const SAMPLES = {
   press: "/sound/press.m4a",
   toggleOn: "/sound/toggle-on.m4a",
@@ -168,12 +196,15 @@ class Engine {
     const { ctx, musicBus } = this;
     if (!ctx || !musicBus || this.playing) return;
     this.playing = true;
+    const resume = readResume();
+    if (resume !== null) this.chordIndex = resume;
+    const fade = resume !== null ? 1.2 : 5;
     musicBus.gain.cancelScheduledValues(ctx.currentTime);
     musicBus.gain.setValueAtTime(musicBus.gain.value, ctx.currentTime);
-    musicBus.gain.linearRampToValueAtTime(this.musicLevel(), ctx.currentTime + 5);
+    musicBus.gain.linearRampToValueAtTime(this.musicLevel(), ctx.currentTime + fade);
     this.chord();
     this.musicTimer = window.setInterval(() => this.chord(), CHORD_SECONDS * 1000);
-    this.melodyTimer = window.setTimeout(() => this.melody(), 4000);
+    this.melodyTimer = window.setTimeout(() => this.melody(), resume !== null ? 1500 : 4000);
   }
 
   stopMusic() {
@@ -196,6 +227,7 @@ class Engine {
     if (!ctx || !musicBus) return;
     const notes = CHORDS[this.chordIndex % CHORDS.length];
     this.chordIndex += 1;
+    writeResume(this.chordIndex);
     const now = ctx.currentTime;
     const length = CHORD_SECONDS + 4; // overlap into the next chord
     for (const note of notes) {

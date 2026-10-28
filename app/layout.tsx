@@ -58,6 +58,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
+      // Next 16 keeps CSS smooth scrolling during route changes unless this is set; with it,
+      // a new page starts at the top at once while in-page anchors still glide.
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${dmSans.variable} ${geist.variable} ${baskerville.variable}`}
       // The inline bootstrap sets lang, classes and data-motion before hydration on purpose —
       // the standard next-themes pattern. Only the <html> attributes may differ.

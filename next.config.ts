@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  // Every page is prerendered per language and prefetched; the default dev-time validation of
+  // every navigation only re-renders each page a second time and floods the log.
+  experimental: {
+    instantInsights: { validationLevel: "manual-warning" },
+  },
   turbopack: {
     rules: {
       "*.css": {

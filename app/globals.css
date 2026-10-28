@@ -583,13 +583,13 @@ html.welcome-skip .hero-in {
    long pages with video. Back mirrors the direction. */
 ::view-transition-old(.page-forward),
 ::view-transition-old(.page-back) {
-  animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
+  animation: 140ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
 }
 ::view-transition-new(.page-forward) {
-  animation: 460ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both vt-in-up;
+  animation: 300ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both vt-in-up;
 }
 ::view-transition-new(.page-back) {
-  animation: 460ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both vt-in-down;
+  animation: 300ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both vt-in-down;
 }
 @keyframes vt-out {
   to {
@@ -599,13 +599,13 @@ html.welcome-skip .hero-in {
 @keyframes vt-in-up {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(12px);
   }
 }
 @keyframes vt-in-down {
   from {
     opacity: 0;
-    transform: translateY(-18px);
+    transform: translateY(-12px);
   }
 }
 
