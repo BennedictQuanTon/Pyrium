@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { OrganizerMark } from "@/components/ui/OrganizerMark";
-import { PillButton } from "@/components/ui/Primitives";
+import { PillButton, SmartLink } from "@/components/ui/Primitives";
 import { getCopy } from "@/content/copy";
 import { collaborations, organizers, supporters } from "@/content/people";
 import { getProductGroups } from "@/content/products";
@@ -122,6 +122,49 @@ export function ProductPanel({
 }
 
 /**
+ * The phone version of a product: logo, category, the promise and where it was recognised.
+ * The whole card opens the case study; the demo keeps its own button.
+ */
+function ProductCard({ product, labels }: { product: Product; labels: Labels }) {
+  return (
+    <article className="glass relative flex flex-col gap-4 rounded-[24px] p-5 transition-transform duration-300 active:scale-[0.985]">
+      <div className="flex items-center justify-between gap-3">
+        <ProductLogo slug={product.slug} size="sm" />
+        <span className="eyebrow text-[10.5px]">{product.category}</span>
+      </div>
+      <p className="font-display text-[20px] leading-[1.2] tracking-[-0.02em] text-ink">
+        {product.tagline}
+      </p>
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[12.5px] text-stone">
+        <span>{product.event}</span>
+        {product.result ? (
+          <span className="rounded-badges bg-signal px-2.5 py-0.5 text-[11px] font-medium text-snow">
+            {product.result}
+          </span>
+        ) : null}
+      </p>
+      <div className="flex items-center justify-between gap-3 border-t border-ink/[0.07] pt-4">
+        <SmartLink
+          href={`/work/${product.slug}`}
+          className="flex items-center gap-1.5 text-[14px] font-medium text-ink after:absolute after:inset-0 after:rounded-[24px]"
+        >
+          {labels.readCase}
+          <span aria-hidden="true" className="text-signal">
+            →
+          </span>
+        </SmartLink>
+        <SmartLink
+          href={product.demo}
+          className="relative z-10 rounded-full bg-signal px-4 py-2 text-[13px] font-medium text-snow"
+        >
+          {labels.tryLive} ↗
+        </SmartLink>
+      </div>
+    </article>
+  );
+}
+
+/**
  * Every product, grouped by the industry it serves. A row of four equal group cells sits at the
  * top; each group opens with its number and name, and its promise travels with its first
  * product.
@@ -152,7 +195,16 @@ export function ProductGroups({ lang }: { lang: Lang }) {
               {names[group].name}
             </h3>
           </Reveal>
-          <div className="flex flex-col gap-14 md:gap-28">
+          <div className="flex flex-col gap-3 md:hidden">
+            <p className="flex items-start gap-2.5 px-1 text-[13.5px] leading-[1.5] text-graphite-ink">
+              <span aria-hidden="true" className="mt-[10px] h-px w-5 shrink-0 bg-signal" />
+              {names[group].body}
+            </p>
+            {products.map((product) => (
+              <ProductCard key={product.slug} product={product} labels={copy.showcase} />
+            ))}
+          </div>
+          <div className="hidden flex-col gap-28 md:flex">
             {products.map((product, position) => {
               const flip = row % 2 === 1;
               row += 1;

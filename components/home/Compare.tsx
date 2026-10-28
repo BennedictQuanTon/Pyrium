@@ -9,7 +9,7 @@ type Level = "full" | "partial" | "none";
 /** Full: a solid disc. Partial: a half disc. None: a short dash. Each with a text label. */
 function Mark({ level, label, strong }: { level: Level; label: string; strong: boolean }) {
   return (
-    <span className="inline-flex items-center justify-center" title={label}>
+    <span className="inline-flex h-4 items-center justify-center align-middle" title={label}>
       <span className="sr-only">{label}</span>
       {level === "none" ? (
         <span aria-hidden="true" className="block h-px w-3 bg-ink/25" />
@@ -50,38 +50,57 @@ export function Compare({ lang }: { lang: Lang }) {
           <SectionHeading eyebrow={t.eyebrow} title={t.title} body={t.body} />
         </Reveal>
         <Reveal pop className="md:hidden">
-          <div className="sticky top-[76px] z-10 grid grid-cols-5 gap-1 rounded-[16px] bg-snow/90 py-2.5 backdrop-blur">
-            {t.columns.map((column, index) => (
-              <span
-                key={column}
-                className={`flex items-end justify-center px-0.5 text-center text-[10.5px] leading-[1.25] font-medium ${index === 0 ? "text-signal" : "text-stone"}`}
-              >
-                {index === 0 ? "Pyrium" : column}
-              </span>
-            ))}
-          </div>
-          <ul className="flex flex-col">
-            {t.rows.map((row) => (
-              <li key={row.label} className="flex flex-col gap-2 border-t border-ink/[0.07] py-3">
-                <p className="text-[14px] leading-[1.4] text-ink">{row.label}</p>
-                <div className="grid grid-cols-5 gap-1">
-                  {row.values.map((value, index) => (
+          <table className="glass w-full border-separate border-spacing-0 rounded-[24px] px-3 pt-2 pb-3 text-left">
+            <thead>
+              <tr>
+                <th scope="col" className="align-bottom pb-3 pl-1">
+                  <span className="sr-only">{t.eyebrow}</span>
+                </th>
+                {t.shortColumns.map((column, index) => (
+                  <th
+                    key={column}
+                    scope="col"
+                    title={t.columns[index]}
+                    className={`w-[34px] px-0 pt-3 pb-3 align-bottom ${index === 0 ? "rounded-t-[14px] bg-signal/[0.07]" : ""}`}
+                  >
                     <span
-                      // biome-ignore lint/suspicious/noArrayIndexKey: columns are fixed and ordered
-                      key={index}
-                      className={`flex h-8 items-center justify-center rounded-[10px] ${index === 0 ? "bg-signal/[0.07]" : ""}`}
+                      className={`mx-auto block rotate-180 text-[11px] leading-none font-medium whitespace-nowrap [writing-mode:vertical-rl] ${index === 0 ? "text-signal" : "text-stone"}`}
                     >
-                      <Mark
-                        level={value as Level}
-                        label={`${index === 0 ? "Pyrium" : t.columns[index]}: ${levels[value as Level]}`}
-                        strong={index === 0}
-                      />
+                      {column}
                     </span>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ul>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {t.rows.map((row, rowIndex) => {
+                const last = rowIndex === t.rows.length - 1;
+                return (
+                  <tr key={row.label}>
+                    <th
+                      scope="row"
+                      className="border-t border-ink/[0.07] py-2.5 pr-2 pl-1 text-[12.5px] leading-[1.35] font-normal text-ink"
+                    >
+                      {row.label}
+                    </th>
+                    {row.values.map((value, index) => (
+                      <td
+                        // biome-ignore lint/suspicious/noArrayIndexKey: columns are fixed and ordered
+                        key={index}
+                        className={`border-t border-ink/[0.07] px-0 text-center align-middle ${index === 0 ? `bg-signal/[0.07] ${last ? "rounded-b-[14px]" : ""}` : ""}`}
+                      >
+                        <Mark
+                          level={value as Level}
+                          label={`${t.columns[index]}: ${levels[value as Level]}`}
+                          strong={index === 0}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </Reveal>
         <Reveal pop className="hidden min-w-0 md:block">
           <div className="no-scrollbar -mx-4 w-[calc(100%+2rem)] overflow-x-auto px-4">

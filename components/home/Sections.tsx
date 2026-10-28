@@ -67,7 +67,7 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
   const t = getCopy(lang).productsSection;
   return (
     <div className="page-width flex flex-col gap-10 md:gap-16">
-      <Reveal>
+      <Reveal className="hidden md:block">
         <ul className="grid grid-cols-2 overflow-hidden rounded-cards bg-ink/[0.07] gap-px md:grid-cols-5">
           {products.map((product) => (
             <li key={product.slug} className="bg-fog">
@@ -372,12 +372,15 @@ export function FounderLinks({
   member,
   lang,
   tone = "snow",
+  size = "md",
 }: {
   member: (typeof team)[number];
   lang: Lang;
   /** Fill of the live buttons: snow on the grey card, fog on white. */
   tone?: "snow" | "fog";
+  size?: "sm" | "md";
 }) {
+  const box = size === "sm" ? "size-8" : "size-10";
   const t = getCopy(lang).team;
   const links: { kind: LinkKind; label: string; href?: string }[] = [
     { kind: "linkedin", label: t.links.linkedin, href: member.links.linkedin },
@@ -408,7 +411,7 @@ export function FounderLinks({
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            className="size-[18px]"
+            className={size === "sm" ? "size-[15px]" : "size-[18px]"}
           >
             {ICONS[kind]}
           </svg>
@@ -419,14 +422,14 @@ export function FounderLinks({
               <SmartLink
                 href={href}
                 aria-label={`${member.name} — ${label}`}
-                className={`flex size-10 items-center justify-center rounded-full text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow ${tone === "snow" ? "bg-snow shadow-button" : "bg-fog"}`}
+                className={`flex ${box} items-center justify-center rounded-full text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-snow ${tone === "snow" ? "bg-snow shadow-button" : "bg-fog"}`}
               >
                 {icon}
               </SmartLink>
             ) : (
               <span
                 title={`${label} · ${t.links.soon}`}
-                className="flex size-10 items-center justify-center rounded-full border border-dashed border-ink/20 text-stone/70"
+                className={`flex ${box} items-center justify-center rounded-full border border-dashed border-ink/20 text-stone/70`}
               >
                 {icon}
                 <span className="sr-only">
@@ -450,44 +453,77 @@ export function FounderLinks({
 export function Founders({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team;
   return (
-    <Rail className="md:grid md:grid-cols-3 md:gap-6">
-      {team.map((member, index) => (
-        <li key={member.github}>
-          <Reveal
-            pop
-            delay={index}
-            className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
-          >
-            <div className="relative overflow-hidden">
+    <>
+      <Reveal pop className="md:hidden">
+        <ul className="flex flex-col divide-y divide-ink/10 rounded-[28px] bg-[#dddbd8] px-3">
+          {team.map((member, index) => (
+            <li key={member.github} className="grid grid-cols-[96px_1fr] items-center gap-4 py-3">
               {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
               <img
                 src={member.photo}
                 alt={member.name}
-                className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
+                loading="lazy"
+                className="aspect-[4/5] w-full rounded-[18px] object-cover object-top"
               />
-            </div>
-            <div className="relative z-10 -mt-12 flex flex-1 flex-col gap-4 px-6 pb-6 md:px-7 md:pb-7">
-              <p className="eyebrow flex items-center gap-2">
-                <span className="tabular text-signal">0{index + 1}</span>
-                <span aria-hidden="true" className="h-px w-5 bg-signal" />
-                {t.cofounder}
-              </p>
-              <div className="flex flex-col gap-1.5">
-                <h3 className="font-display text-[26px] leading-[1.1] tracking-[-0.02em] text-ink">
-                  {member.name}
-                </h3>
-                <p className="text-[14px] font-medium whitespace-nowrap text-signal">
-                  {member.role[lang]}
+              <div className="flex min-w-0 flex-col gap-2.5">
+                <div className="flex flex-col gap-1">
+                  <p className="eyebrow flex items-center gap-2 text-[10.5px]">
+                    <span className="tabular text-signal">0{index + 1}</span>
+                    <span aria-hidden="true" className="h-px w-4 bg-signal" />
+                    {t.cofounder}
+                  </p>
+                  <h3 className="font-display text-[19px] leading-[1.15] tracking-[-0.02em] text-ink">
+                    {member.name}
+                  </h3>
+                  <p className="text-[12.5px] leading-[1.35] font-medium text-signal">
+                    {member.role[lang]}
+                  </p>
+                </div>
+                <FounderLinks member={member} lang={lang} size="sm" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+      <ul className="hidden md:grid md:grid-cols-3 md:gap-6">
+        {team.map((member, index) => (
+          <li key={member.github}>
+            <Reveal
+              pop
+              delay={index}
+              className="founder group flex h-full flex-col overflow-hidden rounded-[28px] bg-[#dddbd8]"
+            >
+              <div className="relative overflow-hidden">
+                {/* biome-ignore lint/performance/noImgElement: prepared portrait; next/image adds nothing here */}
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="aspect-[3/4] w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
+                />
+              </div>
+              <div className="relative z-10 -mt-12 flex flex-1 flex-col gap-4 px-6 pb-6 md:px-7 md:pb-7">
+                <p className="eyebrow flex items-center gap-2">
+                  <span className="tabular text-signal">0{index + 1}</span>
+                  <span aria-hidden="true" className="h-px w-5 bg-signal" />
+                  {t.cofounder}
                 </p>
+                <div className="flex flex-col gap-1.5">
+                  <h3 className="font-display text-[26px] leading-[1.1] tracking-[-0.02em] text-ink">
+                    {member.name}
+                  </h3>
+                  <p className="text-[14px] font-medium text-signal xl:whitespace-nowrap">
+                    {member.role[lang]}
+                  </p>
+                </div>
+                <div className="mt-auto border-t border-ink/10 pt-4">
+                  <FounderLinks member={member} lang={lang} />
+                </div>
               </div>
-              <div className="mt-auto border-t border-ink/10 pt-4">
-                <FounderLinks member={member} lang={lang} />
-              </div>
-            </div>
-          </Reveal>
-        </li>
-      ))}
-    </Rail>
+            </Reveal>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 

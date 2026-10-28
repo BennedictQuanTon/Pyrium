@@ -237,6 +237,7 @@ const en = {
         "Large integrators",
         "Freelancers & in-house",
       ],
+      shortColumns: ["Pyrium", "AI chat", "Automation", "Integrators", "Freelance"],
       legend: { full: "Yes", partial: "Partly", none: "No" },
       rows: [
         {
@@ -1027,6 +1028,7 @@ const vi: Copy = {
         "Đơn vị tích hợp lớn",
         "Freelancer & tự làm",
       ],
+      shortColumns: ["Pyrium", "Chat AI", "Tự động hoá", "Tích hợp lớn", "Freelancer"],
       legend: { full: "Có", partial: "Một phần", none: "Không" },
       rows: [
         {
