@@ -161,7 +161,35 @@
   }
 
   .section {
-    padding-block: 96px;
+    padding-block: 64px;
+  }
+
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 96px;
+    }
+  }
+
+  /* Below md a row of cards swipes sideways: one card plus a peek of the next (components/ui/Rail). */
+  @media (max-width: 767px) {
+    .rail {
+      display: flex;
+      gap: 12px;
+      margin: -8px -16px -24px;
+      padding: 8px 16px 24px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 16px;
+      scrollbar-width: none;
+    }
+    .rail::-webkit-scrollbar {
+      display: none;
+    }
+    .rail > * {
+      flex: 0 0 84%;
+      scroll-snap-align: start;
+    }
   }
 
   .page-width {
@@ -1393,5 +1421,13 @@ html.js .reveal.is-visible .journey-node {
   from {
     opacity: 0;
     transform: translateY(12px);
+  }
+}
+
+/* The products tab bar shows one industry group at a time below md (components/work/GroupNav).
+   Unlayered, so it wins over the section's own display utility. */
+@media (max-width: 767px) {
+  [data-off="true"] {
+    display: none;
   }
 }

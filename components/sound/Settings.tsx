@@ -178,6 +178,7 @@ export function Settings({ onDark = false }: { onDark?: boolean }) {
         aria-expanded={open}
         aria-controls={id}
         aria-label={t.open}
+        data-silent
         onClick={() => {
           setOpen((value) => !value);
           if (prefs.sfx) {

@@ -45,11 +45,45 @@ export function Compare({ lang }: { lang: Lang }) {
   const levels = t.legend;
   return (
     <section id="compare" className="section overflow-x-clip bg-snow">
-      <div className="page-width flex flex-col gap-12">
+      <div className="page-width flex flex-col gap-8 md:gap-12">
         <Reveal>
           <SectionHeading eyebrow={t.eyebrow} title={t.title} body={t.body} />
         </Reveal>
-        <Reveal pop className="min-w-0">
+        <Reveal pop className="md:hidden">
+          <div className="sticky top-[76px] z-10 grid grid-cols-5 gap-1 rounded-[16px] bg-snow/90 py-2.5 backdrop-blur">
+            {t.columns.map((column, index) => (
+              <span
+                key={column}
+                className={`flex items-end justify-center px-0.5 text-center text-[10.5px] leading-[1.25] font-medium ${index === 0 ? "text-signal" : "text-stone"}`}
+              >
+                {index === 0 ? "Pyrium" : column}
+              </span>
+            ))}
+          </div>
+          <ul className="flex flex-col">
+            {t.rows.map((row) => (
+              <li key={row.label} className="flex flex-col gap-2 border-t border-ink/[0.07] py-3">
+                <p className="text-[14px] leading-[1.4] text-ink">{row.label}</p>
+                <div className="grid grid-cols-5 gap-1">
+                  {row.values.map((value, index) => (
+                    <span
+                      // biome-ignore lint/suspicious/noArrayIndexKey: columns are fixed and ordered
+                      key={index}
+                      className={`flex h-8 items-center justify-center rounded-[10px] ${index === 0 ? "bg-signal/[0.07]" : ""}`}
+                    >
+                      <Mark
+                        level={value as Level}
+                        label={`${index === 0 ? "Pyrium" : t.columns[index]}: ${levels[value as Level]}`}
+                        strong={index === 0}
+                      />
+                    </span>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+        <Reveal pop className="hidden min-w-0 md:block">
           <div className="no-scrollbar -mx-4 w-[calc(100%+2rem)] overflow-x-auto px-4">
             <table className="compare w-full min-w-[720px] border-separate border-spacing-0 text-left">
               <thead>

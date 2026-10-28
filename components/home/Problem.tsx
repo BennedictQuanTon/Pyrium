@@ -1,6 +1,7 @@
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
 import { Citation, SectionHeading } from "@/components/ui/Primitives";
+import { Rail } from "@/components/ui/Rail";
 import { getCopy } from "@/content/copy";
 import type { Lang } from "@/lib/i18n";
 
@@ -50,29 +51,32 @@ export function Problem({ lang }: { lang: Lang }) {
   const rows = [t.adoption.from, t.adoption.to];
   return (
     <section id="problem" className="section bg-fog">
-      <div className="page-width flex flex-col gap-12 md:gap-14">
+      <div className="page-width flex flex-col gap-10 md:gap-14">
         <Reveal>
           <SectionHeading eyebrow={t.eyebrow} title={t.title} body={t.body} />
         </Reveal>
 
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Rail className="md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4">
           {t.industries.map((item, index) => (
             <li key={item.name}>
               <IndustryCard item={item} index={index} />
             </li>
           ))}
-        </ul>
+        </Rail>
 
-        <Reveal pop className="overflow-hidden rounded-[32px] bg-ink text-snow">
+        <Reveal pop className="overflow-hidden rounded-[28px] bg-ink text-snow md:rounded-[32px]">
           <div className="grid lg:grid-cols-[1fr_1.2fr]">
             {/* AI arriving */}
-            <div className="flex flex-col gap-8 border-white/10 p-8 md:p-10 lg:border-r">
+            <div className="flex flex-col gap-6 border-white/10 p-6 md:gap-8 md:p-10 lg:border-r">
               <p className="eyebrow flex items-center gap-2 text-silver">
                 {t.adoption.title}
                 <Citation id={t.adoption.source} onDark />
               </p>
-              <div className="flex items-end gap-8">
-                <div className="flex h-[176px] items-end gap-4" aria-hidden="true">
+              <div className="flex items-end gap-6 md:gap-8">
+                <div
+                  className="flex h-[150px] items-end gap-3 [--bar:1.6] md:h-[176px] md:gap-4 md:[--bar:2]"
+                  aria-hidden="true"
+                >
                   {rows.map((row, index) => (
                     <div
                       key={row.label}
@@ -80,9 +84,9 @@ export function Problem({ lang }: { lang: Lang }) {
                     >
                       <span className="tabular text-[12px] text-silver">{row.value}%</span>
                       <span
-                        className={`grow-y block w-12 rounded-[12px] ${index === 1 ? "bg-signal" : "bg-white/20"}`}
+                        className={`grow-y block w-10 rounded-[12px] md:w-12 ${index === 1 ? "bg-signal" : "bg-white/20"}`}
                         style={{
-                          height: `${row.value * 2}px`,
+                          height: `calc(${row.value}px * var(--bar))`,
                           ["--d" as string]: `${index * 0.25}s`,
                         }}
                       />
@@ -91,7 +95,7 @@ export function Problem({ lang }: { lang: Lang }) {
                   ))}
                 </div>
                 <div className="flex flex-col gap-3 pb-6">
-                  <p className="font-display text-[64px] leading-none tracking-[-0.045em] md:text-[80px]">
+                  <p className="font-display text-[52px] leading-none tracking-[-0.045em] md:text-[80px]">
                     <CountUp text={`${t.adoption.to.value}%`} className="tabular" />
                   </p>
                   <p className="max-w-[26ch] text-[14px] leading-[1.5] text-mist">
@@ -102,7 +106,7 @@ export function Problem({ lang }: { lang: Lang }) {
             </div>
 
             {/* What holds the rest back */}
-            <div className="flex flex-col gap-6 border-t border-white/10 p-8 md:p-10 lg:border-t-0">
+            <div className="flex flex-col gap-6 border-t border-white/10 p-6 md:p-10 lg:border-t-0">
               <p className="eyebrow flex items-center gap-2 text-silver">
                 {t.barriers.title}
                 <Citation id={t.barriers.source} onDark />
@@ -142,7 +146,7 @@ export function Problem({ lang }: { lang: Lang }) {
             {t.facts.map((fact, index) => (
               <li
                 key={fact.label}
-                className={`flex items-baseline gap-4 p-6 md:p-8 ${index > 0 ? "border-t border-white/10 md:border-t-0 md:border-l" : ""}`}
+                className={`flex items-baseline gap-4 px-6 py-5 md:p-8 ${index > 0 ? "border-t border-white/10 md:border-t-0 md:border-l" : ""}`}
               >
                 <span className="font-display text-[34px] leading-none tracking-[-0.04em] text-snow">
                   {fact.value}

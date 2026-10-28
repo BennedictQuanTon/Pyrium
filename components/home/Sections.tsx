@@ -3,6 +3,7 @@ import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
 import { Person } from "@/components/ui/Person";
 import { PillButton, SectionHeading, SmartLink } from "@/components/ui/Primitives";
+import { Rail } from "@/components/ui/Rail";
 import { ProductLogo } from "@/components/work/ProductLogo";
 import { getCopy } from "@/content/copy";
 import { getTestimonials, organizers, team } from "@/content/people";
@@ -65,7 +66,7 @@ export function LogoMarquee({ label }: { label: string }) {
 export function ProductStrip({ products, lang }: { products: Product[]; lang: Lang }) {
   const t = getCopy(lang).productsSection;
   return (
-    <div className="page-width flex flex-col gap-16">
+    <div className="page-width flex flex-col gap-10 md:gap-16">
       <Reveal>
         <ul className="grid grid-cols-2 overflow-hidden rounded-cards bg-ink/[0.07] gap-px md:grid-cols-5">
           {products.map((product) => (
@@ -73,7 +74,7 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
               <SmartLink
                 href={`/work/${product.slug}`}
                 aria-label={product.name}
-                className="logo-cell group flex h-28 items-center justify-center px-4 md:h-36"
+                className="logo-cell group flex h-20 items-center justify-center px-4 md:h-36"
               >
                 <ProductLogo
                   slug={product.slug}
@@ -86,11 +87,16 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
         </ul>
       </Reveal>
       <div className="flex flex-col gap-8">
-        <dl className="grid gap-12 md:grid-cols-3 md:gap-8">
+        <dl className="grid gap-0 md:grid-cols-3 md:gap-8">
           {t.stats.map((stat, index) => (
-            <Reveal key={stat.label} pop delay={index} className="stat flex flex-col gap-3">
+            <Reveal
+              key={stat.label}
+              pop
+              delay={index}
+              className="stat grid grid-cols-[7.5rem_1fr] items-center gap-x-4 border-t border-ink/10 py-4 first:border-t-0 md:flex md:flex-col md:items-start md:gap-3 md:border-t-0 md:py-0"
+            >
               <dt className="sr-only">{stat.label}</dt>
-              <dd className="flex items-start gap-1 font-display text-[72px] leading-[0.95] tracking-[-0.05em] text-ink md:text-[88px] lg:text-[104px]">
+              <dd className="flex items-start gap-1 font-display text-[48px] leading-[0.95] tracking-[-0.05em] text-ink md:text-[88px] lg:text-[104px]">
                 <CountUp text={stat.value} className="tabular" />
                 {"note" in stat && stat.note ? (
                   <a
@@ -102,8 +108,11 @@ export function ProductStrip({ products, lang }: { products: Product[]; lang: La
                   </a>
                 ) : null}
               </dd>
-              <span aria-hidden="true" className="stat-rule h-[2px] w-16 rounded-full bg-signal" />
-              <dd className="max-w-[26ch] text-[16px] leading-[1.5] text-graphite-ink">
+              <span
+                aria-hidden="true"
+                className="stat-rule hidden h-[2px] w-16 rounded-full bg-signal md:block"
+              />
+              <dd className="max-w-[26ch] text-[14px] leading-[1.45] text-graphite-ink md:text-[16px] md:leading-[1.5]">
                 {stat.label}
               </dd>
             </Reveal>
@@ -208,7 +217,7 @@ export function Engagement({
 }) {
   const t = getCopy(lang).engagement;
   return (
-    <div className="flex flex-col gap-14 md:gap-16">
+    <div className="flex flex-col gap-10 md:gap-16">
       {heading ? (
         <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
           <div className="flex flex-col gap-4">
@@ -223,15 +232,15 @@ export function Engagement({
       ) : null}
 
       <Reveal pop>
-        <ol className="engage-steps grid overflow-hidden rounded-[32px] bg-ink text-snow sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="engage-steps grid overflow-hidden rounded-[28px] bg-ink text-snow sm:grid-cols-2 md:rounded-[32px] lg:grid-cols-4">
           {t.steps.map((step, index) => (
             <li
               key={step.name}
-              className={`engage-step group relative flex flex-col gap-5 p-8 md:p-9 ${index > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : ""} ${index === 2 ? "sm:border-t sm:border-l-0 lg:border-t-0 lg:border-l" : ""} ${index === 3 ? "sm:border-t lg:border-t-0" : ""}`}
+              className={`engage-step group relative grid grid-cols-[3.25rem_1fr] items-start gap-x-4 gap-y-4 px-6 py-5 sm:flex sm:flex-col sm:gap-5 sm:p-8 md:p-9 ${index > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : ""} ${index === 2 ? "sm:border-t sm:border-l-0 lg:border-t-0 lg:border-l" : ""} ${index === 3 ? "sm:border-t lg:border-t-0" : ""}`}
             >
               <span
                 aria-hidden="true"
-                className="h-[2px] w-full overflow-hidden rounded-full bg-white/10"
+                className="col-span-2 h-[2px] w-full overflow-hidden rounded-full bg-white/10"
               >
                 <span
                   className="engage-fill block h-full w-full origin-left bg-signal"
@@ -240,12 +249,14 @@ export function Engagement({
               </span>
               <span
                 aria-hidden="true"
-                className="engage-num font-display text-[72px] leading-none tracking-[-0.04em] md:text-[84px]"
+                className="engage-num font-display text-[44px] leading-none tracking-[-0.04em] sm:text-[72px] md:text-[84px]"
               >
                 0{index + 1}
               </span>
-              <div className="mt-4 flex flex-col gap-2.5">
-                <h3 className="font-sans text-[20px] font-medium text-snow">{step.name}</h3>
+              <div className="flex flex-col gap-1.5 sm:mt-4 sm:gap-2.5">
+                <h3 className="font-sans text-[18px] font-medium text-snow sm:text-[20px]">
+                  {step.name}
+                </h3>
                 <p className="text-[14px] leading-[1.6] text-silver">{step.detail}</p>
               </div>
             </li>
@@ -254,7 +265,7 @@ export function Engagement({
       </Reveal>
 
       {compact ? null : (
-        <ul className="grid items-stretch gap-4 lg:grid-cols-3 lg:items-center">
+        <Rail className="md:grid md:items-stretch md:gap-4 lg:grid-cols-3 lg:items-center">
           {t.packages.map((pkg, index) => {
             const featured = "featured" in pkg && pkg.featured;
             return (
@@ -262,7 +273,7 @@ export function Engagement({
                 <Reveal
                   pop
                   delay={index}
-                  className={`flex h-full flex-col gap-6 rounded-[28px] p-8 md:p-9 ${
+                  className={`flex h-full flex-col gap-6 rounded-[28px] p-6 md:p-9 ${
                     featured
                       ? "bg-snow shadow-[0_40px_80px_-40px_rgba(17,17,17,0.35)] ring-1 ring-signal/25 lg:py-12"
                       : "border border-ink/[0.07] bg-snow/60"
@@ -324,7 +335,7 @@ export function Engagement({
               </li>
             );
           })}
-        </ul>
+        </Rail>
       )}
     </div>
   );
@@ -439,7 +450,7 @@ export function FounderLinks({
 export function Founders({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team;
   return (
-    <ul className="grid gap-6 md:grid-cols-3">
+    <Rail className="md:grid md:grid-cols-3 md:gap-6">
       {team.map((member, index) => (
         <li key={member.github}>
           <Reveal
@@ -476,7 +487,7 @@ export function Founders({ lang }: { lang: Lang }) {
           </Reveal>
         </li>
       ))}
-    </ul>
+    </Rail>
   );
 }
 
@@ -488,7 +499,7 @@ export function Founders({ lang }: { lang: Lang }) {
 export function Vision({ lang }: { lang: Lang }) {
   const t = getCopy(lang).team.vision;
   return (
-    <Reveal className="vision relative isolate overflow-hidden rounded-[32px] bg-ink text-snow">
+    <Reveal className="vision relative isolate overflow-hidden rounded-[28px] bg-ink text-snow md:rounded-[32px]">
       {/* biome-ignore lint/performance/noImgElement: open-licence editorial photo behind the statement */}
       <img
         src="/images/open/workers.jpg"
@@ -497,20 +508,20 @@ export function Vision({ lang }: { lang: Lang }) {
         className="absolute inset-0 -z-10 size-full object-cover opacity-35"
       />
       <span aria-hidden="true" className="vision-wash absolute inset-0 -z-10" />
-      <div className="flex flex-col gap-14 p-8 md:p-14 lg:p-16">
-        <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-10 p-6 md:gap-14 md:p-14 lg:p-16">
+        <div className="flex flex-col gap-4 md:gap-5">
           <p className="eyebrow flex items-center gap-2 text-silver">
             <span aria-hidden="true" className="h-px w-6 bg-signal" />
             {t.title}
           </p>
-          <p className="max-w-[18ch] font-display text-[36px] leading-[1.08] tracking-[-1px] md:text-[60px] md:tracking-[-1.6px]">
+          <p className="max-w-[18ch] font-display text-[30px] leading-[1.1] tracking-[-0.8px] md:text-[60px] md:tracking-[-1.6px]">
             {t.statement}
           </p>
-          <p className="max-w-[60ch] text-[16px] leading-[1.65] text-silver md:text-[17px]">
+          <p className="max-w-[60ch] text-[15px] leading-[1.6] text-silver md:text-[17px] md:leading-[1.65]">
             {t.body}
           </p>
         </div>
-        <ol className="relative grid gap-8 md:grid-cols-3 md:gap-6">
+        <ol className="relative grid gap-0 md:grid-cols-3 md:gap-6">
           <span
             aria-hidden="true"
             className="absolute top-[7px] right-0 left-0 hidden h-px bg-white/15 md:block"
@@ -518,7 +529,10 @@ export function Vision({ lang }: { lang: Lang }) {
             <span className="grow-x block h-full bg-signal" />
           </span>
           {t.horizons.map((horizon, index) => (
-            <li key={horizon.when} className="relative flex flex-col gap-3 md:pt-8">
+            <li
+              key={horizon.when}
+              className="relative flex flex-col gap-2 border-t border-white/10 py-5 first:border-t-0 first:pt-0 last:pb-0 md:gap-3 md:border-t-0 md:py-0 md:pt-8 md:first:pt-8"
+            >
               <span
                 aria-hidden="true"
                 className={`hidden size-[15px] rounded-full border-2 md:absolute md:top-0 md:left-0 md:block ${index === 0 ? "border-signal bg-signal" : "border-white/40 bg-ink"}`}
@@ -526,7 +540,9 @@ export function Vision({ lang }: { lang: Lang }) {
               <span className={`eyebrow ${index === 0 ? "text-signal" : "text-silver"}`}>
                 {horizon.when}
               </span>
-              <h3 className="text-[22px] leading-[1.25] text-snow">{horizon.title}</h3>
+              <h3 className="text-[19px] leading-[1.25] text-snow md:text-[22px]">
+                {horizon.title}
+              </h3>
               <p className="text-[14px] leading-[1.6] text-silver">{horizon.detail}</p>
             </li>
           ))}

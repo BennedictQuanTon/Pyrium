@@ -85,7 +85,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* 4 · Products: lockups and headline numbers, then every product grouped by industry */}
       <section id="products" className="section scroll-mt-16 bg-fog">
-        <div className="flex flex-col gap-16 md:gap-24">
+        <div className="flex flex-col gap-10 md:gap-24">
           <div className="page-width">
             <Reveal>
               <SectionHeading
@@ -112,8 +112,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* 7 · The three co-founders, and where we're going */}
       <section id="team" className="section bg-snow">
-        <div className="page-width flex flex-col gap-12">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="page-width flex flex-col gap-8 md:gap-12">
+          <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end md:gap-6">
             <Reveal>
               <SectionHeading eyebrow={team.eyebrow} title={team.title} />
             </Reveal>
@@ -128,7 +128,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* 8 · Closing statement inside the brand sheet's "signal frame" */}
       <section className="signal-frame relative overflow-hidden">
-        <div className="page-width relative flex flex-col items-center gap-5 py-28 text-center md:py-40">
+        <div className="page-width relative flex flex-col items-center gap-5 py-20 text-center md:py-40">
           <Reveal>
             <h2 className="max-w-[18ch] text-heading-md md:text-heading-lg">{closing.title}</h2>
           </Reveal>
