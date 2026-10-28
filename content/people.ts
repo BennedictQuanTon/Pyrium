@@ -18,8 +18,13 @@ export const organizers: Organizer[] = [
     viewBox: "0 0 272 92",
   },
   { id: "openacc", name: "OpenACC" },
-  { id: "assemblyai", name: "AssemblyAI" },
-  { id: "lablab", name: "lablab.ai" },
+  {
+    id: "assemblyai",
+    name: "AssemblyAI",
+    logo: "/brand/logos/assemblyai.svg",
+    viewBox: "0 0 161 28",
+  },
+  { id: "lablab", name: "lablab.ai", logo: "/brand/logos/lablab.png", viewBox: "0 0 330 285" },
   { id: "openai", name: "OpenAI", logo: "/brand/logos/openai.svg", viewBox: "0 0 1180 320" },
   { id: "devpost", name: "Devpost", logo: "/brand/logos/devpost.svg", viewBox: "0 0 24 24" },
   { id: "amd", name: "AMD", logo: "/brand/logos/amd.svg", viewBox: "0 7.4 24 9.2" },
@@ -31,6 +36,12 @@ export const organizers: Organizer[] = [
     viewBox: "0 0 626.172 135.109",
   },
   { id: "rmit", name: "RMIT University", logo: "/brand/logos/rmit.svg", viewBox: "0 0 893 314" },
+  {
+    id: "tide",
+    name: "Tide Foundation",
+    logo: "/brand/logos/tide.svg",
+    viewBox: "9 34 596 250",
+  },
   // Academic institutions the team studies and collaborates with.
   { id: "uts", name: "UTS", logo: "/brand/logos/uts.svg", viewBox: "73 74 269 257" },
   { id: "bku", name: "HCMUT (Bách Khoa)", logo: "/brand/logos/bku.png", viewBox: "0 0 240 240" },
@@ -45,8 +56,13 @@ export const collaborations: { product: ProductSlug; with: string[] }[] = [
   { product: "inference", with: ["Viettel", "AMD", "lablab.ai"] },
   { product: "lantern", with: ["AssemblyAI", "lablab.ai"] },
   { product: "ignis", with: ["AMD", "lablab.ai"] },
-  { product: "unfound", with: ["RMIT University", "Tide"] },
+  { product: "unfound", with: ["RMIT University", "Tide Foundation"] },
 ];
+
+/** Products built in partnership rather than at an organizer's event credit the partner instead. */
+export const supporters: Partial<Record<ProductSlug, string[]>> = {
+  unfound: ["Tide Foundation"],
+};
 
 /**
  * The three co-founders. Links are the ones each founder publishes; LinkedIn and email for
@@ -56,8 +72,8 @@ export const team: TeamMember[] = [
   {
     name: "Long Quan Ton",
     github: "BennedictQuanTon",
-    role: { en: "AI Engineer · Product Design", vi: "Kỹ sư AI · Thiết kế sản phẩm" },
-    photo: "/team/quan.jpg",
+    role: { en: "AI Solutions & Product Architect", vi: "Kiến trúc sư giải pháp AI & sản phẩm" },
+    photo: "/team/quan-studio.jpg",
     links: {
       linkedin: "https://linkedin.com/in/bennedictquanton",
       email: "tonlongquanvn@gmail.com",
@@ -131,14 +147,14 @@ export const team: TeamMember[] = [
   {
     name: "Nomura Yoshio",
     github: "UniverseScripts",
-    role: { en: "DevOps & LLMOps Engineer", vi: "Kỹ sư DevOps & LLMOps" },
+    role: { en: "LLMOps & Cloud Infrastructure Engineer", vi: "Kỹ sư LLMOps & hạ tầng Cloud" },
     photo: "/team/yoshio.jpg",
     links: { portfolio: "https://github.com/UniverseScripts" },
   },
   {
     name: "Khanh Tuong Huynh",
     github: "khanhtuongnakitomo",
-    role: { en: "Software Engineer · Logic & QA", vi: "Kỹ sư phần mềm · Logic & Kiểm thử" },
+    role: { en: "Full-Stack & Systems Engineer", vi: "Kỹ sư Full-Stack & Hệ thống" },
     photo: "/team/tuong.jpg",
     links: { portfolio: "https://github.com/khanhtuongnakitomo" },
   },

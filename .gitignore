@@ -52,7 +52,8 @@ Thumbs.db
 CLAUDE.md
 AGENTS.md
 *DESIGN.md
-docs/
+docs/*
+!docs/team-photos/
 .claude/
 
 # Private: brand source kits and raw images outside public/ (the site only ships public/)

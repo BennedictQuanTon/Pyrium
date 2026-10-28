@@ -62,19 +62,19 @@ export default async function TeamPage({ params }: Props) {
                       />
                     </div>
 
-                    <div className="relative flex flex-col gap-5 px-7 pt-2 pb-8 md:px-10 md:pb-10">
+                    <div className="relative -mt-4 flex flex-1 flex-col gap-5 px-7 pb-8 md:-mt-6 md:px-10 md:pb-10">
                       <p className="eyebrow flex items-center gap-2 text-graphite-ink">
                         <span aria-hidden="true" className="h-px w-5 bg-signal" />
                         {t.experience}
                       </p>
                       {member.experience?.length ? (
-                        <ol className="flex flex-col">
+                        <ol className="flex flex-1 flex-col">
                           {member.experience.map((job) => (
                             <li
                               key={job.company}
-                              className="flex items-center gap-4 border-t border-ink/[0.08] py-4 first:border-t-0 first:pt-0"
+                              className="flex flex-1 items-center gap-5 border-t border-ink/[0.08] py-5 first:border-t-0 first:pt-1 last:pb-0"
                             >
-                              <span className="flex h-12 w-[76px] shrink-0 items-center justify-center rounded-[14px] bg-snow px-2.5 py-2 shadow-subtle">
+                              <span className="flex h-14 w-[88px] shrink-0 items-center justify-center rounded-[16px] bg-snow px-3 py-2.5 shadow-subtle">
                                 {/* biome-ignore lint/performance/noImgElement: company logo; next/image adds nothing here */}
                                 <img
                                   src={job.logo}
@@ -83,14 +83,14 @@ export default async function TeamPage({ params }: Props) {
                                   className="max-h-full max-w-full object-contain"
                                 />
                               </span>
-                              <span className="flex min-w-0 flex-col gap-0.5">
-                                <span className="text-[15px] font-medium text-ink">
+                              <span className="flex min-w-0 flex-col gap-1">
+                                <span className="text-[17px] leading-[1.3] font-medium text-ink">
                                   {job.company}
                                 </span>
-                                <span className="text-[13px] leading-[1.4] text-graphite-ink">
+                                <span className="text-[14px] leading-[1.4] text-graphite-ink">
                                   {job.role[lang]}
                                 </span>
-                                <span className="tabular text-[12px] text-graphite-ink/80">
+                                <span className="tabular text-[13px] text-graphite-ink/80">
                                   {job.period[lang]}
                                 </span>
                               </span>

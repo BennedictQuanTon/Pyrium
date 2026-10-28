@@ -237,6 +237,7 @@ const en = {
         "Large integrators",
         "Freelancers & in-house",
       ],
+      shortColumns: ["Pyrium", "AI chat", "Automation", "Integrators", "Freelance"],
       legend: { full: "Yes", partial: "Partly", none: "No" },
       rows: [
         {
@@ -325,6 +326,9 @@ const en = {
     pilot: "From the pilot",
     readCase: "Read the case study",
     tryLive: "View demo",
+    organisedBy: "Organised by",
+    supportedBy: "In collaboration with & supported by",
+    more: "Who it's for & pilot feedback",
     anonymous: "Anonymous",
     est: "est.",
   },
@@ -1024,6 +1028,7 @@ const vi: Copy = {
         "Đơn vị tích hợp lớn",
         "Freelancer & tự làm",
       ],
+      shortColumns: ["Pyrium", "Chat AI", "Tự động hoá", "Tích hợp lớn", "Freelancer"],
       legend: { full: "Có", partial: "Một phần", none: "Không" },
       rows: [
         {
@@ -1115,6 +1120,9 @@ const vi: Copy = {
     pilot: "Từ đợt thí điểm",
     readCase: "Xem chi tiết dự án",
     tryLive: "Xem demo",
+    organisedBy: "Đơn vị tổ chức",
+    supportedBy: "Hợp tác & hỗ trợ bởi",
+    more: "Dành cho ai & phản hồi từ pilot",
     anonymous: "Ẩn danh",
     est: "ước tính",
   },

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Citation } from "@/components/ui/Primitives";
+import { Rail } from "@/components/ui/Rail";
 import type { Copy } from "@/content/copy";
 import { motionLevel } from "@/lib/prefs";
 
@@ -243,16 +244,16 @@ export function Core({ copy }: { copy: CoreCopy }) {
     <section
       ref={section}
       id="solution"
-      className="core-section relative overflow-hidden py-24 text-snow md:py-32"
+      className="core-section relative overflow-hidden py-16 text-snow md:py-32"
     >
       <div aria-hidden="true" className="core-field absolute inset-0" />
-      <div className="page-width relative flex flex-col gap-14">
+      <div className="page-width relative flex flex-col gap-10 md:gap-14">
         <Reveal className="flex flex-col gap-5">
           <p className="eyebrow flex items-center gap-2 text-silver">
             <span aria-hidden="true" className="h-px w-6 bg-signal" />
             {copy.eyebrow}
           </p>
-          <h2 className="max-w-[20ch] text-[40px] leading-[1.06] tracking-[-1px] text-snow md:text-[64px] md:tracking-[-1.8px]">
+          <h2 className="max-w-[20ch] text-[36px] leading-[1.06] tracking-[-1px] text-snow md:text-[64px] md:tracking-[-1.8px]">
             {copy.title.split(" ").map((word, index) => (
               <span
                 // biome-ignore lint/suspicious/noArrayIndexKey: a fixed sentence; position is identity
@@ -267,8 +268,9 @@ export function Core({ copy }: { copy: CoreCopy }) {
           <p className="max-w-[58ch] text-body text-silver md:text-subheading">{copy.body}</p>
         </Reveal>
 
-        <ol
-          className="grid gap-4 md:grid-cols-2 lg:grid-cols-6"
+        <Rail
+          as="ol"
+          className="md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-6"
           onPointerEnter={() => setHeld(true)}
           onPointerLeave={() => setHeld(false)}
         >
@@ -287,7 +289,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
                     }}
                     onBlur={() => setHeld(false)}
                     data-active={active === index}
-                    className="pillar glass-dark flex h-full flex-col gap-6 p-7 outline-none md:p-8"
+                    className="pillar glass-dark flex h-full flex-col gap-6 p-6 outline-none md:p-8"
                   >
                     <span
                       aria-hidden="true"
@@ -326,7 +328,7 @@ export function Core({ copy }: { copy: CoreCopy }) {
                           {pillar.to}
                         </p>
                       </div>
-                      <ul className="flex flex-col gap-2.5 border-t border-white/10 pt-5">
+                      <ul className="hidden flex-col gap-2.5 border-t border-white/10 pt-5 md:flex">
                         {pillar.capabilities.map((item) => (
                           <li
                             key={item}
@@ -346,16 +348,18 @@ export function Core({ copy }: { copy: CoreCopy }) {
               </li>
             );
           })}
-        </ol>
+        </Rail>
 
-        <Reveal className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-white/[0.03] p-8 md:grid-cols-[minmax(0,380px)_1fr] md:gap-16 md:p-12">
-          <Meet labels={copy.meet.labels} />
+        <Reveal className="grid items-center gap-6 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 md:grid-cols-[minmax(0,380px)_1fr] md:gap-16 md:rounded-[32px] md:p-12">
+          <div className="mx-auto w-full max-w-[280px] md:max-w-none">
+            <Meet labels={copy.meet.labels} />
+          </div>
           <div className="flex flex-col gap-4">
             <p className="eyebrow flex items-center gap-2 text-silver">
               <span aria-hidden="true" className="h-px w-6 bg-signal" />
               {copy.meet.title}
             </p>
-            <p className="max-w-[26ch] font-display text-[30px] leading-[1.2] tracking-[-0.5px] text-snow md:text-[42px]">
+            <p className="max-w-[26ch] font-display text-[24px] leading-[1.2] tracking-[-0.5px] text-snow md:text-[42px]">
               {copy.meet.body}
             </p>
           </div>

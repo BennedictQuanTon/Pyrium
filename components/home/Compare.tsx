@@ -9,7 +9,7 @@ type Level = "full" | "partial" | "none";
 /** Full: a solid disc. Partial: a half disc. None: a short dash. Each with a text label. */
 function Mark({ level, label, strong }: { level: Level; label: string; strong: boolean }) {
   return (
-    <span className="inline-flex items-center justify-center" title={label}>
+    <span className="inline-flex h-4 items-center justify-center align-middle" title={label}>
       <span className="sr-only">{label}</span>
       {level === "none" ? (
         <span aria-hidden="true" className="block h-px w-3 bg-ink/25" />
@@ -45,11 +45,64 @@ export function Compare({ lang }: { lang: Lang }) {
   const levels = t.legend;
   return (
     <section id="compare" className="section overflow-x-clip bg-snow">
-      <div className="page-width flex flex-col gap-12">
+      <div className="page-width flex flex-col gap-8 md:gap-12">
         <Reveal>
           <SectionHeading eyebrow={t.eyebrow} title={t.title} body={t.body} />
         </Reveal>
-        <Reveal pop className="min-w-0">
+        <Reveal pop className="md:hidden">
+          <table className="glass w-full border-separate border-spacing-0 rounded-[24px] px-3 pt-2 pb-3 text-left">
+            <thead>
+              <tr>
+                <th scope="col" className="align-bottom pb-3 pl-1">
+                  <span className="sr-only">{t.eyebrow}</span>
+                </th>
+                {t.shortColumns.map((column, index) => (
+                  <th
+                    key={column}
+                    scope="col"
+                    title={t.columns[index]}
+                    className={`w-[34px] px-0 pt-3 pb-3 align-bottom ${index === 0 ? "rounded-t-[14px] bg-signal/[0.07]" : ""}`}
+                  >
+                    <span
+                      className={`mx-auto block rotate-180 text-[11px] leading-none font-medium whitespace-nowrap [writing-mode:vertical-rl] ${index === 0 ? "text-signal" : "text-stone"}`}
+                    >
+                      {column}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {t.rows.map((row, rowIndex) => {
+                const last = rowIndex === t.rows.length - 1;
+                return (
+                  <tr key={row.label}>
+                    <th
+                      scope="row"
+                      className="border-t border-ink/[0.07] py-2.5 pr-2 pl-1 text-[12.5px] leading-[1.35] font-normal text-ink"
+                    >
+                      {row.label}
+                    </th>
+                    {row.values.map((value, index) => (
+                      <td
+                        // biome-ignore lint/suspicious/noArrayIndexKey: columns are fixed and ordered
+                        key={index}
+                        className={`border-t border-ink/[0.07] px-0 text-center align-middle ${index === 0 ? `bg-signal/[0.07] ${last ? "rounded-b-[14px]" : ""}` : ""}`}
+                      >
+                        <Mark
+                          level={value as Level}
+                          label={`${t.columns[index]}: ${levels[value as Level]}`}
+                          strong={index === 0}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </Reveal>
+        <Reveal pop className="hidden min-w-0 md:block">
           <div className="no-scrollbar -mx-4 w-[calc(100%+2rem)] overflow-x-auto px-4">
             <table className="compare w-full min-w-[720px] border-separate border-spacing-0 text-left">
               <thead>
